@@ -1,0 +1,189 @@
+{
+    "Navbar": {
+        "home": "Home",
+        "about": "About",
+        "programs": "Programs",
+        "contact": "Contact",
+        "Gallary":"Gallary",
+        "Events":"Events",
+        "JoinUs":"Join Us",
+        "Eng":"Eng",
+        "Amh":"Amh"
+    },
+    
+    "home":{
+        "title":"welude birhan",
+        "subtitle":"children of light",
+        "tagName":"Ethiopian orthodex tewahdo church sunday school",
+        "description":"nurturing the next generation in the ancient, living faith of Ethiopian orthodox church",
+        "programs":"our programs",
+        "learnMore":"learn more",
+        "students":"students",
+        "teachers":"teachers",
+        "yearsOfService":"years of service",
+        "orthodoxFaith":"orthodox faith"
+    },
+    "recap":{
+        "title":"welcome to holy trinity sunday school",
+        "firstProgram":"friday 11:30 pm - 1:30 pm LT: song study",
+        "secondProgram":"saturday 9:00 pm - 11:30 pm LT: bible study",
+        "thirdProgram":"saturday 11:30 pm - 1:30 pm LT: sunday school",
+        "fourthProgram":"sunday 9:00 pm - 11:30 pm LT: sunday school",
+        "fifthProgram":"sunday 2:00 pm - 5:00 pm LT: sunday school",
+        "sixthProgram":"sunday 11:30 pm - 1:30 pm LT: sunday school"
+    },
+    "testimonials":{
+        "title":"older students' testimonials",
+        "firstTestimonial":"I have been a student at Welude Birhan for the past 5 years, and I can confidently say that it has been an incredible experience. The teachers are knowledgeable and passionate about their subjects, and they create a welcoming and supportive environment for all students.",
+        "secondTestimonial":"Welude Birhan has helped me grow both academically and personally. The curriculum is challenging, but the teachers are always available to provide guidance and support. I have learned so much during my time here, and I am grateful for the opportunities that this school has provided me.",
+        "thirdTestimonial":"I have made lifelong friends at Welude Birhan, and I have had the chance to participate in a variety of extracurricular activities. The school encourages students to explore their interests and develop their talents, and I have been able to pursue my passion for music and art while also excelling academically.",
+        "fourthTestimonial":"Overall, I would highly recommend Welude Birhan to any student who is looking for a challenging and rewarding educational experience. The teachers are dedicated to helping students succeed, and the school provides a supportive and inclusive community that fosters growth and learning."
+    },
+    "objectives":{
+        "title":"holy trinity sunday school",
+        "mission":"to prepare a generation that knows the faith, dogma, canon and tradition of the Ethiopian orthodox tewahdo church and is spiritually mature, academically competent, and demonstrates integrity in service to the country and the church.",
+        "vision":"to nurture a generation that knows, preserves and protects the dogma, canon and tradition of the Ethiopian orthodox tewahdo church; is spiritually strong in their spiritual life; is well-versed in both spiritual and modern education; and is a generation that is grounded in faith and practice. By 2025, to make the sunday school a model institution that is self-sufficient in all aspects and accessible to all.",
+        "coreValues":
+         [
+        "wholeheartedly serving God with heart, soul, and strength",
+        "living a holy life",
+        "mutual respect for one another",
+        "focusing on practical Christianity (being a witness)",
+        "observing the law and order of the church: respecting and honoring",
+        "teaching the saints and the unchanging apostolic faith for generations in a consistent manner",
+        "serving the holy church faithfully and diligently with the grace given to us",
+        "avoiding evil speech",
+        "wearing Christian attire",
+        "respecting one another"
+      ],
+      "goals":
+      [
+        "spiritual growth",
+        "education and training",
+        "youth development",
+        "evangelism and outreach",
+        "community service"
+      ],
+      "objectives":
+         [
+          "to provide a comprehensive understanding of the Ethiopian orthodox tewahdo church's faith, dogma, canon, and tradition",
+          "to cultivate spiritual maturity and personal growth in students",
+          "to promote academic excellence and critical thinking skills",
+          "to instill a sense of integrity, responsibility, and service to the community and the church",
+          "to foster a supportive and inclusive learning environment that encourages collaboration and mutual respect among students and teachers"
+        ],
+        "moto":"we stand on the faith, we grow in knowledge, we will together on service"
+    },
+    "contact":{
+        "title":"contact us",
+        "subtitle":"contact us for any inquiries or questions you may have.",
+        "address":[
+            "address",
+            "holy trinity church",
+            "dire dawa, Ethiopia"
+        ],
+        "phone":"phone",
+        "email":"email",
+        "fullname":"name",
+        "subject":"subject",
+        "message":"message",
+        "sendMessage":"send message"
+    },
+    "footer":{
+        "title":"holy trinity sunday school",
+        "description":"service that working for the spiritual growth of children and youth based on the orthodox tewahdo faith.",
+        "links":"Links",
+        "address":"address",
+        "home":"Home",
+        "about":"About",
+        "mission":"Mission and vision",
+        "contact":"Contact",
+        "copyright":" Holy Trinity Sunday School. All rights reserved.",
+        "moto":"we stand on the faith, we grow in knowledge, we will together on service"
+    },
+    "signIn":{
+        "title":"sign in",
+        "subtitle":"Welcome back! Login to continue.",
+        "email":"Email Address",
+        "emailHolder":"enter your email",
+        "password":"password",
+        "passwordHolder":"enter your password",
+        "rememberMe":"Remember me",
+        "forgotPassword":"Forgot password?",
+        "signIn":"sign in"
+    },
+    "adminSide":{
+        "title":"welude birhan",
+        "dashboard":"dashboard",
+        "registration":"registration",
+        "roleAssigned":"role assignment",
+        "setting":"setting"
+
+    },
+    "registration":{
+        "title":"Registration form",
+        "fullname":"Full name",
+        "christianName":"christian Name",
+        "age":"age",
+        "sex":[
+            "male",
+            "famale"
+        ],
+        "phoneNumber":"Phone Number",
+        "duration":"duration(month)",
+        "repentanceName":"repantance name",
+        "repentancePhone":"repentance phone",
+        "familyName":"family fullname",
+        "familyPhone":"family phone",
+        "address":"family address",
+        "status": [
+            "STUDENT",
+            "YOUNG",
+            "FIRST_CLASS",
+            "SECOND_CLASS",
+            "THIRD_CLASS",
+            "SPECIAL_STANDARD",
+            "HONORARY_MEMBER",
+            "OUT_OF_TOWN"
+    ],
+    "statusLabels": {
+      "STUDENT": "Student",
+      "YOUNG": "Young Adult",
+      "FIRST_CLASS": "First Class",
+      "SECOND_CLASS": "Second Class",
+      "THIRD_CLASS": "Third Class",
+      "SPECIAL_STANDARD": "Special Standard",
+      "HONORARY_MEMBER": "Honorary Member",
+      "OUT_OF_TOWN": "Out of Town"
+    },
+    "statusDefault":"current status",
+        "register":"register"
+    },
+    "dashboard":{
+        "title":"Members statistics",
+        "totalMembers":"total members",
+        "totalMale":"total male",
+        "totalFemale":"total female",
+        "genderDistribution":"gender distribution",
+        "membersAge":"members by age group"
+    },
+    "roleAssign":{
+        "title":"role assignment",
+        "phone":"phone number",
+        "email":"Email Address",
+        "password":"password",
+        "confirmPassword":"confirm password",
+        "assign":"assign",
+        "fullname":"Full name",
+        "chrstianName":"christian Name",
+        "status":"status"
+    },
+    "setting":{
+        "profile":"profile",
+        "changer":"email and passworde change",
+        "language":"language",
+        "copyright":" Holy Trinity Sunday School. All rights reserved.",
+        "moto":"we stand on the faith, we grow in knowledge, we will together on service"
+    }
+    
+}
