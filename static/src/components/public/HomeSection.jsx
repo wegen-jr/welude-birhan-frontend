@@ -3,7 +3,7 @@ import { useCms } from '../../context/CmsContext';
 import logo from '../../assets/logo.png';
 import {
   Calendar, Clock, MapPin, Sparkles, BookOpen, GraduationCap,
-  Music, BellRing, ArrowRight, PlusCircle, CheckCircle2, ChevronRight
+  Music, ArrowRight, PlusCircle, CheckCircle2, ChevronRight
 } from 'lucide-react';
 
 export default function HomeSection() {
@@ -11,7 +11,6 @@ export default function HomeSection() {
     language,
     aboutData,
     publishedGridEvents,
-    urgentNotices,
     openLoginModal,
     setActiveNavSection,
   } = useCms();
@@ -84,42 +83,6 @@ export default function HomeSection() {
   return (
     <div id="home" className="w-full bg-[#081226] text-slate-100 pt-20">
       
-      {/* ========================================================
-          URGENT NOTICE BANNER (Dynamic from CMS)
-         ======================================================== */}
-      {urgentNotices.length > 0 && (
-        <aside aria-label="Urgent Notices" className="w-full bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 text-slate-950 px-4 py-3 shadow-lg border-b border-amber-300">
-          <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3">
-            <div className="flex items-center gap-3">
-              <span className="p-2 rounded-full bg-slate-950 text-amber-400 shrink-0 animate-bounce">
-                <BellRing className="w-4 h-4" />
-              </span>
-              <div>
-                <span className="text-xs font-black uppercase tracking-wider bg-slate-950 text-white px-2 py-0.5 rounded mr-2">
-                  {language === 'am' ? 'አስቸኳይ ማስታወቂያ' : 'Urgent Notice'}
-                </span>
-                <strong className="font-bold text-sm text-slate-950">
-                  {language === 'am' && urgentNotices[0].titleAm
-                    ? urgentNotices[0].titleAm
-                    : urgentNotices[0].title}:
-                </strong>{' '}
-                <span className="text-sm font-medium text-slate-900">
-                  {language === 'am' && urgentNotices[0].descriptionAm
-                    ? urgentNotices[0].descriptionAm
-                    : urgentNotices[0].description}
-                </span>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3 shrink-0">
-              <span className="text-xs font-bold bg-slate-950/15 px-3 py-1 rounded-full">
-                {urgentNotices[0].date}
-              </span>
-            </div>
-          </div>
-        </aside>
-      )}
-
       {/* ========================================================
           HERO SECTION (High-Contrast Overlay + Fixed Copy + Metrics)
          ======================================================== */}

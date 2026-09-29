@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useCms } from '../../context/CmsContext';
 import logo from '../../assets/logo.png';
-import { Globe, Menu, X, ExternalLink, ShieldCheck } from 'lucide-react';
+import { Globe, Menu, X, LogIn, User } from 'lucide-react';
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -115,44 +115,78 @@ export default function Navbar() {
             })}
           </nav>
 
-          {/* Utility Actions (Right) */}
-          <div className="hidden sm:flex items-center space-x-3">
+          {/* Utility Actions (Right - Desktop) */}
+          <div className="hidden sm:flex items-center gap-3">
             
             {/* Language Toggle Capsule: AMH | ENG */}
             <button
               type="button"
               onClick={toggleLanguage}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-amber-500/40 bg-amber-500/10 text-amber-300 hover:text-white hover:border-amber-400 hover:bg-amber-500/20 text-xs font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer shadow-sm"
-              title="Toggle Amharic / English"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-amber-500/30 bg-[#0b172d]/80 text-xs font-semibold tracking-wider hover:border-amber-400/60 hover:bg-amber-500/10 transition-all duration-200 cursor-pointer shadow-sm"
+              title="Toggle Amharic / English (ቋንቋ ቀይር)"
+              aria-label="Toggle language"
             >
               <Globe className="w-3.5 h-3.5 text-amber-400" />
-              <span>{language === 'am' ? 'ENG' : 'አማርኛ'}</span>
+              <span className="flex items-center gap-1 font-bold text-xs">
+                <span className={language === 'am' ? 'text-amber-400 font-extrabold' : 'text-slate-400'}>AMH</span>
+                <span className="text-amber-500/30 text-[10px]">|</span>
+                <span className={language === 'en' ? 'text-amber-400 font-extrabold' : 'text-slate-400'}>ENG</span>
+              </span>
             </button>
 
-            {/* Primary Action Button: "CMS PORTAL ⎘" */}
+            {/* Public-Appropriate Sign-In Capsule Icon */}
             <button
               type="button"
               onClick={handlePortalAction}
-              className="relative inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-sm shadow-md transition-all duration-200 cursor-pointer hover:scale-[1.02] active:scale-98"
+              className="relative w-10 h-10 rounded-full flex items-center justify-center bg-[#0b172d]/90 border border-amber-500/30 text-amber-400/90 hover:text-amber-300 hover:border-amber-400/70 hover:bg-amber-500/15 hover:shadow-[0_0_12px_rgba(245,158,11,0.2)] transition-all duration-200 cursor-pointer active:scale-95 shadow-sm group"
+              title={isAuthenticated ? (language === 'am' ? 'የተጠቃሚ መለያ' : 'User Account') : (language === 'am' ? 'ይግቡ' : 'Sign In')}
+              aria-label={isAuthenticated ? (language === 'am' ? 'የተጠቃሚ መለያ' : 'User Account') : (language === 'am' ? 'ይግቡ' : 'Sign In')}
             >
-              <span>{language === 'am' ? 'የአስተዳዳሪ ፖርታል ⎘' : 'CMS PORTAL ⎘'}</span>
+              {isAuthenticated ? (
+                <User className="w-4 h-4 text-amber-300 transition-transform group-hover:scale-110" />
+              ) : (
+                <LogIn className="w-4 h-4 text-amber-400 transition-transform group-hover:scale-110 ml-0.5" />
+              )}
               {isAuthenticated && (
-                <span className="w-2 h-2 rounded-full bg-emerald-950 animate-pulse ml-0.5" />
+                <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-emerald-400 ring-2 ring-[#081226] animate-pulse" />
               )}
             </button>
 
           </div>
 
-          {/* Mobile Hamburger Menu Toggle */}
+          {/* Mobile Actions & Menu Toggle */}
           <div className="flex sm:hidden items-center gap-2">
+            {/* Mobile Language Toggle */}
             <button
               type="button"
               onClick={toggleLanguage}
-              className="px-2 py-1 rounded-lg border border-amber-500/40 text-amber-300 text-xs font-bold"
+              className="flex items-center gap-1 px-2.5 py-1.5 rounded-full border border-amber-500/30 bg-[#0b172d]/80 text-xs font-bold"
+              aria-label="Toggle language"
             >
-              {language === 'am' ? 'ENG' : 'አማ'}
+              <span className={language === 'am' ? 'text-amber-400' : 'text-slate-400'}>AMH</span>
+              <span className="text-amber-500/30 text-[10px]">|</span>
+              <span className={language === 'en' ? 'text-amber-400' : 'text-slate-400'}>ENG</span>
             </button>
 
+            {/* Mobile User Icon */}
+            <button
+              type="button"
+              onClick={handlePortalAction}
+              className="relative w-9 h-9 rounded-full flex items-center justify-center bg-[#0b172d]/90 border border-amber-500/30 text-amber-400 hover:text-amber-300 hover:border-amber-400/60 hover:bg-amber-500/10 transition-all duration-200 cursor-pointer shadow-sm active:scale-95"
+              title={isAuthenticated ? (language === 'am' ? 'የተጠቃሚ መለያ' : 'User Account') : (language === 'am' ? 'ይግቡ' : 'Sign In')}
+              aria-label={isAuthenticated ? (language === 'am' ? 'የተጠቃሚ መለያ' : 'User Account') : (language === 'am' ? 'ይግቡ' : 'Sign In')}
+            >
+              {isAuthenticated ? (
+                <User className="w-4 h-4 text-amber-300" />
+              ) : (
+                <LogIn className="w-4 h-4 text-amber-400 ml-0.5" />
+              )}
+              {isAuthenticated && (
+                <span className="absolute top-0.5 right-0.5 w-2 h-2 rounded-full bg-emerald-400 ring-2 ring-[#081226] animate-pulse" />
+              )}
+            </button>
+
+            {/* Mobile Hamburger Drawer Toggle */}
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -189,13 +223,17 @@ export default function Navbar() {
             );
           })}
 
-          <div className="pt-4 border-t border-slate-700/80">
+          <div className="pt-3 border-t border-amber-500/20">
             <button
               type="button"
               onClick={handlePortalAction}
-              className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-bold text-sm tracking-wide shadow-md cursor-pointer"
+              className="w-full flex items-center justify-center gap-2.5 py-2.5 px-4 rounded-xl bg-[#0b172d]/90 border border-amber-500/30 text-amber-300 hover:text-white hover:bg-amber-500/15 hover:border-amber-400/60 transition-all font-semibold text-sm cursor-pointer shadow-sm"
             >
-              <span>{language === 'am' ? 'የአስተዳዳሪ ፖርታል ⎘' : 'CMS PORTAL ⎘'}</span>
+              {isAuthenticated ? <User className="w-4 h-4 text-amber-400" /> : <LogIn className="w-4 h-4 text-amber-400" />}
+              <span>{isAuthenticated ? (language === 'am' ? 'የተጠቃሚ መለያ' : 'User Account') : (language === 'am' ? 'ይግቡ' : 'Sign In')}</span>
+              {isAuthenticated && (
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse ml-1" />
+              )}
             </button>
           </div>
         </div>
