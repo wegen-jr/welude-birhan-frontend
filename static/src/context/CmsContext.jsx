@@ -479,7 +479,7 @@ export function CmsProvider({ children }) {
   const toggleTestimonialStatus = (id) => {
     setTestimonials((prev) =>
       prev.map((t) =>
-        t.id === id ? { ...t, status: t.status === 'published' ? 'draft' : 'published' } : e
+        t.id === id ? { ...t, status: t.status === 'published' ? 'draft' : 'published' } : t
       )
     );
   };

@@ -1,0 +1,10 @@
+{
+  "buildCommand": "npm --prefix static run build",
+  "outputDirectory": "static/dist",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
