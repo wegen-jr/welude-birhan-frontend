@@ -4,11 +4,13 @@
         "about": "About",
         "programs": "Programs",
         "contact": "Contact",
-        "Gallary":"Gallary",
-        "Events":"Events",
-        "JoinUs":"Join Us",
-        "Eng":"Eng",
-        "Amh":"Amh"
+        "Gallery": "Gallery",
+        "Gallary": "Gallery",
+        "Events": "Events",
+        "JoinUs": "Join Us",
+        "portalLogin": "Portal Login",
+        "Eng": "Eng",
+        "Amh": "Amh"
     },
     
     "home":{
@@ -72,7 +74,7 @@
           "to instill a sense of integrity, responsibility, and service to the community and the church",
           "to foster a supportive and inclusive learning environment that encourages collaboration and mutual respect among students and teachers"
         ],
-        "moto":"we stand on the faith, we grow in knowledge, we will together on service"
+        "moto":"United in faith, growing in spiritual wisdom, devoted to selfless service."
     },
     "contact":{
         "title":"contact us",

@@ -1,92 +1,192 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; // Make sure react-router-dom is installed
-import logo from "../assets/logo.png";
-import { useLanguage } from "../Contexts/LanguageContext";
+import { Link, useNavigate } from 'react-router-dom';
+import logo from '../assets/logo.png';
+import { useLanguage } from '../Contexts/LanguageContext';
+import { useContent } from '../Contexts/ContentContext';
+import { Lock, LogIn, LayoutDashboard, Globe, Menu, X, Church } from 'lucide-react';
+
 export default function HomeNavBar() {
   const [isOpen, setIsOpen] = useState(false);
-  const {t, language, toggleLanguage } = useLanguage();
+  const { t, language, toggleLanguage } = useLanguage();
+  const { openLoginModal, isAuthenticated, user } = useContent();
+  const navigate = useNavigate();
 
   const nextLanguage = language === 'en' ? 'am' : 'en';
 
-  // Function to toggle the mobile menu
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
-  // Reusable styling for links to keep code clean
-  const navLinkStyles = "hover:bg-yellow-300 transition-colors duration-300 rounded-full px-4 py-2 md:px-2 md:py-1 hover:text-white";
+  const handlePortalClick = (e) => {
+    e.preventDefault();
+    if (isOpen) setIsOpen(false);
+
+    if (isAuthenticated) {
+      navigate('/portal/cms');
+    } else {
+      openLoginModal();
+    }
+  };
+
+  // Reusable styling for links
+  const navLinkStyles =
+    'px-3 py-2 text-sm font-medium text-slate-200 hover:text-amber-400 hover:bg-white/5 rounded-lg transition-colors duration-200';
 
   return (
-    // 'relative z-50' ensures the mobile menu drops down over your page content
-    <nav className='w-full relative z-50 bg-blue-950 shadow-sm '>
-      <div className='max-w-7xl mx-auto px-4 py-3 flex justify-between items-center text-yellow-500'>
-        
-        {/* Logo Section */}
-        <div className='flex items-center'>
-          <Link to="/">
-            <img src={logo} alt="cross section" className='w-10 h-10 rounded-full' />
+    <nav className="w-full relative z-50 bg-[#081226]/95 backdrop-blur-md border-b border-amber-500/20 shadow-lg">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-18">
+          
+          {/* Logo & Church Branding */}
+          <Link to="/" className="flex items-center gap-3 group">
+            <div className="relative">
+              <img
+                src={logo}
+                alt="Welude Birhan Logo"
+                className="w-10 h-10 rounded-full object-cover ring-2 ring-amber-400/60 group-hover:ring-amber-400 transition-all shadow-md"
+              />
+              <div className="absolute -bottom-1 -right-1 bg-amber-500 text-slate-950 p-0.5 rounded-full text-[10px]">
+                ✝
+              </div>
+            </div>
+            <div className="flex flex-col">
+              <span className="font-serif font-bold text-lg text-white group-hover:text-amber-300 transition-colors tracking-wide leading-tight">
+                {language === 'am' ? 'ወሉደ ብርሃን' : 'Welude Birhan'}
+              </span>
+              <span className="text-[11px] font-sans font-medium text-amber-400 tracking-wider uppercase">
+                {language === 'am' ? 'ቅድስት ሥላሴ ሰንበት ት/ቤት' : 'Holy Trinity Sunday School'}
+              </span>
+            </div>
           </Link>
+
+          {/* Desktop Nav Links */}
+          <div className="hidden lg:flex items-center space-x-1">
+            <a href="#home" className={navLinkStyles}>{t.Navbar.home}</a>
+            <a href="#about" className={navLinkStyles}>{t.Navbar.about}</a>
+            <a href="#programs" className={navLinkStyles}>{t.Navbar.programs}</a>
+            <a href="#events" className={navLinkStyles}>{t.Navbar.Events}</a>
+            <a href="#gallery" className={navLinkStyles}>{t.Navbar.Gallery || 'Gallery'}</a>
+            <a href="#contact" className={navLinkStyles}>{t.Navbar.contact}</a>
+          </div>
+
+          {/* Right Action Area (Language Toggle & Prominent Portal Login) */}
+          <div className="hidden sm:flex items-center space-x-3">
+            {/* Language Toggle Button */}
+            <button
+              onClick={() => toggleLanguage(nextLanguage)}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-amber-500/40 text-amber-300 hover:text-white hover:border-amber-400 hover:bg-amber-500/10 text-xs font-semibold uppercase tracking-wider transition-all duration-200 cursor-pointer"
+              title="Toggle Amharic / English"
+            >
+              <Globe className="w-3.5 h-3.5" />
+              <span>{nextLanguage === 'am' ? 'Amh' : 'Eng'}</span>
+            </button>
+
+            {/* Prominent Portal Login Button */}
+            <button
+              onClick={handlePortalClick}
+              className="relative inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-bold text-xs uppercase tracking-wider shadow-md shadow-amber-500/25 hover:shadow-amber-500/40 transition-all duration-200 cursor-pointer active:scale-95"
+            >
+              {isAuthenticated ? (
+                <>
+                  <LayoutDashboard className="w-4 h-4" />
+                  <span>CMS Portal</span>
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse ml-0.5" />
+                </>
+              ) : (
+                <>
+                  <Lock className="w-3.5 h-3.5" />
+                  <span>{t.Navbar.portalLogin || 'Portal Login'}</span>
+                </>
+              )}
+            </button>
+          </div>
+
+          {/* Mobile Hamburger Button */}
+          <div className="flex sm:hidden items-center gap-2">
+            <button
+              onClick={() => toggleLanguage(nextLanguage)}
+              className="p-1.5 rounded-lg border border-amber-500/40 text-amber-300 text-xs font-bold uppercase"
+            >
+              {nextLanguage === 'am' ? 'Amh' : 'Eng'}
+            </button>
+            <button
+              onClick={toggleMenu}
+              className="p-2 rounded-lg text-amber-400 hover:text-white hover:bg-white/10 transition-colors"
+              aria-label="Toggle navigation menu"
+            >
+              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
+
         </div>
-
-        {/* Desktop Menu (Hidden on Mobile) */}
-        <div className='hidden md:flex items-center justify-end gap-4 mr-10'>
-          <Link to="/" className={navLinkStyles}>{t.Navbar.home}</Link>
-          <Link to="/about" className={navLinkStyles}>{t.Navbar.about}</Link>
-          <Link to="/programs" className={navLinkStyles}>{t.Navbar.programs}</Link>
-          <Link to="/events" className={navLinkStyles}>{t.Navbar.Events}</Link>
-          <Link to="/gallery" className={navLinkStyles}>{t.Navbar.Gallary}</Link>
-          <Link to="/contacts" className={navLinkStyles}>{t.Navbar.contact}</Link>
-
-          <button className='bg-gray-600 border border-yellow-400  px-2 hover:cursor-pointer'
-          onClick={()=>toggleLanguage(nextLanguage)}>{nextLanguage==='am'?t.Navbar.Amh:t.Navbar.Eng}</button>
-        </div>
-
-        {/* Mobile Hamburger Icon (Hidden on Desktop) */}
-        <div className='md:hidden flex items-center'>
-          <button 
-            onClick={toggleMenu} 
-            className='text-yellow-500 focus:outline-none'
-          >
-            {isOpen ? (
-              // Close "X" Icon
-              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            ) : (
-              // Hamburger Menu Icon
-              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            )}
-          </button>
-        </div>
-
       </div>
 
       {/* Mobile Menu Dropdown */}
-      <div 
-        className={`${
-          isOpen ? 'flex' : 'hidden'
-        } md:hidden absolute top-full left-0 w-full bg-blue-950 shadow-lg flex-col items-center gap-2 py-4 text-yellow-500`}
-      >
-        {/* Added onClick={toggleMenu} so the menu closes when a link is clicked */}
-        <Link to="/" onClick={toggleMenu} className={navLinkStyles}>{t.Navbar.home}</Link>
-        <Link to="/about" onClick={toggleMenu} className={navLinkStyles}>{t.Navbar.about}</Link>
-        <Link to="/programs" onClick={toggleMenu} className={navLinkStyles}>{t.Navbar.programs}</Link>
-        <Link to="/events" onClick={toggleMenu} className={navLinkStyles}>{t.Navbar.Events}</Link>
-        <Link to="/gallery" onClick={toggleMenu} className={navLinkStyles}>{t.Navbar.Gallary}</Link>
-        <Link to="/contacts" onClick={toggleMenu} className={navLinkStyles}>{t.Navbar.contact}</Link>
+      {isOpen && (
+        <div className="sm:hidden bg-[#0b1b3d] border-b border-amber-500/30 px-4 pt-3 pb-6 space-y-2 shadow-2xl animate-fadeIn">
+          <a
+            href="#home"
+            onClick={toggleMenu}
+            className="block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:text-amber-400 hover:bg-white/5"
+          >
+            {t.Navbar.home}
+          </a>
+          <a
+            href="#about"
+            onClick={toggleMenu}
+            className="block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:text-amber-400 hover:bg-white/5"
+          >
+            {t.Navbar.about}
+          </a>
+          <a
+            href="#programs"
+            onClick={toggleMenu}
+            className="block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:text-amber-400 hover:bg-white/5"
+          >
+            {t.Navbar.programs}
+          </a>
+          <a
+            href="#events"
+            onClick={toggleMenu}
+            className="block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:text-amber-400 hover:bg-white/5"
+          >
+            {t.Navbar.Events}
+          </a>
+          <a
+            href="#gallery"
+            onClick={toggleMenu}
+            className="block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:text-amber-400 hover:bg-white/5"
+          >
+            {t.Navbar.Gallery || 'Gallery'}
+          </a>
+          <a
+            href="#contact"
+            onClick={toggleMenu}
+            className="block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:text-amber-400 hover:bg-white/5"
+          >
+            {t.Navbar.contact}
+          </a>
 
-        <Link 
-          to="/signIn" 
-          onClick={toggleMenu}
-          className='bg-yellow-500 text-white py-2 px-6 mt-2 rounded-2xl font-bold hover:bg-yellow-600 transition-colors duration-300'
-        >
-          {t.Navbar.JoinUs}
-        </Link>
-          <button className='bg-gray-600 border border-yellow-400  px-2 hover:cursor-pointer'
-          onClick={()=>toggleLanguage(nextLanguage)}>{nextLanguage==='am'?t.Navbar.Amh:t.Navbar.Eng}</button>
-      </div>
+          <div className="pt-4 border-t border-slate-700/60">
+            <button
+              onClick={handlePortalClick}
+              className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm tracking-wide shadow-md shadow-amber-500/30 transition-all cursor-pointer"
+            >
+              {isAuthenticated ? (
+                <>
+                  <LayoutDashboard className="w-4 h-4" />
+                  <span>Go to CMS Portal</span>
+                </>
+              ) : (
+                <>
+                  <Lock className="w-4 h-4" />
+                  <span>{t.Navbar.portalLogin || 'Portal Login'}</span>
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+      )}
     </nav>
-  )
+  );
 }

@@ -1,0 +1,11 @@
+{
+  "name": "welude-birhan-frontend",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "npm --prefix static run dev",
+    "build": "npm --prefix static run build",
+    "lint": "npm --prefix static run lint",
+    "preview": "npm --prefix static run preview"
+  }
+}

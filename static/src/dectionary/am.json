@@ -4,11 +4,13 @@
         "about": "ስለ እኛ",
         "programs": "ፕሮግራሞች",
         "contact": "አግኙን",
-        "Gallary":"ጋለሪ",
-        "Events":"ክስተቶች",
-        "JoinUs":"ተቀላቀሉ",
-        "Eng":"Eng",
-        "Amh":"Amh"
+        "Gallery": "ጋለሪ",
+        "Gallary": "ጋለሪ",
+        "Events": "ክስተቶች",
+        "JoinUs": "ተቀላቀሉ",
+        "portalLogin": "የአስተዳዳሪ ፖርታል",
+        "Eng": "Eng",
+        "Amh": "Amh"
     },
     "home":{
         "title":"ወሉደ ብርሃን",

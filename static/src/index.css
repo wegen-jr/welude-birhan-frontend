@@ -1,1 +1,28 @@
 @import "tailwindcss";
+
+@theme {
+  --color-orthodox-navy: #081226;
+  --color-orthodox-dark: #0b1b3d;
+  --color-orthodox-gold: #f59e0b;
+  --color-orthodox-amber: #fbbf24;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #081226;
+}
+::-webkit-scrollbar-thumb {
+  background: #d97706;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #f59e0b;
+}
