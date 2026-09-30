@@ -9,7 +9,7 @@ export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { login, loading, error } = useAuth();
+  const { login, loading } = useAuth();
   const navigate = useNavigate();
   const { t } = useLanguage();
 
@@ -18,18 +18,36 @@ export default function SignIn() {
 
     const res = await login(email, password);
 
+    // Login failed
     if (!res.success) {
       toast.error(res.data?.message || "Login failed");
       return;
     }
 
-    if (res.data?.access_token) {
-      localStorage.setItem("token", res.data.access_token);
+    // Get authentication data
+    const token = res.data?.access_token;
+    const user = res.data?.user;
+
+    // Make sure required data exists
+    if (!token || !user) {
+      toast.error("Invalid login response from server");
+      return;
     }
+
+    // Store authentication data
+    localStorage.setItem("token", token);
+    localStorage.setItem("user", JSON.stringify(user));
 
     toast.success("Logged in successfully");
 
-    setTimeout(() => navigate("/dashboard"), 500);
+    // Redirect according to role
+    if (user.role === "ADMIN") {
+      navigate("/dashboard", { replace: true });
+    } else if (user.role === "MEMBER_USER") {
+      navigate("/media", { replace: true });
+    } else {
+      navigate("/unauthorized", { replace: true });
+    }
   };
 
   return (
@@ -42,30 +60,37 @@ export default function SignIn() {
     >
       <ToastContainer />
 
-      <form onSubmit={handleSubmit} className="space-y-5">
-        <input
-          className="w-full px-4 py-3 rounded-lg bg-blue-950 border border-yellow-500 text-white"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <input
+            type="email"
+            className="w-full px-5 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 transition-all backdrop-blur-sm"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
 
-        <input
-          type="password"
-          className="w-full px-4 py-3 rounded-lg bg-blue-950 border border-yellow-500 text-white"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <div>
+          <input
+            type="password"
+            className="w-full px-5 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 transition-all backdrop-blur-sm"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
 
         <button
+          type="submit"
           disabled={loading}
-          className="w-full bg-yellow-500 py-3 rounded-lg font-semibold"
+          className="w-full bg-amber-500 hover:bg-amber-400 text-[#081226] py-3.5 rounded-xl font-bold transition-all shadow-lg shadow-amber-500/20 disabled:opacity-50 disabled:cursor-not-allowed mt-4"
         >
           {loading ? "Loading..." : "Sign In"}
         </button>
       </form>
-      
     </AuthCard>
   );
 }

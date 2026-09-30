@@ -3,11 +3,13 @@ import { ToastContainer, toast } from "react-toastify";
 import { useLanguage } from '../../Contexts/LanguageContext'
 import PhoneInputModule from "react-phone-input-2";
 import { isValidPhoneNumber } from "libphonenumber-js";
+import { useOutletContext } from "react-router-dom";
 import "react-phone-input-2/lib/style.css";
 
 const PhoneInput = PhoneInputModule.default || PhoneInputModule;
 
 export default function RoleAssignment() {
+  const { isDarkMode } = useOutletContext();
   const { t } = useLanguage();
   const [error, setError] = useState('');
   const [members, setMembers] = useState([]);
@@ -207,52 +209,54 @@ export default function RoleAssignment() {
   // Show loading state
   if (loading) {
     return (
-      <div className="bg-amber-200 h-screen p-5 flex justify-center items-center">
-        <div className="text-[#4A1010] text-xl">Loading members...</div>
+      <div className={`h-screen flex justify-center items-center ${isDarkMode ? 'bg-[#081226] text-white' : 'bg-slate-50 text-slate-800'}`}>
+        <div className="text-xl font-medium animate-pulse">Loading members...</div>
       </div>
     );
   }
 
   return (
-    <div className='bg-amber-200 min-h-screen p-5'>
-      <div className="bg-[#4A1010] gap-4 mb-8 p-5 rounded-2xl">
-        <h1 className="text-3xl font-bold text-center mb-6 text-amber-200 capitalize">
+    <div className={`min-h-screen p-6 lg:p-10 transition-colors duration-300 ${isDarkMode ? 'bg-[#081226]' : 'bg-slate-50'}`}>
+      <div className={`mb-8 p-8 rounded-3xl shadow-xl transition-colors duration-300 border ${isDarkMode ? 'bg-[#0b1b3d] border-white/10' : 'bg-white border-slate-200'}`}>
+        <h1 className={`text-3xl font-bold text-center mb-8 font-serif capitalize ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
           {t.roleAssign.title}
         </h1>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           {/* Search Section */}
-          <div className="text-amber-200 font-bold capitalize">
-            <h2 className="text-xl mb-4 text-amber-100">Search Member</h2>
-            <form onSubmit={handleSearch}>
-              <label>{t.registration.phoneNumber}</label>
-              <PhoneInput
-                country={"et"}
-                value={formData.phoneNo.replace('+', '')}
-                onChange={handlePhoneChange}
-                isValid={isPhoneValid}
-                inputClass={`p-3 bg-amber-100 border rounded capitalize w-full !text-[#4A1010] !bg-amber-100 ${
-                  touchedFields.phoneNo && !isPhoneValid ? '!border-red-500' : '!border-yellow-500'
-                }`}
-                containerClass="w-full"
-                buttonClass="!bg-amber-200 !border-yellow-500 rounded-l"
-                dropdownClass="!bg-amber-200 !text-[#4A1010]"
-              />
-              {touchedFields.phoneNo && !isPhoneValid && (
-                <p className="text-red-400 text-sm mt-1">Please enter a valid phone number</p>
-              )}
-              <div className='my-4 flex gap-2'>
+          <div>
+            <h2 className={`text-xl mb-6 font-bold capitalize ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>Search Member</h2>
+            <form onSubmit={handleSearch} className="space-y-4">
+              <div>
+                <label className={`block mb-2 text-sm font-medium ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>{t.registration.phoneNumber}</label>
+                <PhoneInput
+                  country={"et"}
+                  value={formData.phoneNo.replace('+', '')}
+                  onChange={handlePhoneChange}
+                  isValid={isPhoneValid}
+                  inputClass={`!w-full !px-5 !py-3.5 !rounded-xl !transition-all focus:!outline-none focus:!ring-2 focus:!ring-amber-500/50 focus:!border-amber-500 ${isDarkMode ? '!bg-white/5 !text-white' : '!bg-slate-50 !text-slate-900'} ${
+                    touchedFields.phoneNo && !isPhoneValid ? '!border-red-500' : (isDarkMode ? '!border-white/10' : '!border-slate-200')
+                  }`}
+                  containerClass="w-full"
+                  buttonClass={`!rounded-l-xl ${isDarkMode ? '!bg-white/5 !border-white/10' : '!bg-slate-100 !border-slate-200'}`}
+                  dropdownClass={isDarkMode ? '!bg-[#0b1b3d] !text-white !border-white/10' : '!bg-white !text-slate-900 !border-slate-200'}
+                />
+                {touchedFields.phoneNo && !isPhoneValid && (
+                  <p className="text-red-400 text-sm mt-1">Please enter a valid phone number</p>
+                )}
+              </div>
+              <div className='flex gap-3 pt-2'>
                 <button 
                   type='submit'
                   disabled={searching}
-                  className='bg-amber-100 text-[#4A1010] font-bold px-6 py-2 capitalize rounded-lg shadow-2xl shadow-amber-200 hover:cursor-pointer hover:bg-amber-200 disabled:opacity-50'
+                  className='flex-1 bg-amber-500 text-slate-900 font-bold px-6 py-3.5 capitalize rounded-xl shadow-lg shadow-amber-500/20 hover:bg-amber-400 transition-colors disabled:opacity-50'
                 >
                   {searching ? 'Searching...' : 'Search'}
                 </button>
                 <button 
                   type='button'
                   onClick={handleReset}
-                  className='bg-gray-300 text-[#4A1010] font-bold px-6 py-2 capitalize rounded-lg hover:bg-gray-400'
+                  className={`flex-1 font-bold px-6 py-3.5 capitalize rounded-xl transition-colors border ${isDarkMode ? 'bg-white/5 border-white/10 text-slate-300 hover:bg-white/10' : 'bg-slate-100 border-slate-200 text-slate-700 hover:bg-slate-200'}`}
                 >
                   Reset
                 </button>
@@ -261,25 +265,25 @@ export default function RoleAssignment() {
             
             {/* Selected Member Display */}
             {selectedMember && (
-              <div className="mt-4 p-3 bg-amber-100 rounded-lg text-[#4A1010]">
-                <p className="font-bold">Selected Member:</p>
-                <p>Name: {selectedMember.fullname || selectedMember.name || '-'}</p>
-                <p>Phone: {selectedMember.phoneNo || selectedMember.phone || '-'}</p>
+              <div className={`mt-6 p-5 rounded-2xl border ${isDarkMode ? 'bg-green-500/10 border-green-500/20 text-green-400' : 'bg-green-50 border-green-200 text-green-700'}`}>
+                <p className="font-bold mb-2 text-sm uppercase tracking-wider opacity-80">Selected Member</p>
+                <p className="text-lg font-medium">{selectedMember.fullname || selectedMember.name || '-'}</p>
+                <p className="opacity-90">{selectedMember.phoneNo || selectedMember.phone || '-'}</p>
               </div>
             )}
           </div>
 
           {/* Role Assignment Section */}
-          <div className='flex flex-col gap-2'>
-            <h2 className="text-xl text-amber-100 font-bold capitalize">Assign Role</h2>
-            <form onSubmit={handleRoleAssignment}>
+          <div>
+            <h2 className={`text-xl mb-6 font-bold capitalize ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>Assign Role</h2>
+            <form onSubmit={handleRoleAssignment} className="space-y-4">
               <input
                 name="email"
                 type="email"
                 placeholder={t.roleAssign.email}
                 value={formData.email}
                 onChange={handleInputChange}
-                className="p-3 bg-amber-100 border border-[#4A1010] rounded  text-[#4A1010] w-full mb-2"
+                className={`w-full px-5 py-3.5 rounded-xl transition-all outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 border ${isDarkMode ? 'bg-white/5 border-white/10 text-white placeholder-slate-400' : 'bg-slate-50 border-slate-200 text-slate-900 placeholder-slate-500'}`}
                 required
               />
 
@@ -289,7 +293,7 @@ export default function RoleAssignment() {
                 placeholder={t.roleAssign.password}
                 value={formData.password}
                 onChange={handleInputChange}
-                className="p-3 bg-amber-100 border border-[#4A1010] rounded  text-[#4A1010] w-full mb-2"
+                className={`w-full px-5 py-3.5 rounded-xl transition-all outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 border ${isDarkMode ? 'bg-white/5 border-white/10 text-white placeholder-slate-400' : 'bg-slate-50 border-slate-200 text-slate-900 placeholder-slate-500'}`}
                 required
               />
               <input
@@ -298,14 +302,14 @@ export default function RoleAssignment() {
                 placeholder={t.roleAssign.confirmPassword}
                 value={formData.confirmPassword}
                 onChange={handleInputChange}
-                className="p-3 bg-amber-100 border border-[#4A1010] rounded  text-[#4A1010] w-full mb-2"
+                className={`w-full px-5 py-3.5 rounded-xl transition-all outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 border ${isDarkMode ? 'bg-white/5 border-white/10 text-white placeholder-slate-400' : 'bg-slate-50 border-slate-200 text-slate-900 placeholder-slate-500'}`}
                 required
               />
               <select
                 name="role"
                 value={formData.role}
                 onChange={handleInputChange}
-                className="p-3 bg-amber-100 border border-[#4A1010] rounded  text-[#4A1010] w-full mb-2"
+                className={`w-full px-5 py-3.5 rounded-xl transition-all outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 border ${isDarkMode ? 'bg-white/5 border-white/10 text-white' : 'bg-slate-50 border-slate-200 text-slate-900'}`}
                 required
               >
                 <option value="" disabled>Select Role</option>
@@ -313,9 +317,9 @@ export default function RoleAssignment() {
                   <option key={index} value={role}>{role}</option>
                 ))}
               </select>
-              <div className='text-center mt-4'>
+              <div className='pt-2'>
                 <button type='submit'
-                  className='bg-amber-100 text-[#4A1010] font-bold px-8 py-2 capitalize rounded-lg shadow-2xl shadow-amber-200 hover:cursor-pointer hover:bg-amber-200'
+                  className='w-full bg-amber-500 text-slate-900 font-bold px-6 py-3.5 capitalize rounded-xl shadow-lg shadow-amber-500/20 hover:bg-amber-400 transition-colors'
                 >
                   {t.roleAssign.assign}
                 </button>
@@ -326,28 +330,28 @@ export default function RoleAssignment() {
       </div>
       
       {/* Results Table */}
-      <div className='bg-[#4A1010] rounded-lg overflow-hidden'>
-        <div className='bg-amber-100'>
-          <div className="flex justify-between items-center p-3 bg-[#4A1010] text-amber-100">
-            <span>Members List</span>
-            <span className="text-sm">
-              Showing {filteredMembers.length} of {members.length} members
-            </span>
-          </div>
-          <table className='w-full'>
-            <thead className='bg-[#4A1010] text-amber-100'>
+      <div className={`rounded-3xl shadow-xl overflow-hidden border ${isDarkMode ? 'bg-[#0b1b3d] border-white/10' : 'bg-white border-slate-200'}`}>
+        <div className={`flex justify-between items-center p-6 border-b ${isDarkMode ? 'border-white/10' : 'border-slate-200'}`}>
+          <h2 className={`text-xl font-bold capitalize ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>Members List</h2>
+          <span className={`text-sm px-4 py-1.5 rounded-full ${isDarkMode ? 'bg-white/5 text-slate-400' : 'bg-slate-100 text-slate-600'}`}>
+            Showing {filteredMembers.length} of {members.length} members
+          </span>
+        </div>
+        <div className="overflow-x-auto">
+          <table className='w-full text-left'>
+            <thead className={`border-b ${isDarkMode ? 'border-white/10 bg-white/5' : 'border-slate-200 bg-slate-50'}`}>
               <tr>
-                <th className="p-3">{t.roleAssign.fullname}</th>
-                <th className="p-3">{t.roleAssign.chrstianName}</th>
-                <th className="p-3">{t.roleAssign.status}</th>
-                <th className="p-3">{t.roleAssign.phone}</th>
-                <th className="p-3">Action</th>
+                <th className={`p-4 font-medium ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>{t.roleAssign.fullname}</th>
+                <th className={`p-4 font-medium ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>{t.roleAssign.chrstianName}</th>
+                <th className={`p-4 font-medium ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>{t.roleAssign.status}</th>
+                <th className={`p-4 font-medium ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>{t.roleAssign.phone}</th>
+                <th className={`p-4 font-medium text-center ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>Action</th>
               </tr>
             </thead>
             <tbody>
               {filteredMembers.length === 0 ? (
                 <tr>
-                  <td colSpan="5" className="text-center p-4 text-[#4A1010]">
+                  <td colSpan="5" className={`text-center p-8 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
                     {members.length === 0 ? 'No members found' : 'No members match your search'}
                   </td>
                 </tr>
@@ -355,29 +359,33 @@ export default function RoleAssignment() {
                 filteredMembers.map((item, index) => (
                   <tr 
                     key={index} 
-                    className={`border-b border-[#4A1010] hover:bg-amber-200 transition-colors ${
-                      selectedMember === item ? 'bg-amber-200' : ''
+                    className={`border-b transition-colors ${
+                      selectedMember === item 
+                        ? (isDarkMode ? 'bg-amber-500/10 border-amber-500/20' : 'bg-amber-50 border-amber-200') 
+                        : (isDarkMode ? 'border-white/5 hover:bg-white/5' : 'border-slate-100 hover:bg-slate-50')
                     }`}
                   >
-                    <td className="p-3 text-center text-[#4A1010]">
+                    <td className={`p-4 ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>
                       {item.fullname || item.fullName || item.name || '-'}
                     </td>
-                    <td className="p-3 text-center text-[#4A1010]">
+                    <td className={`p-4 ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
                       {item.christianName || item.christian_name || '-'}
                     </td>
-                    <td className="p-3 text-center text-[#4A1010]">
-                      {item.currentStatus || item.status || '-'}
+                    <td className="p-4">
+                      <span className={`px-2.5 py-1 text-xs rounded-full font-medium ${isDarkMode ? 'bg-white/10 text-slate-300' : 'bg-slate-200 text-slate-700'}`}>
+                        {item.currentStatus || item.status || '-'}
+                      </span>
                     </td>
-                    <td className="p-3 text-center text-[#4A1010]">
+                    <td className={`p-4 font-mono text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
                       {item.phoneNo || item.phone || item.phone_number || '-'}
                     </td>
-                    <td className="p-3 text-center">
+                    <td className="p-4 text-center">
                       <button
                         onClick={() => handleSelectMember(item)}
-                        className={`px-3 py-1 rounded text-sm font-bold ${
+                        className={`px-4 py-2 rounded-lg text-sm font-bold transition-colors shadow-sm ${
                           selectedMember === item 
-                            ? 'bg-green-600 text-white' 
-                            : 'bg-[#4A1010] text-amber-100 hover:bg-[#6B2020]'
+                            ? 'bg-green-500 text-white hover:bg-green-600' 
+                            : (isDarkMode ? 'bg-white/10 text-white hover:bg-white/20' : 'bg-slate-200 text-slate-800 hover:bg-slate-300')
                         }`}
                       >
                         {selectedMember === item ? 'Selected' : 'Select'}
@@ -391,7 +399,7 @@ export default function RoleAssignment() {
         </div>
       </div>
       
-      <ToastContainer position="top-right" autoClose={3000} />
+      <ToastContainer position="top-right" autoClose={3000} theme={isDarkMode ? "dark" : "light"} />
     </div>
   );
 }

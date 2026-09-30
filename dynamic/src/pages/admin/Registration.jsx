@@ -3,12 +3,14 @@ import { useLanguage } from "../../Contexts/LanguageContext";
 import { toast } from "react-toastify";
 import PhoneInputModule from "react-phone-input-2";
 import { isValidPhoneNumber } from "libphonenumber-js";
+import { useOutletContext } from "react-router-dom";
 import "react-phone-input-2/lib/style.css";
 
 // Safely unwrap the CommonJS default export for Vite
 const PhoneInput = PhoneInputModule.default || PhoneInputModule;
 
 export default function Registration() {
+  const { isDarkMode } = useOutletContext();
   const { t } = useLanguage();
   const status = t.registration.status || [];
   const statusLabels = t.registration.statusLabels || {};
@@ -306,22 +308,22 @@ export default function Registration() {
   };
 
   return (
-    <div className="min-h-screen bg-amber-200 flex items-center justify-center p-4">
+    <div className={`min-h-screen flex items-center justify-center p-6 lg:p-10 transition-colors duration-300 ${isDarkMode ? 'bg-[#081226]' : 'bg-slate-50'}`}>
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-3xl bg-[#4A1010] text-amber-200 p-6 rounded-xl shadow-lg"
+        className={`w-full max-w-3xl p-8 rounded-3xl shadow-xl transition-colors duration-300 border ${isDarkMode ? 'bg-[#0b1b3d] border-white/10' : 'bg-white border-slate-200'}`}
       >
-        <h1 className="text-3xl font-bold text-center mb-6">
+        <h1 className={`text-3xl font-bold text-center mb-8 font-serif capitalize ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
           {t.registration.title}
         </h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <input
             name="fullname"
             placeholder={t.registration.fullname}
             onChange={handleChange}
             value={formData.fullname}
-            className="p-3 bg-amber-100 border border-yellow-500 rounded capitalize text-[#4A1010]"
+            className={`w-full px-5 py-3.5 rounded-xl transition-all outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 border ${isDarkMode ? 'bg-white/5 border-white/10 text-white placeholder-slate-400' : 'bg-slate-50 border-slate-200 text-slate-900 placeholder-slate-500'}`}
             required
           />
 
@@ -330,7 +332,7 @@ export default function Registration() {
             placeholder={t.registration.christianName}
             onChange={handleChange}
             value={formData.christianName}
-            className="p-3 bg-amber-100 border  rounded capitalize text-[#4A1010]"
+            className={`w-full px-5 py-3.5 rounded-xl transition-all outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 border ${isDarkMode ? 'bg-white/5 border-white/10 text-white placeholder-slate-400' : 'bg-slate-50 border-slate-200 text-slate-900 placeholder-slate-500'}`}
             required
           />
 
@@ -342,7 +344,7 @@ export default function Registration() {
             value={formData.Age}
             min="6"
             max="120"
-            className="p-3 bg-amber-100 rounded capitalize text-[#4A1010]"
+            className={`w-full px-5 py-3.5 rounded-xl transition-all outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 border ${isDarkMode ? 'bg-white/5 border-white/10 text-white placeholder-slate-400' : 'bg-slate-50 border-slate-200 text-slate-900 placeholder-slate-500'}`}
             required
           />
 
@@ -350,7 +352,7 @@ export default function Registration() {
             name="gender"
             onChange={handleChange}
             value={formData.gender}
-            className="p-3 bg-amber-100 border rounded capitalize text-[#4A1010]"
+            className={`w-full px-5 py-3.5 rounded-xl transition-all outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 border ${isDarkMode ? 'bg-white/5 border-white/10 text-white' : 'bg-slate-50 border-slate-200 text-slate-900'}`}
             required
           >
             <option value="MALE">{t.registration.sex[0]}</option>
@@ -358,19 +360,19 @@ export default function Registration() {
           </select>
 
           {/* Phone Input 1 - phoneNo */}
-          <div className="md:col-span-2 text-amber-200 font-bold capitalize">
-            <label>{t.registration.phoneNumber}</label>
+          <div className="md:col-span-2 font-medium">
+            <label className={`block mb-2 text-sm ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>{t.registration.phoneNumber}</label>
             <PhoneInput
               country={"et"}
               value={formData.phoneNo.replace('+', '')}
               onChange={handlePhoneChange}
               isValid={isPhoneValid}
-              inputClass={`p-3 bg-amber-100 border rounded capitalize w-full !text-[#4A1010] !bg-amber-100 ${
-                touchedFields.phoneNo && !isPhoneValid ? '!border-red-500' : '!border-yellow-500'
+              inputClass={`!w-full !px-5 !py-3.5 !rounded-xl !transition-all focus:!outline-none focus:!ring-2 focus:!ring-amber-500/50 focus:!border-amber-500 ${isDarkMode ? '!bg-white/5 !text-white' : '!bg-slate-50 !text-slate-900'} ${
+                touchedFields.phoneNo && !isPhoneValid ? '!border-red-500' : (isDarkMode ? '!border-white/10' : '!border-slate-200')
               }`}
               containerClass="w-full"
-              buttonClass="!bg-amber-200 !border-yellow-500 rounded-l"
-              dropdownClass="!bg-amber-200 !text-[#4A1010]"
+              buttonClass={`!rounded-l-xl ${isDarkMode ? '!bg-white/5 !border-white/10' : '!bg-slate-100 !border-slate-200'}`}
+              dropdownClass={isDarkMode ? '!bg-[#0b1b3d] !text-white !border-white/10' : '!bg-white !text-slate-900 !border-slate-200'}
             />
             {touchedFields.phoneNo && !isPhoneValid && (
               <p className="text-red-400 text-sm mt-1">Please enter a valid phone number</p>
@@ -384,7 +386,7 @@ export default function Registration() {
             onChange={handleChange}
             value={formData.duration}
             min="1"
-            className="p-3 bg-amber-100 rounded capitalize text-[#4A1010]"
+            className={`w-full px-5 py-3.5 rounded-xl transition-all outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 border ${isDarkMode ? 'bg-white/5 border-white/10 text-white placeholder-slate-400' : 'bg-slate-50 border-slate-200 text-slate-900 placeholder-slate-500'}`}
             required
           />
 
@@ -393,25 +395,25 @@ export default function Registration() {
             placeholder={t.registration.repentanceName}
             onChange={handleChange}
             value={formData.repentanceName}
-            className="p-3 bg-amber-100  rounded capitalize text-[#4A1010]"
+            className={`w-full px-5 py-3.5 rounded-xl transition-all outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 border ${isDarkMode ? 'bg-white/5 border-white/10 text-white placeholder-slate-400' : 'bg-slate-50 border-slate-200 text-slate-900 placeholder-slate-500'}`}
             required
           />
 
           {/* Phone Input 2 - repentancePhone */}
-          <div className="md:col-span-2 text-amber-200 font-bold capitalize">
-            <label>{t.registration.repentancePhone}</label>
+          <div className="md:col-span-2 font-medium">
+            <label className={`block mb-2 text-sm ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>{t.registration.repentancePhone}</label>
             <PhoneInput
               country={"et"}
               value={formData.repentancePhone.replace('+', '')}
               onChange={handleRepentancePhoneChange}
               isValid={isRepentancePhoneValid}
               placeholder={t.registration.repentancePhone}
-              inputClass={`p-3 bg-amber-00 border rounded capitalize w-full !text-[#4A1010] !bg-amber-100${
-                touchedFields.repentancePhone && !isRepentancePhoneValid ? '!border-red-500' : '!border-yellow-500'
+              inputClass={`!w-full !px-5 !py-3.5 !rounded-xl !transition-all focus:!outline-none focus:!ring-2 focus:!ring-amber-500/50 focus:!border-amber-500 ${isDarkMode ? '!bg-white/5 !text-white' : '!bg-slate-50 !text-slate-900'} ${
+                touchedFields.repentancePhone && !isRepentancePhoneValid ? '!border-red-500' : (isDarkMode ? '!border-white/10' : '!border-slate-200')
               }`}
               containerClass="w-full"
-              buttonClass="!bg-amber-200 !border-yellow-500 rounded-l"
-              dropdownClass="!bg-amber-200 !text-[#4A1010]"
+              buttonClass={`!rounded-l-xl ${isDarkMode ? '!bg-white/5 !border-white/10' : '!bg-slate-100 !border-slate-200'}`}
+              dropdownClass={isDarkMode ? '!bg-[#0b1b3d] !text-white !border-white/10' : '!bg-white !text-slate-900 !border-slate-200'}
             />
             {touchedFields.repentancePhone && !isRepentancePhoneValid && (
               <p className="text-red-400 text-sm mt-1">Please enter a valid phone number</p>
@@ -423,25 +425,25 @@ export default function Registration() {
             placeholder={t.registration.familyName}
             onChange={handleChange}
             value={formData.familyName}
-            className="p-3 bg-amber-100 rounded capitalize text-[#4A1010]"
+            className={`w-full px-5 py-3.5 rounded-xl transition-all outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 border ${isDarkMode ? 'bg-white/5 border-white/10 text-white placeholder-slate-400' : 'bg-slate-50 border-slate-200 text-slate-900 placeholder-slate-500'}`}
             required
           />
 
           {/* Phone Input 3 - familyPhone */}
-          <div className="md:col-span-2 text-amber-200 font-bold capitalize">
-            <label>{t.registration.familyPhone}</label>
+          <div className="md:col-span-2 font-medium">
+            <label className={`block mb-2 text-sm ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>{t.registration.familyPhone}</label>
             <PhoneInput
               country={"et"}
               value={formData.familyPhone.replace('+', '')}
               onChange={handleFamilyPhoneChange}
               isValid={isFamilyPhoneValid}
               placeholder={t.registration.familyPhone}
-              inputClass={`p-3 bg-amber-100 border rounded capitalize w-full !text-[#4A1010] !bg-amber-100 ${
-                touchedFields.familyPhone && !isFamilyPhoneValid ? '!border-red-500' : '!border-yellow-500'
+              inputClass={`!w-full !px-5 !py-3.5 !rounded-xl !transition-all focus:!outline-none focus:!ring-2 focus:!ring-amber-500/50 focus:!border-amber-500 ${isDarkMode ? '!bg-white/5 !text-white' : '!bg-slate-50 !text-slate-900'} ${
+                touchedFields.familyPhone && !isFamilyPhoneValid ? '!border-red-500' : (isDarkMode ? '!border-white/10' : '!border-slate-200')
               }`}
               containerClass="w-full"
-              buttonClass="!bg-amber-200 !border-yellow-500 rounded-l"
-              dropdownClass="!bg-amber-200 !text-[#4A1010]"
+              buttonClass={`!rounded-l-xl ${isDarkMode ? '!bg-white/5 !border-white/10' : '!bg-slate-100 !border-slate-200'}`}
+              dropdownClass={isDarkMode ? '!bg-[#0b1b3d] !text-white !border-white/10' : '!bg-white !text-slate-900 !border-slate-200'}
             />
             {touchedFields.familyPhone && !isFamilyPhoneValid && (
               <p className="text-red-400 text-sm mt-1">Please enter a valid phone number</p>
@@ -453,7 +455,7 @@ export default function Registration() {
             placeholder={t.registration.address}
             onChange={handleChange}
             value={formData.familyAddress}
-            className="p-3 bg-amber-100  rounded md:col-span-2 capitalize text-[#4A1010]"
+            className={`w-full md:col-span-2 px-5 py-3.5 rounded-xl transition-all outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 border ${isDarkMode ? 'bg-white/5 border-white/10 text-white placeholder-slate-400' : 'bg-slate-50 border-slate-200 text-slate-900 placeholder-slate-500'}`}
             required
           />
 
@@ -461,7 +463,7 @@ export default function Registration() {
             name="currentStatus"
             value={formData.currentStatus}
             onChange={handleChange}
-            className="p-3 bg-amber-100  rounded md:col-span-2 capitalize text-[#4A1010]"
+            className={`w-full md:col-span-2 px-5 py-3.5 rounded-xl transition-all outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 border ${isDarkMode ? 'bg-white/5 border-white/10 text-white' : 'bg-slate-50 border-slate-200 text-slate-900'}`}
             required
           >
             <option value="" disabled>
@@ -478,7 +480,7 @@ export default function Registration() {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full mt-6 bg-amber-200 text-[#4A1010] font-bold py-3 rounded hover:bg-amber-100 hover:cursor-pointer capitalize disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-lg shadow-amber-100"
+          className="w-full mt-8 bg-amber-500 text-slate-900 font-bold py-3.5 rounded-xl hover:bg-amber-400 hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg shadow-amber-500/20"
         >
           {isSubmitting ? "Registering..." : t.registration.register}
         </button>

@@ -86,55 +86,61 @@ export default function SignUp() {
     >
       <ToastContainer />
 
-      <form onSubmit={handleSubmit} className="space-y-5">
-        <input
-          name="email"
-          type="email"
-          className="w-full px-4 py-3 rounded-lg bg-blue-950 border border-yellow-500 text-white "
-          placeholder={t.signUp.emailHolder}
-          value={formData.email}
-          onChange={handleChange}
-        />
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <input
+            name="email"
+            type="email"
+            className="w-full px-5 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 transition-all backdrop-blur-sm"
+            placeholder={t.signUp.emailHolder}
+            value={formData.email}
+            onChange={handleChange}
+          />
+        </div>
 
-       <div className="md:col-span-2 font-bold capitalize">
+        <div className="font-medium text-slate-300">
             <PhoneInput
               country={"et"}
               value={formData.phone.replace('+', '')}
               placeholder={t.signUp.phoneHolder}
               onChange={handlePhoneChange}
               isValid={isPhoneValid}
-              inputClass={`p-3 bg-blue-950 w-full border rounded capitalize w-full !text-white !bg-blue-950 ${
-                touchedFields.phoneNo && !isPhoneValid ? '!border-red-500' : '!border-yellow-500'
+              inputClass={`!w-full !px-5 !py-3.5 !rounded-xl !text-white !bg-white/5 !transition-all !backdrop-blur-sm focus:!outline-none focus:!ring-2 focus:!ring-amber-500/50 focus:!border-amber-500 ${
+                touchedFields.phoneNo && !isPhoneValid ? '!border-red-500' : '!border-white/10'
               }`}
               containerClass="w-full"
-              buttonClass="!bg-blue-900 !border-yellow-500 rounded-l"
-              dropdownClass="!bg-blue-900 !text-white"
+              buttonClass="!bg-white/5 !border-white/10 !rounded-l-xl"
+              dropdownClass="!bg-[#0b1b3d] !text-white !border-white/10"
             />
             {touchedFields.phoneNo && !isPhoneValid && (
               <p className="text-red-400 text-sm mt-1">Please enter a valid phone number</p>
             )}
-          </div>
+        </div>
 
-        <input
-          name="password"
-          type="password"
-          className="w-full px-4 py-3 rounded-lg bg-blue-950 border border-yellow-500 text-white capitalize"
-          placeholder={t.signUp.passwordHolder}
-          value={formData.password}
-          onChange={handleChange}
-        />
-        <input
-          name="confirmPassword"
-          type="password"
-          className="w-full px-4 py-3 rounded-lg bg-blue-950 border border-yellow-500 text-white capitalize"
-          placeholder={t.signUp.confirmPasswordHolder}
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-        />
+        <div>
+          <input
+            name="password"
+            type="password"
+            className="w-full px-5 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 transition-all backdrop-blur-sm"
+            placeholder={t.signUp.passwordHolder}
+            value={formData.password}
+            onChange={handleChange}
+          />
+        </div>
+        <div>
+          <input
+            name="confirmPassword"
+            type="password"
+            className="w-full px-5 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 transition-all backdrop-blur-sm"
+            placeholder={t.signUp.confirmPasswordHolder}
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+        </div>
 
         <button
           disabled={loading}
-          className="w-full bg-yellow-500 py-3 rounded-lg font-semibold hover:cursor-pointer hover:bg-yellow-600 transition-colors duration-300"
+          className="w-full bg-amber-500 hover:bg-amber-400 text-[#081226] py-3.5 rounded-xl font-bold transition-all shadow-lg shadow-amber-500/20 disabled:opacity-50 disabled:cursor-not-allowed mt-4"
         >
           {loading ? "Creating..." : "Sign Up"}
         </button>
