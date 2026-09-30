@@ -10,11 +10,18 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "libphonenumber-js": "^1.13.7",
+    "lucide-react": "^1.23.0",
     "react": "^19.2.7",
-    "react-dom": "^19.2.7"
+    "react-dom": "^19.2.7",
+    "react-phone-input-2": "^2.15.1",
+    "react-router-dom": "^7.18.1",
+    "react-toastify": "^11.1.0",
+    "recharts": "^3.9.1"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@tailwindcss/vite": "^4.3.2",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.3",
