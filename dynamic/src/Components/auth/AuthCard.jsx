@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import logo from "../../assets/logo.png";
 import bgImage from "../../assets/selassieChurch.png";
+import { ArrowBigLeftIcon } from "lucide-react";
 
 export default function AuthCard({ title, subtitle, noAccount, signUp, haveAccount, signIn, children }) {
   return (
@@ -49,9 +50,16 @@ export default function AuthCard({ title, subtitle, noAccount, signUp, haveAccou
           {/* Form Card */}
           <div className="bg-[#0b1b3d]/90 backdrop-blur-xl rounded-[2rem] shadow-2xl border border-white/10 p-8 sm:p-10">
             <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold text-amber-500 mb-3 font-serif tracking-wide">
-                {title}
-              </h1>
+              <div className="flex justify-start items-center cursor-pointer">
+                  <Link to={'/'} className="flex items-center gap-2">
+                    <ArrowBigLeftIcon className="w-6 h-6 text-amber-400 hover:text-amber-300 transition-colors" />
+                  </Link>
+              </div>
+              <div className="flex items-center justify-center">
+                  <h1 className="text-3xl font-bold text-amber-500 mb-3 font-serif tracking-wide">
+                    {title}
+                  </h1>
+              </div>
               <p className="text-slate-400 text-sm">
                 {subtitle}
               </p>

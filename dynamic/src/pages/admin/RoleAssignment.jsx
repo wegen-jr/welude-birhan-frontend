@@ -21,7 +21,7 @@ export default function RoleAssignment() {
   const [touchedFields, setTouchedFields] = useState({
     phoneNo: false,
   });
-  const roleOptions = ['User','Member', 'Admin'];
+  const roleOptions = ['MEMBER_USER', 'ADMIN'];
   const [formData, setFormData] = useState({
     phoneNo: '',
     email: '',
