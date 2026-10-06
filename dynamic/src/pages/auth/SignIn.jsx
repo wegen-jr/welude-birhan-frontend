@@ -56,7 +56,6 @@ export default function SignIn() {
       subtitle={t.signIn.subtitle}
       forgotPassword={t.signIn.forgotPassword}
       noAccount={t.signIn.noAccount}
-      signUp={t.signIn.signUp}
     >
       <ToastContainer />
 

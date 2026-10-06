@@ -270,7 +270,6 @@ export default function Registration() {
 
       // Check if response is OK
       if (!response.ok) {
-        // Try to get error message from response
         let errorMessage = `Server error: ${response.status}`;
         try {
           const errorData = await response.json();
@@ -288,7 +287,7 @@ export default function Registration() {
       }
 
       const data = await response.json();
-      toast.success(data.message || "Registered successfully!");
+      toast.success(data.message );
       
       // Reset form on success
       setFormData({
