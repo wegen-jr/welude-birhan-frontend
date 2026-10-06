@@ -240,7 +240,7 @@ export default function Registration() {
       
 
       // Try the first endpoint first
-      const response = await fetch("https://welude-birhan-1.onrender.com/member/creat_member", {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'https://welude-birhan-1.onrender.com'}/member/creat_member`, {
         method: "POST",
         headers: { 
           "Content-Type": "application/json",

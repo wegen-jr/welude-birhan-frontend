@@ -2,11 +2,12 @@
 import React, { useState } from 'react';
 import { Mail, Lock, Check, X, Eye, EyeOff, Shield } from 'lucide-react';
 import { toast } from 'react-toastify';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import {  ArrowBigLeft } from 'lucide-react';
 
 export default function EmailPasswordChanger({ currentEmail }) {
-    const Navigate=useNavigate();
+    const Navigate = useNavigate();
+    const { isDarkMode } = useOutletContext();
   
     // Email state
   const [isEditingEmail, setIsEditingEmail] = useState(false);
@@ -72,7 +73,7 @@ export default function EmailPasswordChanger({ currentEmail }) {
     setEmailLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('https://welude-birhan-1.onrender.com/user/change-email', {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'https://welude-birhan-1.onrender.com'}/user/change-email`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -170,7 +171,7 @@ export default function EmailPasswordChanger({ currentEmail }) {
     setPasswordLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('https://welude-birhan-1.onrender.com/user/change-password', {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'https://welude-birhan-1.onrender.com'}/user/change-password`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -221,16 +222,15 @@ export default function EmailPasswordChanger({ currentEmail }) {
         {!isEditingEmail ? (
           <div className="flex justify-between items-center">
             <div>
-              <h3 className="text-amber-200 font-medium mb-1 flex items-center gap-2">
+              <h3 className={`font-medium mb-1 flex items-center gap-2 ${isDarkMode ? "text-slate-300" : "text-slate-700"}`}>
                 <Mail size={18} />
                 Email Address
               </h3>
-              <p className="text-amber-200/70">{currentEmail || 'Not set'}</p>
+              <p className={isDarkMode ? "text-slate-400" : "text-slate-500"}>{currentEmail || 'Not set'}</p>
             </div>
             <button
               onClick={() => setIsEditingEmail(true)}
-              className="bg-amber-200 text-[#4A1010] px-4 py-2 rounded-lg 
-                         hover:bg-amber-100 transition-colors flex items-center gap-2"
+              className={`px-4 py-2 rounded-lg transition-colors flex items-center gap-2 ${isDarkMode ? "bg-amber-500 text-slate-950 hover:bg-amber-400" : "bg-amber-500 text-white hover:bg-amber-600"}`}
             >
               <Mail size={18} />
               Change Email
@@ -238,13 +238,13 @@ export default function EmailPasswordChanger({ currentEmail }) {
           </div>
         ) : (
           <form onSubmit={handleEmailSubmit} className="space-y-4">
-            <h3 className="text-amber-200 font-medium flex items-center gap-2">
+            <h3 className={`font-medium flex items-center gap-2 ${isDarkMode ? "text-slate-300" : "text-slate-700"}`}>
               <Mail size={20} />
               Change Email Address
             </h3>
             
             <div>
-              <label className="block text-amber-200 text-sm font-medium mb-1">
+              <label className={`block text-sm font-medium mb-1 ${isDarkMode ? "text-slate-300" : "text-slate-700"}`}>
                 New Email Address
               </label>
               <input
@@ -252,8 +252,8 @@ export default function EmailPasswordChanger({ currentEmail }) {
                 value={emailData.newEmail}
                 onChange={(e) => setEmailData({...emailData, newEmail: e.target.value})}
                 placeholder="Enter new email"
-                className={`w-full px-4 py-2 rounded-lg bg-amber-100 text-[#4A1010] 
-                           focus:outline-none focus:ring-2 focus:ring-amber-200
+                className={`w-full px-4 py-2 rounded-lg border ${isDarkMode ? "border-white/10" : "border-slate-200"} ${isDarkMode ? "bg-white/5 text-white" : "bg-white text-slate-900"} 
+                           focus:outline-none focus:ring-2 focus:ring-amber-500
                            ${emailErrors.newEmail ? 'border-2 border-red-500' : ''}`}
               />
               {emailErrors.newEmail && (
@@ -262,7 +262,7 @@ export default function EmailPasswordChanger({ currentEmail }) {
             </div>
 
             <div>
-              <label className="block text-amber-200 text-sm font-medium mb-1">
+              <label className={`block text-sm font-medium mb-1 ${isDarkMode ? "text-slate-300" : "text-slate-700"}`}>
                 Confirm New Email
               </label>
               <input
@@ -270,8 +270,8 @@ export default function EmailPasswordChanger({ currentEmail }) {
                 value={emailData.confirmEmail}
                 onChange={(e) => setEmailData({...emailData, confirmEmail: e.target.value})}
                 placeholder="Confirm new email"
-                className={`w-full px-4 py-2 rounded-lg bg-amber-100 text-[#4A1010] 
-                           focus:outline-none focus:ring-2 focus:ring-amber-200
+                className={`w-full px-4 py-2 rounded-lg border ${isDarkMode ? "border-white/10" : "border-slate-200"} ${isDarkMode ? "bg-white/5 text-white" : "bg-white text-slate-900"} 
+                           focus:outline-none focus:ring-2 focus:ring-amber-500
                            ${emailErrors.confirmEmail ? 'border-2 border-red-500' : ''}`}
               />
               {emailErrors.confirmEmail && (
@@ -280,7 +280,7 @@ export default function EmailPasswordChanger({ currentEmail }) {
             </div>
 
             <div>
-              <label className="block text-amber-200 text-sm font-medium mb-1">
+              <label className={`block text-sm font-medium mb-1 ${isDarkMode ? "text-slate-300" : "text-slate-700"}`}>
                 Current Password
               </label>
               <input
@@ -288,8 +288,8 @@ export default function EmailPasswordChanger({ currentEmail }) {
                 value={emailData.password}
                 onChange={(e) => setEmailData({...emailData, password: e.target.value})}
                 placeholder="Enter current password"
-                className={`w-full px-4 py-2 rounded-lg bg-amber-100 text-[#4A1010] 
-                           focus:outline-none focus:ring-2 focus:ring-amber-200
+                className={`w-full px-4 py-2 rounded-lg border ${isDarkMode ? "border-white/10" : "border-slate-200"} ${isDarkMode ? "bg-white/5 text-white" : "bg-white text-slate-900"} 
+                           focus:outline-none focus:ring-2 focus:ring-amber-500
                            ${emailErrors.password ? 'border-2 border-red-500' : ''}`}
               />
               {emailErrors.password && (
@@ -301,9 +301,7 @@ export default function EmailPasswordChanger({ currentEmail }) {
               <button
                 type="submit"
                 disabled={emailLoading}
-                className="bg-amber-200 text-[#4A1010] px-6 py-2 rounded-lg 
-                           hover:bg-amber-100 transition-colors flex items-center gap-2
-                           disabled:opacity-50 disabled:cursor-not-allowed"
+                className={`px-6 py-2 rounded-lg transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed ${isDarkMode ? "bg-amber-500 text-slate-950 hover:bg-amber-400" : "bg-amber-500 text-white hover:bg-amber-600"}`}
               >
                 {emailLoading ? (
                   <>
@@ -332,20 +330,19 @@ export default function EmailPasswordChanger({ currentEmail }) {
       </div>
 
       {/* ========== CHANGE PASSWORD SECTION ========== */}
-      <div className="bg-[#4A1010] rounded-2xl p-6">
+      <div className={`rounded-2xl p-6 border ${isDarkMode ? "bg-white/5 border-white/10" : "bg-slate-50 border-slate-200"}`}>
         {!isEditingPassword ? (
           <div className="flex justify-between items-center">
             <div>
-              <h3 className="text-amber-200 font-medium mb-1 flex items-center gap-2">
+              <h3 className={`font-medium mb-1 flex items-center gap-2 ${isDarkMode ? "text-slate-300" : "text-slate-700"}`}>
                 <Lock size={18} />
                 Password
               </h3>
-              <p className="text-amber-200/70">••••••••</p>
+              <p className={isDarkMode ? "text-slate-400" : "text-slate-500"}>••••••••</p>
             </div>
             <button
               onClick={() => setIsEditingPassword(true)}
-              className="bg-amber-200 text-[#4A1010] px-4 py-2 rounded-lg 
-                         hover:bg-amber-100 transition-colors flex items-center gap-2"
+              className={`px-4 py-2 rounded-lg transition-colors flex items-center gap-2 ${isDarkMode ? "bg-amber-500 text-slate-950 hover:bg-amber-400" : "bg-amber-500 text-white hover:bg-amber-600"}`}
             >
               <Lock size={18} />
               Change Password
@@ -353,13 +350,13 @@ export default function EmailPasswordChanger({ currentEmail }) {
           </div>
         ) : (
           <form onSubmit={handlePasswordSubmit} className="space-y-4">
-            <h3 className="text-amber-200 font-medium flex items-center gap-2">
+            <h3 className={`font-medium flex items-center gap-2 ${isDarkMode ? "text-slate-300" : "text-slate-700"}`}>
               <Shield size={20} />
               Change Password
             </h3>
             
             <div>
-              <label className="block text-amber-200 text-sm font-medium mb-1">
+              <label className={`block text-sm font-medium mb-1 ${isDarkMode ? "text-slate-300" : "text-slate-700"}`}>
                 Current Password
               </label>
               <div className="relative">
@@ -368,14 +365,14 @@ export default function EmailPasswordChanger({ currentEmail }) {
                   value={passwordData.currentPassword}
                   onChange={(e) => setPasswordData({...passwordData, currentPassword: e.target.value})}
                   placeholder="Enter current password"
-                  className={`w-full px-4 py-2 rounded-lg bg-amber-100 text-[#4A1010] 
-                             focus:outline-none focus:ring-2 focus:ring-amber-200
+                  className={`w-full px-4 py-2 rounded-lg border ${isDarkMode ? "border-white/10" : "border-slate-200"} ${isDarkMode ? "bg-white/5 text-white" : "bg-white text-slate-900"} 
+                             focus:outline-none focus:ring-2 focus:ring-amber-500
                              ${passwordErrors.currentPassword ? 'border-2 border-red-500' : ''}`}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPasswords({...showPasswords, current: !showPasswords.current})}
-                  className="absolute right-3 top-2.5 text-[#4A1010] hover:text-[#6A2020]"
+                  className={`absolute right-3 top-2.5 ${isDarkMode ? "text-slate-400 hover:text-white" : "text-slate-500 hover:text-slate-900"}`}
                 >
                   {showPasswords.current ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
@@ -386,7 +383,7 @@ export default function EmailPasswordChanger({ currentEmail }) {
             </div>
 
             <div>
-              <label className="block text-amber-200 text-sm font-medium mb-1">
+              <label className={`block text-sm font-medium mb-1 ${isDarkMode ? "text-slate-300" : "text-slate-700"}`}>
                 New Password
               </label>
               <div className="relative">
@@ -398,14 +395,14 @@ export default function EmailPasswordChanger({ currentEmail }) {
                     checkPasswordStrength(e.target.value);
                   }}
                   placeholder="Enter new password (min 8 characters)"
-                  className={`w-full px-4 py-2 rounded-lg bg-amber-100 text-[#4A1010] 
-                             focus:outline-none focus:ring-2 focus:ring-amber-200
+                  className={`w-full px-4 py-2 rounded-lg border ${isDarkMode ? "border-white/10" : "border-slate-200"} ${isDarkMode ? "bg-white/5 text-white" : "bg-white text-slate-900"} 
+                             focus:outline-none focus:ring-2 focus:ring-amber-500
                              ${passwordErrors.newPassword ? 'border-2 border-red-500' : ''}`}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPasswords({...showPasswords, new: !showPasswords.new})}
-                  className="absolute right-3 top-2.5 text-[#4A1010] hover:text-[#6A2020]"
+                  className={`absolute right-3 top-2.5 ${isDarkMode ? "text-slate-400 hover:text-white" : "text-slate-500 hover:text-slate-900"}`}
                 >
                   {showPasswords.new ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
@@ -414,7 +411,7 @@ export default function EmailPasswordChanger({ currentEmail }) {
               {passwordData.newPassword && (
                 <div className="mt-2">
                   <div className="flex items-center gap-2">
-                    <div className="flex-1 h-2 bg-amber-200/20 rounded-full overflow-hidden">
+                    <div className={`flex-1 h-2 ${isDarkMode ? "bg-white/10" : "bg-slate-200"} rounded-full overflow-hidden`}>
                       <div 
                         className={`h-full bg-${passwordStrength.color} transition-all duration-300`}
                         style={{ width: `${(passwordStrength.score / 6) * 100}%` }}
@@ -433,7 +430,7 @@ export default function EmailPasswordChanger({ currentEmail }) {
             </div>
 
             <div>
-              <label className="block text-amber-200 text-sm font-medium mb-1">
+              <label className={`block text-sm font-medium mb-1 ${isDarkMode ? "text-slate-300" : "text-slate-700"}`}>
                 Confirm New Password
               </label>
               <div className="relative">
@@ -442,14 +439,14 @@ export default function EmailPasswordChanger({ currentEmail }) {
                   value={passwordData.confirmPassword}
                   onChange={(e) => setPasswordData({...passwordData, confirmPassword: e.target.value})}
                   placeholder="Confirm new password"
-                  className={`w-full px-4 py-2 rounded-lg bg-amber-100 text-[#4A1010] 
-                             focus:outline-none focus:ring-2 focus:ring-amber-200
+                  className={`w-full px-4 py-2 rounded-lg border ${isDarkMode ? "border-white/10" : "border-slate-200"} ${isDarkMode ? "bg-white/5 text-white" : "bg-white text-slate-900"} 
+                             focus:outline-none focus:ring-2 focus:ring-amber-500
                              ${passwordErrors.confirmPassword ? 'border-2 border-red-500' : ''}`}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPasswords({...showPasswords, confirm: !showPasswords.confirm})}
-                  className="absolute right-3 top-2.5 text-[#4A1010] hover:text-[#6A2020]"
+                  className={`absolute right-3 top-2.5 ${isDarkMode ? "text-slate-400 hover:text-white" : "text-slate-500 hover:text-slate-900"}`}
                 >
                   {showPasswords.confirm ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
@@ -463,9 +460,7 @@ export default function EmailPasswordChanger({ currentEmail }) {
               <button
                 type="submit"
                 disabled={passwordLoading}
-                className="bg-amber-200 text-[#4A1010] px-6 py-2 rounded-lg 
-                           hover:bg-amber-100 transition-colors flex items-center gap-2
-                           disabled:opacity-50 disabled:cursor-not-allowed"
+                className={`px-6 py-2 rounded-lg transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed ${isDarkMode ? "bg-amber-500 text-slate-950 hover:bg-amber-400" : "bg-amber-500 text-white hover:bg-amber-600"}`}
               >
                 {passwordLoading ? (
                   <>
