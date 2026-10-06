@@ -219,18 +219,35 @@ export default function Registration() {
     setIsSubmitting(true);
 
     try {
+      // 1. Format phone to 09... (for primary phone)
+      const formatPhoneZeroNine = (phone) => {
+        if (!phone) return phone;
+        let formatted = String(phone).replace(/^\+?251/, '0');
+        if (formatted.startsWith('9')) formatted = '0' + formatted;
+        return formatted;
+      };
+
+      // 2. Format phone to +251... (for repentancePhone backend strict validation)
+      const formatPhonePlus251 = (phone) => {
+        if (!phone) return phone;
+        let digits = String(phone).replace(/\D/g, '');
+        if (digits.startsWith('0')) digits = '251' + digits.slice(1);
+        if (!digits.startsWith('251')) digits = '251' + digits;
+        return '+' + digits;
+      };
+
       // Prepare the data to match backend expectations
       const submitData = {
         fullname: formData.fullname,
         christianName: formData.christianName,
         Age: Number(formData.Age), // Ensure Age is a number
         gender: formData.gender,
-        phoneNo: formData.phoneNo,
+        phoneNo: formatPhoneZeroNine(formData.phoneNo),
         duration: Number(formData.duration), // Ensure duration is a number
         repentanceName: formData.repentanceName,
-        repentancePhone: formData.repentancePhone,
+        repentancePhone: formatPhonePlus251(formData.repentancePhone),
         familyName: formData.familyName,
-        familyPhone: formData.familyPhone,
+        familyPhone: formatPhoneZeroNine(formData.familyPhone),
         familyAddress: formData.familyAddress,
         currentStatus: formData.currentStatus,
       };

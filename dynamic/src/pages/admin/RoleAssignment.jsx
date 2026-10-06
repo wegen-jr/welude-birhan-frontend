@@ -304,9 +304,8 @@ export default function RoleAssignment() {
                 className={`w-full px-5 py-3.5 rounded-xl border outline-none focus:ring-2 focus:ring-amber-500/50 ${isDarkMode ? 'bg-white/5 border-white/10 text-white' : 'bg-slate-50 border-slate-200 text-slate-900'}`}
               >
                 <option value="USER">USER</option>
-                <option value="MEMBER">MEMBER_USER</option>
+                <option value="MEMBER_USER">MEMBER_USER</option>
                 <option value="ADMIN">ADMIN</option>
-
               </select>
 
               <button

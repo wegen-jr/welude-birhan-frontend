@@ -212,14 +212,15 @@ export default function EmailPasswordChanger({ currentEmail }) {
     Navigate(-1);
   }
   return (
-    <div className="bg-amber-200  flex justify-center p-2">
-      {/* ========== CHANGE EMAIL SECTION ========== */}
-        <div className='bg-[#4A1010] w-full md:w-100 h-screen rounded-2xl shadow-2xl shadow-[#4A1010] p-5'>
-            <button onClick={goBack} className="hover:cursor-pointer"> 
-            <ArrowBigLeft className="w-5 h-5 text-amber-200"/>
-          </button>
-        <div className="bg-[#4A1010]  p-6 ">
-        {!isEditingEmail ? (
+    <div className={`min-h-screen flex justify-center p-6 lg:p-10 transition-colors duration-300 ${isDarkMode ? 'bg-[#081226]' : 'bg-slate-50'}`}>
+      <div className={`w-full max-w-2xl h-fit rounded-3xl shadow-xl transition-colors duration-300 border p-8 ${isDarkMode ? 'bg-[#0b1b3d] border-white/10' : 'bg-white border-slate-200'}`}>
+        <button onClick={goBack} className={`hover:cursor-pointer mb-6 transition-colors ${isDarkMode ? 'text-amber-500 hover:text-amber-400' : 'text-slate-600 hover:text-slate-900'}`}> 
+          <ArrowBigLeft className="w-6 h-6"/>
+        </button>
+
+        {/* ========== CHANGE EMAIL SECTION ========== */}
+        <div className={`rounded-2xl p-6 mb-6 border ${isDarkMode ? "bg-white/5 border-white/10" : "bg-slate-50 border-slate-200"}`}>
+          {!isEditingEmail ? (
           <div className="flex justify-between items-center">
             <div>
               <h3 className={`font-medium mb-1 flex items-center gap-2 ${isDarkMode ? "text-slate-300" : "text-slate-700"}`}>
