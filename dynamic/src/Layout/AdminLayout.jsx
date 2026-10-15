@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Outlet } from "react-router-dom";
-import SideBar from "../pages/admin/SideBar";
+import SideBar from "../Components/admin/SideBar";
 
 export default function AdminLayout() {
   const [isDarkMode, setIsDarkMode] = useState(true);

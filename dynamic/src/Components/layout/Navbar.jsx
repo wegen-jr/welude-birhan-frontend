@@ -1,227 +1,257 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useCms } from '../../Contexts/CmsContext.jsx';
-import logo from '../../assets/logo.png';
-import { Globe, Menu, X, LogIn, User } from 'lucide-react';
-
+import { useState } from "react";
+import {
+  Menu,
+  X,
+  CalendarDays,
+  Image as ImageIcon,
+  BookOpen,
+  Phone,
+  LogIn,
+} from "lucide-react";
+import { Link } from "react-router-dom";
+import logo from "../../assets/logo.png";
 export default function Navbar() {
-  const navigate = useNavigate();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const {
-    activeNavSection,
-    setActiveNavSection,
-    language,
-    toggleLanguage,
-    isAuthenticated,
-    setCurrentView,
-    currentView,
-  } = useCms();
-
-  const navLinks = [
-    { id: '/', labelEn: 'Home', labelAm: 'መነሻ' },
-    { id: 'about-pillars', labelEn: 'About & Pillars', labelAm: 'ስለ እኛ እና 4ቱ ምሰሶዎች' },
-    { id: 'programs', labelEn: 'Programs', labelAm: 'መርሃ ግብሮች' },
-    { id: 'gallery-testimonials', labelEn: 'Gallery & Testimonials', labelAm: 'ጋለሪና ምስክርነት' },
-    { id: 'contact', labelEn: 'Contact', labelAm: 'አድራሻ' },
-  ];
-
-  const handleLinkClick = (sectionId) => {
-    navigate(`/${sectionId}`)
-  }
-
-  const handlePortalAction = () => {
-    setMobileMenuOpen(false);
-    if (isAuthenticated) {
-      setCurrentView('cms');
-    } else {
-      navigate('/signin');
-    }
-  };
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 h-20 bg-[#081226]/95 backdrop-blur-md border-b border-amber-500/20 shadow-xl transition-all">
-      <div className="max-w-7xl mx-auto h-full px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-full">
+    <header className="fixed top-0 left-0 z-50 w-full">
 
-          {/* Brand Cluster (Left) */}
-          <button
-            type="button"
-            onClick={() => handleLinkClick('/')}
-            className="flex items-center gap-3.5 group cursor-pointer text-left"
+      {/* Main Navbar */}
+      <nav className="border-b border-white/10 bg-[#081226]/95 shadow-[0_8px_30px_rgba(0,0,0,0.18)] backdrop-blur-xl">
+
+        <div className="mx-auto flex h-[82px] max-w-7xl items-center justify-between px-5 sm:px-8">
+
+          {/* Logo */}
+          <Link
+            to={'/'}
+            className="group flex items-center gap-3"
           >
-            <div className="relative">
-              <div className="w-12 h-12 rounded-full p-0.5 bg-gradient-to-tr from-amber-500 via-amber-300 to-amber-600 shadow-md group-hover:scale-105 transition-transform duration-300 ring-2 ring-amber-400/40">
-                <img
-                  src={logo}
-                  alt="Welude Birhan Emblem"
-                  className="w-full h-full object-cover rounded-full bg-[#0b1b3d]"
-                />
-              </div>
-              <span className="absolute -bottom-1 -right-1 bg-amber-500 text-slate-950 p-0.5 rounded-full text-[10px] font-bold shadow">
-                ✝
-              </span>
+            <div className="relative flex items-center justify-center rounded-full border border-[#c9a85d]/40 bg-[#0c1c39]">
+             <img src={logo} alt="logo" className="w-15 h-15 rounded-full" />
+
+              <span className="absolute inset-[-4px] rounded-full border border-[#c9a85d]/10 transition-all duration-500 group-hover:inset-[-6px]" />
             </div>
 
-            <div className="flex flex-col">
-              <span className="font-serif font-black text-xl text-white tracking-wide group-hover:text-amber-400 transition-colors leading-tight">
-                {language === 'am' ? 'ወሉደ ብርሃን' : 'Welude Birhan'}
-              </span>
-              <span className="text-[11px] font-sans font-semibold tracking-wider text-amber-400 uppercase">
-                {language === 'am'
-                  ? 'የቅድስት ሥላሴ ሰንበት ት/ቤት • ዲሬዳዋ'
-                  : 'HOLY TRINITY SUNDAY SCHOOL • ዲሬዳዋ'}
-              </span>
+            <div className="leading-none">
+              <h1 className="font-serif text-[17px] font-semibold tracking-wide text-white">
+                Welude Birhan
+              </h1>
+
+              <p className="mt-1 text-[9px] tracking-[0.28em] text-[#c9a85d] uppercase">
+                Orthodox Church
+              </p>
             </div>
+          </Link>
+
+          {/* Desktop Navigation */}
+          <div className="hidden items-center gap-1 lg:flex">
+
+            <NavItem
+              href="/"
+              label="Home"
+            />
+
+            <NavItem
+              href={'/about'}            
+              label="About"
+            />
+            <NavItem
+              href="/events"
+              label="Events"
+              icon={<CalendarDays size={15} />}
+            />
+
+            <NavItem
+              href="/gallery"
+              label="Gallery"
+              icon={<ImageIcon size={15} />}
+            />
+            <NavItem
+              href="/testimonials"
+              label="Testimonials"
+            />
+            <NavItem
+              href="/contact"
+              label="Contact"
+              icon={<Phone size={15} />}
+            />
+          </div>
+
+          {/* Login */}
+          <div className="hidden items-center gap-4 lg:flex">
+
+            <div className="h-6 w-px bg-white/10" />
+            <Link to={'/signin'} className="text-amber-300 flex items-center gap-3 hover:text-amber-500">
+              <LogIn
+                size={14}
+                strokeWidth={1.7}
+                className="transition-transform duration-300 group-hover:translate-x-0.5"
+              />
+              Login
+            </Link>
+
+          </div>
+
+          {/* Mobile Button */}
+          <button
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className="
+              flex h-10 w-10 items-center justify-center
+              rounded-lg border border-white/10
+              bg-white/[0.03]
+              text-slate-300
+              transition
+              hover:border-[#c9a85d]/30
+              hover:text-[#d6b56a]
+              lg:hidden
+            "
+            aria-label="Toggle navigation"
+          >
+            {mobileOpen ? (
+              <X size={21} />
+            ) : (
+              <Menu size={21} />
+            )}
           </button>
 
-          {/* Navigation Links (Center) */}
-          <nav className="hidden lg:flex items-center space-x-1" aria-label="Main Navigation">
-            {navLinks.map((link) => {
-              const isActive = activeNavSection === link.id;
-
-              return (
-                <button
-                  key={link.id}
-                  type="button"
-                  onClick={() => handleLinkClick(link.id)}
-                  className={`relative px-4 py-2 text-sm font-semibold transition-all duration-200 cursor-pointer ${isActive
-                    ? 'text-amber-400'
-                    : 'text-slate-300 hover:text-white hover:bg-white/5 rounded-lg'
-                    }`}
-                >
-                  <span>{language === 'am' ? link.labelAm : link.labelEn}</span>
-
-                  {/* Warm Gold Underline Indicator */}
-                  {isActive && (
-                    <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-gradient-to-r from-amber-500 via-amber-300 to-amber-500 rounded-full animate-fadeIn" />
-                  )}
-                </button>
-              );
-            })}
-          </nav>
-
-          {/* Utility Actions (Right - Desktop) */}
-          <div className="hidden sm:flex items-center gap-3">
-
-            {/* Language Toggle Capsule: AMH | ENG */}
-            <button
-              type="button"
-              onClick={toggleLanguage}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-amber-500/30 bg-[#0b172d]/80 text-xs font-semibold tracking-wider hover:border-amber-400/60 hover:bg-amber-500/10 transition-all duration-200 cursor-pointer shadow-sm"
-              title="Toggle Amharic / English (ቋንቋ ቀይር)"
-              aria-label="Toggle language"
-            >
-              <Globe className="w-3.5 h-3.5 text-amber-400" />
-              <span className="flex items-center gap-1 font-bold text-xs">
-                <span className={language === 'am' ? 'text-amber-400 font-extrabold' : 'text-slate-400'}>AMH</span>
-                <span className="text-amber-500/30 text-[10px]">|</span>
-                <span className={language === 'en' ? 'text-amber-400 font-extrabold' : 'text-slate-400'}>ENG</span>
-              </span>
-            </button>
-
-            {/* Public-Appropriate Sign-In Capsule Icon */}
-            <button
-              type="button"
-              onClick={handlePortalAction}
-              className="relative w-10 h-10 rounded-full flex items-center justify-center bg-[#0b172d]/90 border border-amber-500/30 text-amber-400/90 hover:text-amber-300 hover:border-amber-400/70 hover:bg-amber-500/15 hover:shadow-[0_0_12px_rgba(245,158,11,0.2)] transition-all duration-200 cursor-pointer active:scale-95 shadow-sm group"
-              title={isAuthenticated ? (language === 'am' ? 'የተጠቃሚ መለያ' : 'User Account') : (language === 'am' ? 'ይግቡ' : 'Sign In')}
-              aria-label={isAuthenticated ? (language === 'am' ? 'የተጠቃሚ መለያ' : 'User Account') : (language === 'am' ? 'ይግቡ' : 'Sign In')}
-            >
-              {isAuthenticated ? (
-                <User className="w-4 h-4 text-amber-300 transition-transform group-hover:scale-110" />
-              ) : (
-                <LogIn className="w-4 h-4 text-amber-400 transition-transform group-hover:scale-110 ml-0.5" />
-              )}
-              {isAuthenticated && (
-                <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-emerald-400 ring-2 ring-[#081226] animate-pulse" />
-              )}
-            </button>
-
-          </div>
-
-          {/* Mobile Actions & Menu Toggle */}
-          <div className="flex sm:hidden items-center gap-2">
-            {/* Mobile Language Toggle */}
-            <button
-              type="button"
-              onClick={toggleLanguage}
-              className="flex items-center gap-1 px-2.5 py-1.5 rounded-full border border-amber-500/30 bg-[#0b172d]/80 text-xs font-bold"
-              aria-label="Toggle language"
-            >
-              <span className={language === 'am' ? 'text-amber-400' : 'text-slate-400'}>AMH</span>
-              <span className="text-amber-500/30 text-[10px]">|</span>
-              <span className={language === 'en' ? 'text-amber-400' : 'text-slate-400'}>ENG</span>
-            </button>
-
-            {/* Mobile User Icon */}
-            <button
-              type="button"
-              onClick={handlePortalAction}
-              className="relative w-9 h-9 rounded-full flex items-center justify-center bg-[#0b172d]/90 border border-amber-500/30 text-amber-400 hover:text-amber-300 hover:border-amber-400/60 hover:bg-amber-500/10 transition-all duration-200 cursor-pointer shadow-sm active:scale-95"
-              title={isAuthenticated ? (language === 'am' ? 'የተጠቃሚ መለያ' : 'User Account') : (language === 'am' ? 'ይግቡ' : 'Sign In')}
-              aria-label={isAuthenticated ? (language === 'am' ? 'የተጠቃሚ መለያ' : 'User Account') : (language === 'am' ? 'ይግቡ' : 'Sign In')}
-            >
-              {isAuthenticated ? (
-                <User className="w-4 h-4 text-amber-300" />
-              ) : (
-                <LogIn className="w-4 h-4 text-amber-400 ml-0.5" />
-              )}
-              {isAuthenticated && (
-                <span className="absolute top-0.5 right-0.5 w-2 h-2 rounded-full bg-emerald-400 ring-2 ring-[#081226] animate-pulse" />
-              )}
-            </button>
-
-            {/* Mobile Hamburger Drawer Toggle */}
-            <button
-              type="button"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-lg text-amber-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
-              aria-label="Toggle navigation drawer"
-            >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
-          </div>
-
         </div>
-      </div>
 
-      {/* Smooth Mobile Drawer */}
-      {mobileMenuOpen && (
-        <div className="sm:hidden bg-[#081226]/98 border-b border-amber-500/30 px-4 pt-3 pb-6 space-y-2 shadow-2xl animate-fadeIn backdrop-blur-lg">
-          {navLinks.map((link) => {
-            const isActive = activeNavSection === link.id;
+        {/* Mobile Navigation */}
+        <div
+          className={`
+            overflow-hidden border-t border-white/10
+            bg-[#071226]
+            transition-all duration-300
+            lg:hidden
+            ${
+              mobileOpen
+                ? "max-h-[600px] opacity-100"
+                : "max-h-0 opacity-0"
+            }
+          `}
+        >
+          <div className="mx-auto max-w-7xl px-5 py-5">
 
-            return (
-              <button
-                key={link.id}
-                type="button"
-                onClick={() => handleLinkClick(link.id)}
-                className={`w-full text-left px-3.5 py-2.5 rounded-xl text-base font-semibold transition-colors flex items-center justify-between ${isActive
-                  ? 'text-amber-400 bg-amber-500/10 border-l-4 border-amber-400 pl-3'
-                  : 'text-slate-200 hover:text-amber-400 hover:bg-white/5'
-                  }`}
+            <MobileNavItem
+              href="/"
+              label="Home"
+              onClick={() => setMobileOpen(false)}
+            />
+
+            <MobileNavItem
+              href="/about"
+              label="About"
+              onClick={() => setMobileOpen(false)}
+            />
+
+            <MobileNavItem
+              href="/events"
+              label="Events"
+              icon={<CalendarDays size={16} />}
+              onClick={() => setMobileOpen(false)}
+            />
+
+            <MobileNavItem
+              href="/gallery"
+              label="Gallery"
+              icon={<ImageIcon size={16} />}
+              onClick={() => setMobileOpen(false)}
+            />
+
+            <MobileNavItem
+              href="/contact"
+              label="Contact"
+              icon={<Phone size={16} />}
+              onClick={() => setMobileOpen(false)}
+            />
+
+            {/* Mobile Login */}
+            <div className="mt-4 border-t border-white/10 pt-4">
+
+              <Link
+                to={'/signin'}
+                onClick={() => setMobileOpen(false)}
+                className="
+                  flex items-center justify-center gap-2
+                  rounded-lg
+                  border border-[#c9a85d]/40
+                  px-4 py-3
+                  text-sm font-medium
+                  text-[#d6b56a]
+                  transition
+                  hover:bg-[#c9a85d]/10
+                "
               >
-                <span>{language === 'am' ? link.labelAm : link.labelEn}</span>
-                {isActive && <span className="text-amber-400">●</span>}
-              </button>
-            );
-          })}
+                <LogIn size={15} />
+                Login
+              </Link>
 
-          <div className="pt-3 border-t border-amber-500/20">
-            <button
-              type="button"
-              onClick={handlePortalAction}
-              className="w-full flex items-center justify-center gap-2.5 py-2.5 px-4 rounded-xl bg-[#0b172d]/90 border border-amber-500/30 text-amber-300 hover:text-white hover:bg-amber-500/15 hover:border-amber-400/60 transition-all font-semibold text-sm cursor-pointer shadow-sm"
-            >
-              {isAuthenticated ? <User className="w-4 h-4 text-amber-400" /> : <LogIn className="w-4 h-4 text-amber-400" />}
-              <span>{isAuthenticated ? (language === 'am' ? 'የተጠቃሚ መለያ' : 'User Account') : (language === 'am' ? 'ይግቡ' : 'Sign In')}</span>
-              {isAuthenticated && (
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse ml-1" />
-              )}
-            </button>
+            </div>
+
           </div>
         </div>
-      )}
+
+      </nav>
     </header>
+  );
+}
+
+
+/* Desktop Navigation Item */
+
+function NavItem({ href, label, icon }) {
+  return (
+    <a
+      href={href}
+      className="
+        group flex items-center gap-1.5
+        rounded-lg px-4 py-3
+        text-sm text-slate-300
+        transition-all duration-300
+        hover:bg-white/[0.04]
+        hover:text-[#e0c27b]
+      "
+    >
+      {icon && (
+        <span className="text-slate-400 transition group-hover:text-[#d6b56a]">
+          {icon}
+        </span>
+      )}
+
+      <span>{label}</span>
+    </a>
+  );
+}
+
+
+/* Mobile Navigation Item */
+
+function MobileNavItem({
+  href,
+  label,
+  icon,
+  onClick,
+}) {
+  return (
+    <a
+      href={href}
+      onClick={onClick}
+      className="
+        flex items-center gap-3
+        border-b border-white/[0.06]
+        px-2 py-4
+        text-sm text-slate-300
+        transition
+        hover:text-[#d6b56a]
+      "
+    >
+      {icon && (
+        <span className="text-[#b9964d]">
+          {icon}
+        </span>
+      )}
+
+      {label}
+    </a>
   );
 }

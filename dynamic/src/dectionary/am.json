@@ -198,5 +198,285 @@
         "language":"ቁአንቁአ",
         "copyright":" ቅድስት ሥላሴ ሰንበት ትምህርት ቤት. መብቱ በሙሉ የተጠበቀ ነው።",
         "moto":"በእምነት እንቆማለን፤ በእውቀት እናድጋለን፤ በአገልግሎት እናበራለን።"
+    },
+    "cmsSidebar":{
+        "title":"እንኳን ወደ ሚዲያ ክፍል ዳሽቦርድ በደህና መጡ",
+        "subtitle":"እባክዎን የበይነ መረብ ገጾችን ይቆጣጥሩ",
+        "navigations":[
+            "ዳሽቦርድ",
+            "የተማሪዎች ምስክርነት",
+            "ጋለሪ",
+            "ዝግጅቶች",
+            "ግንኙነት"
+        ]
+        
+    },
+    "cmsDashboard": {
+    "title": "ወደ CMS ዳሽቦርድ እንኳን በደህና መጡ",
+    "subtitle": "የድረገጽዎን ይዘት እና ቅንብሮች ያስተዳድሩ",
+    "welcome": "በድጋሚ እንኳን በደህና መጡ",
+    "stats": {
+      "announcement": "ማስታወቂያ",
+      "gallery": "ጋለሪ",
+      "messages": "መልዕክቶች",
+      "pages": "ገጾች"
+    },
+
+    "sanctuary": {
+      "title": "ውሉደ ብርሃን",
+      "subtitle": "የቤተክርስቲያን ድረገጽ አስተዳደር",
+      "description":
+        "መረጃዎችን፣ ዝግጅቶችን፣ የጋለሪ ይዘቶችን እና ከጎብኚዎች የሚመጡ መልዕክቶችን በማስተዳደር የቤተክርስቲያኑን ድረገጽ ወቅታዊ ያድርጉ።",
+      "manageContent": "ይዘት ያስተዳድሩ",
+      "viewWebsite": "ድረገጹን ይመልከቱ"
+    },
+
+    "recentActivity": {
+      "title": "የቅርብ ጊዜ እንቅስቃሴ",
+
+      "activities": {
+        "eventAdded": "አዲስ ዝግጅት ተጨምሯል",
+        "galleryUpdated": "ጋለሪ ተዘምኗል",
+        "messageReceived": "አዲስ መልዕክት ደርሷል",
+        "aboutUpdated": "የስለ እኛ ገጽ ተዘምኗል"
+      },
+
+      "today": "ዛሬ",
+      "yesterday": "ትናንት",
+      "daysAgo": "ቀን በፊት"
     }
+  },
+  "cmsGallery": {
+  "title": "ጋለሪ",
+  "subtitle": "በድረ-ገጹ ላይ የሚታዩ ፎቶዎችን ያስተዳድሩ",
+  "addImage": "ምስል ይጨምሩ",
+
+  "stats": {
+    "totalImages": "ጠቅላላ ምስሎች",
+    "categories": "ምድቦች",
+    "dated": "የዝግጅት ቀን ያላቸው"
+  },
+
+  "filters": {
+    "searchPlaceholder": "ምስሎችን ይፈልጉ...",
+    "category": "ምድብ",
+    "all": "ሁሉም"
+  },
+
+  "actions": {
+    "edit": "አርትዕ",
+    "delete": "ሰርዝ"
+  },
+
+  "categories": {
+    "conferences": "ኮንፈረንሶች",
+    "worship": "አምልኮ",
+    "church": "ቤተክርስቲያን",
+    "community": "ማህበረሰብ",
+    "youth": "ወጣቶች"
+  },
+
+  "form": {
+    "addTitle": "የጋለሪ ምስል ይጨምሩ",
+    "editTitle": "የጋለሪ ምስል ያርትዑ",
+    "description": "ወደ ቤተክርስቲያኑ ጋለሪ ምስል ይጨምሩ",
+
+    "imageUrl": "የምስል ዩአርኤል",
+    "imageUrlPlaceholder": "የምስሉን ዩአርኤል ያስገቡ",
+    "imagePreview": "የምስል ቅድመ እይታ",
+
+    "mediaTitle": "የሚዲያ ርዕስ",
+    "mediaTitlePlaceholder": "የምስሉን ርዕስ ያስገቡ",
+
+    "category": "ምድብ",
+    "selectCategory": "ምድብ ይምረጡ",
+
+    "eventDate": "የዝግጅት ቀን እና ሰዓት",
+
+    "descriptionLabel": "መግለጫ",
+    "descriptionPlaceholder": "የምስሉን መግለጫ ያስገቡ",
+
+    "cancel": "ይቅር",
+    "save": "ምስል ያስቀምጡ",
+    "update": "ምስል ያዘምኑ",
+
+    "creating": "በመፍጠር ላይ...",
+    "updating": "በማዘመን ላይ..."
+  },
+
+  "empty": {
+    "title": "ምንም የጋለሪ ምስል አልተገኘም",
+    "description": "ለማሳየት ምንም ምስል የለም።"
+  }
+},
+  "cmsEvents": {
+  "title": "ዝግጅቶች",
+  "subtitle": "በድረ-ገጹ ላይ የሚታዩ ዝግጅቶችን ያስተዳድሩ",
+  "addEvent": "ዝግጅት ይጨምሩ",
+
+  "stats": {
+    "totalEvents": "ጠቅላላ ዝግጅቶች",
+    "upcoming": "መጪ ዝግጅቶች",
+    "categories": "ምድቦች",
+    "active": "ንቁ"
+  },
+
+  "filters": {
+    "searchPlaceholder": "ዝግጅቶችን ይፈልጉ...",
+    "allCategories": "ሁሉም ምድቦች"
+  },
+
+  "categories": {
+    "conference": "ኮንፈረንስ",
+    "worship": "አምልኮ",
+    "youth": "ወጣቶች",
+    "academic": "ትምህርታዊ",
+    "community": "ማህበረሰብ"
+  },
+
+  "actions": {
+    "edit": "አርትዕ",
+    "delete": "ሰርዝ"
+  },
+
+  "form": {
+    "addTitle": "ዝግጅት ይጨምሩ",
+    "editTitle": "ዝግጅት ያርትዑ",
+    "description": "በድረ-ገጹ ላይ የሚታይ ዝግጅት ይፍጠሩ",
+
+    "title": "ርዕስ",
+    "titlePlaceholder": "የዝግጅቱን ርዕስ ያስገቡ",
+
+    "category": "ምድብ",
+    "selectCategory": "ምድብ ይምረጡ",
+
+    "eventDate": "የዝግጅት ቀን እና ሰዓት",
+
+    "timeDuration": "ቆይታ",
+    "timeDurationPlaceholder": "ለምሳሌ፦ 3 ሰዓት (ከ9:00 - 12:00)",
+
+    "targetPlace": "የዝግጅት ቦታ",
+    "targetPlacePlaceholder": "ለምሳሌ፦ ዋና አዳራሽ / አዳራሽ B",
+
+    "location": "አካባቢ",
+    "locationPlaceholder": "ለምሳሌ፦ ድሬዳዋ የማህበረሰብ ማዕከል",
+
+    "descriptionLabel": "መግለጫ",
+    "descriptionPlaceholder": "የዝግጅቱን መግለጫ ያስገቡ",
+
+    "cancel": "ይቅር",
+    "save": "ዝግጅት ያስቀምጡ",
+    "update": "ዝግጅት ያዘምኑ",
+
+    "creating": "በመፍጠር ላይ...",
+    "updating": "በማዘመን ላይ..."
+  },
+
+  "empty": {
+    "title": "ምንም ዝግጅት አልተገኘም",
+    "description": "ለማሳየት ምንም ዝግጅት የለም።"
+  }
+},
+  "aboutPage": {
+    "hero": {
+      "title": "ስለ ወሉደ ብርሃን",
+      "subtitle": "የእምነት፣ የትምህርት፣ የኅብረትና የአገልግሎት ማዕከል።"
+    },
+    "intro": {
+      "title": "እኛ ማን ነን?",
+      "paragraphs": [
+        "ወሉደ ብርሃን እምነትን፣ እውቀትን፣ ኅብረትንና አገልግሎትን ለማጠናከር የሚሠራ የክርስቲያን ማኅበረሰብ ነው።",
+        "ቤተ ክርስቲያናችን አባላት በመንፈሳዊነት እንዲያድጉ፣ አብረው እንዲማሩ፣ በታማኝነት እንዲያመልኩና ማኅበረሰቡን እንዲያገለግሉ ምቹ ሁኔታን ትፈጥራለች።"
+      ]
+    },
+    "mission": {
+      "title": "ተልዕኳችን",
+      "description": "በአምልኮ፣ በትምህርት፣ በኅብረትና በአገልግሎት በእምነትና በእውቀት የዳበረ የክርስቲያን ማኅበረሰብ መገንባት።"
+    },
+    "vision": {
+      "title": "ራዕያችን",
+      "description": "መንፈሳዊ እድገትን የሚያበረታታ፣ ኅብረትን የሚያጠናክርና ለማኅበረሰቡ አዎንታዊ አስተዋጽኦ የሚያደርግ ብርቱ የክርስቲያን ማኅበረሰብ መሆን።"
+    },
+    "values": {
+      "title": "ዋና እሴቶቻችን",
+      "items": [
+        {
+          "title": "እምነት",
+          "description": "በእምነትና በአምልኮ አብረን ማደግ።"
+        },
+        {
+          "title": "ፍቅር",
+          "description": "እርስ በርሳችን በርኅራኄ፣ በአክብሮትና በእንክብካቤ ማገልገል።"
+        },
+        {
+          "title": "እውቀት",
+          "description": "መማርን፣ መረዳትንና የግል እድገትን ማበረታታት።"
+        },
+        {
+          "title": "ኅብረት",
+          "description": "ጠንካራና የሚደጋገፍ ማኅበረሰብ መገንባት።"
+        },
+        {
+          "title": "አገልግሎት",
+          "description": "ስጦታዎቻችንንና ችሎታዎቻችንን ተጠቅመን ቤተ ክርስቲያንንና ማኅበረሰቡን ማገልገል።"
+        }
+      ]
+    },
+    "community": {
+      "title": "ማኅበረሰባችን",
+      "description": "ወሉደ ብርሃን በአምልኮ፣ በትምህርት፣ በወጣቶች እንቅስቃሴ፣ በኅብረትና በማኅበረሰብ አገልግሎት የተለያየ ዕድሜና አስተዳደር ያላቸውን ሰዎች አንድ ላይ ያመጣል።"
+    },
+    "callToAction": {
+      "title": "የማኅበረሰባችን አካል ይሁኑ",
+      "description": "ከእኛ ጋር እንዲያመልኩ፣ እንዲማሩ፣ ኅብረት እንዲያደርጉና አብረው እንዲያድጉ በደስታ እንጋብዛለን።",
+      "button": "ተጨማሪ ይወቁ"
+    }
+  },
+  "cmsTestimonials": {
+    "label": "ምስክርነቶች",
+    "title": "የተመራቂዎች ምስክርነት",
+    "subtitle": "የተመራቂዎችን ታሪኮች፣ ስኬቶችና አነሳሽ መልዕክቶች ያስተዳድሩ",
+    "addTestimonial": "ምስክርነት ጨምር",
+    "loading": "ምስክርነቶች በመጫን ላይ...",
+    "actions": {
+      "edit": "አርትዕ",
+      "delete": "ሰርዝ"
+    },
+    "empty": {
+      "title": "ምንም ምስክርነት አልተገኘም",
+      "description": "ለማሳየት የተመራቂ ምስክርነት የለም።"
+    },
+    "form": {
+      "addTitle": "የተመራቂ ምስክርነት ጨምር",
+      "editTitle": "የተመራቂ ምስክርነት አርትዕ",
+      "image": "የተመራቂው ምስል",
+      "imagePreview": "የተመራቂው ምስል ቅድመ እይታ",
+      "chooseImage": "ምስል ይምረጡ",
+      "changeImage": "ምስል ቀይር",
+      "imageHint": "JPG፣ PNG ወይም WEBP",
+      "name": "ስም",
+      "namePlaceholder": "የተመራቂውን ስም ያስገቡ",
+      "baptismalName": "የክርስትና ስም",
+      "baptismalNamePlaceholder": "የክርስትና ስም ያስገቡ",
+      "graduateTitle": "የትምህርት ውጤት",
+      "graduateTitlePlaceholder": "ለምሳሌ፦ BSc in Software Engineering",
+      "year": "የተመረቁበት ዓመት",
+      "yearPlaceholder": "ለምሳሌ፦ 2026",
+      "inspirationQuote": "አነሳሽ ጥቅስ",
+      "inspirationQuotePlaceholder": "የተመራቂውን አነሳሽ መልዕክት ያስገቡ",
+      "cancel": "ሰርዝ",
+      "save": "ምስክርነት አስቀምጥ",
+      "update": "ምስክርነት አዘምን",
+      "creating": "በመፍጠር ላይ...",
+      "updating": "በማዘመን ላይ..."
+    },
+    "toast": {
+      "created": "ምስክርነቱ በተሳካ ሁኔታ ተፈጥሯል።",
+      "updated": "ምስክርነቱ በተሳካ ሁኔታ ታድሷል።",
+      "deleted": "ምስክርነቱ በተሳካ ሁኔታ ተሰርዟል።",
+      "error": "አንድ ችግር ተፈጥሯል።"
+    },
+    "confirmDelete": "ይህን ምስክርነት ማጥፋት እርግጠኛ ነዎት?"
+  }
 }
+

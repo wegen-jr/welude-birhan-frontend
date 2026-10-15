@@ -3,7 +3,7 @@ import logo from "../../assets/logo.png";
 import bgImage from "../../assets/selassieChurch.png";
 import { ArrowBigLeftIcon } from "lucide-react";
 
-export default function AuthCard({ title, subtitle, noAccount, signUp, haveAccount, signIn, children }) {
+export default function AuthCard({ title, subtitle, haveAccount, signIn, children }) {
   return (
     <div className="min-h-screen bg-[#081226] flex font-sans">
       {/* Left side - Image & Branding (Hidden on mobile) */}
@@ -68,15 +68,6 @@ export default function AuthCard({ title, subtitle, noAccount, signUp, haveAccou
             {children}
 
             <div className="mt-8 pt-6 border-t border-white/10 space-y-4">
-              {noAccount && signUp && (
-                <div className="flex items-center justify-center gap-2 text-sm text-slate-400">
-                  <p>{noAccount}</p>
-                  <Link to='/signUp' className="text-amber-400 font-semibold hover:text-amber-300 transition-colors hover:underline">
-                    {signUp}
-                  </Link>
-                </div>
-              )}
-              
               {haveAccount && signIn && (
                 <div className="flex items-center justify-center gap-2 text-sm text-slate-400">
                   <p>{haveAccount}</p>

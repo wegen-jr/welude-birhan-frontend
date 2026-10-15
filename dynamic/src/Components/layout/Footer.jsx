@@ -1,201 +1,367 @@
-import React from 'react';
-import { useCms } from '../../Contexts/CmsContext.jsx';
-import logo from '../../assets/logo.png';
-import { MapPin, Phone, Mail, Clock, Church, Heart, Shield, ArrowUp } from 'lucide-react';
-
+import {
+  Church,
+  MapPin,
+  Mail,
+  Phone,
+  Send,
+  ArrowBigDown,
+  ArrowBigDownDashIcon,
+} from "lucide-react";
+import logo from"../../assets/logo.png"
 export default function Footer() {
-  const { language, aboutData, openLoginModal } = useCms();
-  const currentYear = new Date().getFullYear();
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
   return (
-    <footer className="w-full bg-[#050c1a] border-t-2 border-amber-500/40 text-slate-300 relative overflow-hidden">
+    <footer className="bg-[#040b18] text-white">
 
-      {/* Decorative Golden Top Line */}
-      <div className="h-1.5 w-full bg-gradient-to-r from-amber-600 via-amber-400 to-amber-600" />
+      {/* ================= MAIN FOOTER ================= */}
+      <div className="mx-auto max-w-7xl px-6 py-16 sm:px-8 lg:py-20">
 
-      {/* Main Footer Container */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+        <div className="grid gap-12 lg:grid-cols-[1.5fr_1fr_1fr_1.2fr]">
 
-          {/* Column 1: Church Identity */}
-          <div className="space-y-4">
+          {/* ================= BRAND ================= */}
+          <div className="max-w-sm">
+
+            {/* Logo */}
             <div className="flex items-center gap-3">
-              <img
-                src={logo}
-                alt="Welude Birhan"
-                className="w-12 h-12 rounded-full p-0.5 bg-amber-400 ring-2 ring-amber-400/40"
-              />
+
+              <div
+                className="
+                  flex h-12 w-12
+                  items-center justify-center
+                  rounded-full
+                  border-2 border-[#d4a72c]
+                  
+                "
+              >
+                <img
+                  src={logo}
+                  alt="Welude Birhan"
+                  className="h-full w-full object-contain rounded-full"
+                />
+              </div>
+
               <div>
-                <h3 className="font-serif font-bold text-lg text-white leading-tight">
-                  {language === 'am' ? 'ወሉደ ብርሃን' : 'Welude Birhan'}
-                </h3>
-                <p className="text-xs text-amber-400 font-medium">
-                  {language === 'am' ? 'ቅድስት ሥላሴ ሰንበት ት/ቤት' : 'Holy Trinity Sunday School'}
+                <h2 className="font-serif text-xl font-semibold">
+                  Welude Birhan
+                </h2>
+
+                <p className="mt-1 text-[9px] font-medium tracking-[0.18em] text-[#d4a72c] uppercase">
+                  Holy Trinity Sunday School
                 </p>
               </div>
+
             </div>
 
-            <p className="text-xs text-slate-400 leading-relaxed">
-              {language === 'am'
-                ? 'በድሬዳዋና ምስራቅ ሐረርጌ ሀገረ ስብከት ስር በድሬዳዋ ቅድስት ሥላሴ ካቴድራል የተመሰረተ፤ ቀጣዩን ትውልድ በኦርቶዶክሳዊት ተዋሕዶ እምነትና ምግባር የሚያንፅ የተቀደሰ ማዕከል።'
-                : 'Established under the Holy Trinity Cathedral in Dire Dawa, dedicated to cultivating spiritually enlightened, disciplined, and faithful Orthodox youth.'}
+            {/* Description */}
+            <p className="mt-6 text-sm leading-7 text-slate-400">
+              Nurturing the next generation in the ancient, living faith,
+              holy liturgy, and sacred apostolic tradition of the
+              Ethiopian Orthodox Tewahedo Church.
             </p>
 
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs">
-              <span>✝</span>
-              <span className="font-serif italic font-semibold">
-                {language === 'am'
-                  ? (aboutData?.mottoAm || 'በሃይማኖት ጸንተን፤ በዕውቀት አድገን፤ በአገልግሎት እንተጋለን!')
-                  : (aboutData?.mottoEn || 'United in faith, growing in spiritual wisdom, devoted to selfless service.')}
-              </span>
+            {/* Social Media */}
+            <div className="mt-6 flex items-center gap-3">
+
+              <SocialLink
+                href="#"
+                label="Facebook"
+                icon={<ArrowBigDownDashIcon size={16} />}
+              />
+
+              <SocialLink
+                href="#"
+                label="YouTube"
+                icon={<ArrowBigDown size={16} />}
+              />
+
+              <SocialLink
+                href="#"
+                label="Telegram"
+                icon={<Send size={16} />}
+              />
+
             </div>
+
           </div>
 
-          {/* Column 2: Dire Dawa Cathedral Location & Contact */}
-          <div className="space-y-3">
-            <h4 className="font-serif font-bold text-sm text-white uppercase tracking-wider border-b border-amber-500/30 pb-2">
-              {language === 'am' ? 'የካቴድራሉ አድራሻ' : 'Cathedral Location'}
-            </h4>
 
-            <ul className="space-y-2.5 text-xs text-slate-400">
-              <li className="flex items-start gap-2.5">
-                <MapPin className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-                <span>
-                  {language === 'am'
-                    ? 'ድሬዳዋ ከተማ፣ ቀበሌ 02፣ የቅድስት ሥላሴ ካቴድራል አደባባይ፣ ኢትዮጵያ'
-                    : 'Dire Dawa, Kebele 02, Holy Trinity Cathedral Square, Ethiopia'}
-                </span>
-              </li>
-              <li className="flex items-center gap-2.5">
-                <Phone className="w-4 h-4 text-amber-400 shrink-0" />
-                <span>+251 25 111 2345 / +251 91 555 6789</span>
-              </li>
-              <li className="flex items-center gap-2.5">
-                <Mail className="w-4 h-4 text-amber-400 shrink-0" />
-                <span>info@weludebirhan-diredawa.org</span>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <Church className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-                <span>
-                  {language === 'am'
-                    ? 'የድሬዳዋና ምስራቅ ሐረርጌ ሀገረ ስብከት'
-                    : 'Dire Dawa & Eastern Hararghe Diocese'}
-                </span>
-              </li>
-            </ul>
-          </div>
+          {/* ================= QUICK LINKS ================= */}
+          <FooterColumn title="Quick Links">
 
-          {/* Column 3: Liturgical & Sunday School Schedule */}
-          <div className="space-y-3">
-            <h4 className="font-serif font-bold text-sm text-white uppercase tracking-wider border-b border-amber-500/30 pb-2">
-              {language === 'am' ? 'የአገልግሎት ሰዓታት' : 'Service & School Hours'}
-            </h4>
+            <FooterLink href="/" label="Home" />
 
-            <ul className="space-y-2 text-xs text-slate-400">
-              <li className="flex items-start gap-2">
-                <Clock className="w-3.5 h-3.5 text-amber-400 shrink-0 mt-0.5" />
+            <FooterLink
+              href="/about"
+              label="About & Pillars"
+            />
+
+            <FooterLink
+              href="/programs"
+              label="Programs"
+            />
+
+            <FooterLink
+              href="/gallery"
+              label="Gallery & Testimonials"
+            />
+
+            <FooterLink
+              href="/contact"
+              label="Contact"
+            />
+
+          </FooterColumn>
+
+
+          {/* ================= ABOUT ================= */}
+          <FooterColumn title="Our Church">
+
+            <FooterLink
+              href="/about"
+              label="Our Story"
+            />
+
+            <FooterLink
+              href="/history"
+              label="Our History"
+            />
+
+            <FooterLink
+              href="/belief"
+              label="Faith & Belief"
+            />
+
+            <FooterLink
+              href="/leadership"
+              label="Leadership"
+            />
+
+            <FooterLink
+              href="/programs"
+              label="Ministries & Programs"
+            />
+
+          </FooterColumn>
+
+
+          {/* ================= CONTACT ================= */}
+          <div>
+
+            <h3
+              className="
+                text-xs
+                font-semibold
+                tracking-[0.22em]
+                text-[#d4a72c]
+                uppercase
+              "
+            >
+              Visit Us
+            </h3>
+
+            <div className="mt-6 space-y-5">
+
+              {/* Location */}
+              <div className="flex gap-3">
+
+                <MapPin
+                  size={18}
+                  strokeWidth={1.5}
+                  className="mt-0.5 shrink-0 text-[#d4a72c]"
+                />
+
                 <div>
-                  <strong className="text-white block">Sunday Divine Liturgy:</strong>
-                  <span>6:00 AM – 10:30 AM (ቅዳሴ)</span>
-                </div>
-              </li>
-              <li className="flex items-start gap-2">
-                <Clock className="w-3.5 h-3.5 text-amber-400 shrink-0 mt-0.5" />
-                <div>
-                  <strong className="text-white block">Children & Youth Classes:</strong>
-                  <span>Sunday 10:45 AM – 1:30 PM</span>
-                </div>
-              </li>
-              <li className="flex items-start gap-2">
-                <Clock className="w-3.5 h-3.5 text-amber-400 shrink-0 mt-0.5" />
-                <div>
-                  <strong className="text-white block">Saturday Dogma & Ge'ez:</strong>
-                  <span>Saturday 3:00 PM – 6:30 PM</span>
-                </div>
-              </li>
-              <li className="flex items-start gap-2">
-                <Clock className="w-3.5 h-3.5 text-amber-400 shrink-0 mt-0.5" />
-                <div>
-                  <strong className="text-white block">Friday Choral Mezmur:</strong>
-                  <span>Friday 5:30 PM – 7:30 PM</span>
-                </div>
-              </li>
-            </ul>
-          </div>
+                  <p className="text-sm text-slate-300">
+                    Holy Trinity Cathedral
+                  </p>
 
-          {/* Column 4: Quick Navigation & Admin Access */}
-          <div className="space-y-3">
-            <h4 className="font-serif font-bold text-sm text-white uppercase tracking-wider border-b border-amber-500/30 pb-2">
-              {language === 'am' ? 'ፈጣን ማገናኛዎች' : 'Navigation & Portal'}
-            </h4>
+                  <p className="mt-1 text-xs leading-5 text-slate-500">
+                    Dire Dawa, Ethiopia
+                  </p>
+                </div>
 
-            <ul className="space-y-2 text-xs">
-              <li>
-                <a href="#home" className="hover:text-amber-400 transition-colors">
-                  {language === 'am' ? '→ መነሻ ገጽ' : '→ Home & Overview'}
-                </a>
-              </li>
-              <li>
-                <a href="#about-pillars" className="hover:text-amber-400 transition-colors">
-                  {language === 'am' ? '→ ራዕይ፣ ተልዕኮና እሴቶች' : '→ Vision, Mission & 4 Pillars'}
-                </a>
-              </li>
-              <li>
-                <a href="#programs" className="hover:text-amber-400 transition-colors">
-                  {language === 'am' ? '→ ሳምንታዊ የትምህርት ሰሌዳ' : '→ Weekly Curriculum'}
-                </a>
-              </li>
-              <li>
-                <a href="#events" className="hover:text-amber-400 transition-colors">
-                  {language === 'am' ? '→ መጪ በዓላትና ክስተቶች' : '→ Upcoming Feasts & Events'}
-                </a>
-              </li>
-              <li>
-                <a href="#gallery-testimonials" className="hover:text-amber-400 transition-colors">
-                  {language === 'am' ? '→ የፎቶ ጋለሪና ምስክርነቶች' : '→ Media Gallery & Testimonials'}
-                </a>
-              </li>
-              <li>
-                <a href="#contact" className="hover:text-amber-400 transition-colors">
-                  {language === 'am' ? '→ የካቴድራሉ አድራሻና ካርታ' : '→ Cathedral Map & Inquiry'}
-                </a>
-              </li>
-            </ul>
+              </div>
 
-            <div className="pt-2">
-              <button
-                type="button"
-                onClick={openLoginModal}
-                className="w-full py-2 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-amber-500/40 text-amber-300 hover:text-white text-xs font-bold transition-all text-center cursor-pointer"
-              >
-                {language === 'am' ? 'የአስተዳዳሪ ዴስክ ግባ (CMS)' : 'Coordinator CMS Login'}
-              </button>
+
+              {/* Email */}
+              <div className="flex gap-3">
+
+                <Mail
+                  size={18}
+                  strokeWidth={1.5}
+                  className="mt-0.5 shrink-0 text-[#d4a72c]"
+                />
+
+                <div>
+                  <p className="text-sm text-slate-300">
+                    Email
+                  </p>
+
+                  <a
+                    href="mailto:info@weludebirhan.org"
+                    className="
+                      mt-1
+                      block
+                      text-xs
+                      text-slate-500
+                      transition
+                      hover:text-[#d4a72c]
+                    "
+                  >
+                    info@weludebirhan.org
+                  </a>
+                </div>
+
+              </div>
+
+
+              {/* Phone */}
+              <div className="flex gap-3">
+
+                <Phone
+                  size={18}
+                  strokeWidth={1.5}
+                  className="mt-0.5 shrink-0 text-[#d4a72c]"
+                />
+
+                <div>
+                  <p className="text-sm text-slate-300">
+                    Phone
+                  </p>
+
+                  <a
+                    href="tel:+251900000000"
+                    className="
+                      mt-1
+                      block
+                      text-xs
+                      text-slate-500
+                      transition
+                      hover:text-[#d4a72c]
+                    "
+                  >
+                    +251 900 000 000
+                  </a>
+                </div>
+
+              </div>
+
             </div>
+
           </div>
 
-        </div>
-
-        {/* Bottom Bar: Copyright & Back to Top */}
-        <div className="mt-12 pt-6 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-          <p>
-            © {currentYear} Welude Birhan • Holy Trinity Sunday School (በድሬዳዋ ቅድስት ሥላሴ ካቴድራል የብርሃን ልጆች ሰንበት ት/ቤት). All rights reserved.
-          </p>
-
-          <button
-            type="button"
-            onClick={scrollToTop}
-            className="inline-flex items-center gap-1.5 text-amber-400 hover:text-amber-300 transition-colors cursor-pointer"
-          >
-            <span>Back to Top</span>
-            <ArrowUp className="w-3.5 h-3.5" />
-          </button>
         </div>
 
       </div>
+
+
+      {/* ================= DIVIDER ================= */}
+      <div className="border-t border-white/[0.07]" />
+
+
+      {/* ================= BOTTOM BAR ================= */}
+      <div className="mx-auto flex max-w-7xl flex-col gap-3 px-6 py-6 sm:px-8 md:flex-row md:items-center md:justify-between">
+
+        <p className="text-xs text-slate-500">
+          © {new Date().getFullYear()} Welude Birhan Holy Trinity
+          Sunday School. All rights reserved.
+        </p>
+
+        <div className="flex items-center gap-2 text-xs text-slate-600">
+
+          <Church
+            size={13}
+            className="text-[#d4a72c]"
+          />
+
+          <span>
+            Ethiopian Orthodox Tewahedo Church
+          </span>
+
+        </div>
+
+      </div>
+
     </footer>
+  );
+}
+
+
+/* ================================================= */
+/* Footer Column                                     */
+/* ================================================= */
+
+function FooterColumn({ title, children }) {
+  return (
+    <div>
+
+      <h3
+        className="
+          text-xs
+          font-semibold
+          tracking-[0.22em]
+          text-[#d4a72c]
+          uppercase
+        "
+      >
+        {title}
+      </h3>
+
+      <div className="mt-6 space-y-3">
+        {children}
+      </div>
+
+    </div>
+  );
+}
+
+
+/* ================================================= */
+/* Footer Link                                       */
+/* ================================================= */
+
+function FooterLink({ href, label }) {
+  return (
+    <a
+      href={href}
+      className="
+        block
+        text-sm
+        text-slate-400
+        transition-all
+        duration-200
+        hover:translate-x-1
+        hover:text-[#e0c27b]
+      "
+    >
+      {label}
+    </a>
+  );
+}
+
+
+/* ================================================= */
+/* Social Link                                       */
+/* ================================================= */
+
+function SocialLink({ href, label, icon }) {
+  return (
+    <a
+      href={href}
+      aria-label={label}
+      className="
+        flex h-9 w-9
+        items-center justify-center
+        rounded-full
+        border border-white/10
+        text-slate-400
+        transition-all
+        duration-300
+        hover:border-[#d4a72c]/50
+        hover:bg-[#d4a72c]/10
+        hover:text-[#d4a72c]
+      "
+    >
+      {icon}
+    </a>
   );
 }

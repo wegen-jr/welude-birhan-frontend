@@ -24,11 +24,9 @@ export default function SignIn() {
       return;
     }
 
-    // Get authentication data
     const token = res.data?.access_token;
     const user = res.data?.user;
 
-    // Make sure required data exists
     if (!token || !user) {
       toast.error("Invalid login response from server");
       return;
@@ -42,9 +40,9 @@ export default function SignIn() {
 
     // Redirect according to role
     if (user.role === "ADMIN") {
-      navigate("/dashboard", { replace: true });
+      navigate("/adminDashboard", { replace: true });
     } else if (user.role === "MEMBER_USER") {
-      navigate("/media", { replace: true });
+      navigate("/mediaDashboard", { replace: true });
     } else {
       navigate("/unauthorized", { replace: true });
     }
