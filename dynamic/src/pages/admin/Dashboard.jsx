@@ -1,7 +1,8 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import { UserPlus, Users, Activity } from 'lucide-react';
-import { useLanguage } from "../../Contexts/LanguageContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { useOutletContext } from "react-router-dom";
+import { memberService } from "../../services/memberService";
 import {
   PieChart, Pie, Cell,
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
@@ -12,17 +13,54 @@ export default function Dashboard() {
   const { isDarkMode } = useOutletContext();
   const { t } = useLanguage();
 
+  const [members, setMembers] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchMembers = async () => {
+      try {
+        const data = await memberService.getAllMembers();
+        setMembers(data);
+      } catch (error) {
+        console.error("Failed to fetch members:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchMembers();
+  }, []);
+
+  const totalMembers = members.length;
+  let totalMale = 0;
+  let totalFemale = 0;
+  let age0_18 = 0;
+  let age19_30 = 0;
+  let age31_45 = 0;
+  let age46_plus = 0;
+
+  members.forEach(m => {
+    const gender = (m.gender || '').toUpperCase();
+    if (gender === 'MALE') totalMale++;
+    if (gender === 'FEMALE') totalFemale++;
+
+    const age = Number(m.Age) || 0;
+    if (age <= 18) age0_18++;
+    else if (age <= 30) age19_30++;
+    else if (age <= 45) age31_45++;
+    else age46_plus++;
+  });
+
   const genderData = [
-    { name: 'Male', value: 300 },
-    { name: 'Female', value: 200 },
+    { name: 'Male', value: totalMale },
+    { name: 'Female', value: totalFemale },
   ];
   const PIE_COLORS = ['#3b82f6', '#f59e0b'];
 
   const ageData = [
-    { name: '0-18 yrs', members: 45 },
-    { name: '19-30 yrs', members: 150 },
-    { name: '31-45 yrs', members: 200 },
-    { name: '46+ yrs', members: 105 },
+    { name: '0-18 yrs', members: age0_18 },
+    { name: '19-30 yrs', members: age19_30 },
+    { name: '31-45 yrs', members: age31_45 },
+    { name: '46+ yrs', members: age46_plus },
   ];
 
   return (
@@ -36,7 +74,7 @@ export default function Dashboard() {
 
       {/* --- TOP ROW: SUMMARY CARDS --- */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        
+
         {/* Total Members Card */}
         <div className={`p-6 rounded-3xl shadow-xl flex items-center gap-6 group hover:border-amber-500/50 transition-colors border ${isDarkMode ? 'bg-[#0b1b3d] border-white/10' : 'bg-white border-slate-200'}`}>
           <div className="bg-amber-500/20 p-4 rounded-2xl text-amber-500 group-hover:bg-amber-500 group-hover:text-white transition-colors">
@@ -44,7 +82,7 @@ export default function Dashboard() {
           </div>
           <div>
             <p className={`text-sm font-medium capitalize mb-1 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>{t.dashboard.totalMembers}</p>
-            <p className={`font-extrabold text-3xl ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>500</p>
+            <p className={`font-extrabold text-3xl ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>{loading ? '...' : totalMembers}</p>
           </div>
         </div>
 
@@ -55,7 +93,7 @@ export default function Dashboard() {
           </div>
           <div>
             <p className={`text-sm font-medium capitalize mb-1 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>{t.dashboard.totalMale}</p>
-            <p className={`font-extrabold text-3xl ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>300</p>
+            <p className={`font-extrabold text-3xl ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>{totalMale}</p>
           </div>
         </div>
 
@@ -66,7 +104,7 @@ export default function Dashboard() {
           </div>
           <div>
             <p className={`text-sm font-medium capitalize mb-1 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>{t.dashboard.totalFemale}</p>
-            <p className={`font-extrabold text-3xl ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>200</p>
+            <p className={`font-extrabold text-3xl ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>{totalFemale}</p>
           </div>
         </div>
 

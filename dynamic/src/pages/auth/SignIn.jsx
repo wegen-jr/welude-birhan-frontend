@@ -27,6 +27,10 @@ export default function SignIn() {
     const token = res.data?.access_token;
     const user = res.data?.user;
 
+    if (user && user.role === 'EducationHub') {
+      user.role = 'EDUCATION_LEADER';
+    }
+
     if (!token || !user) {
       toast.error("Invalid login response from server");
       return;
@@ -38,9 +42,13 @@ export default function SignIn() {
 
     toast.success("Logged in successfully");
 
+    const dashboardRoles = ["ADMIN", "TEACHER", "STUDENT", "CHOIR_LEADER", "EDUCATION_LEADER", "FINANCE_LEADER", "PR_LEADER", "SECRETARIAT_LEADER"];
+
     // Redirect according to role
     if (user.role === "ADMIN") {
       navigate("/adminDashboard", { replace: true });
+    } else if (dashboardRoles.includes(user.role)) {
+      navigate("/dashboard", { replace: true });
     } else if (user.role === "MEMBER_USER") {
       navigate("/mediaDashboard", { replace: true });
     } else {

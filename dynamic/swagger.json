@@ -1,1 +1,3198 @@
-{"openapi":"3.0.0","paths":{"/":{"get":{"operationId":"AppController_getHello","parameters":[],"responses":{"200":{"description":""}},"tags":["App"]}},"/member/creat_member":{"post":{"operationId":"MemberController_create","parameters":[],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/CreateMemberDto"}}}},"responses":{"201":{"description":""}},"summary":"crating member","tags":["Member"]}},"/member/all_member":{"get":{"operationId":"MemberController_findAll","parameters":[],"responses":{"200":{"description":""}},"summary":"get all member","tags":["Member"]}},"/member/{id}":{"get":{"operationId":"MemberController_findOne","parameters":[{"name":"id","required":true,"in":"path","schema":{"type":"string"}}],"responses":{"200":{"description":""}},"summary":"get all member by Id","tags":["Member"]},"patch":{"operationId":"MemberController_update","parameters":[{"name":"id","required":true,"in":"path","schema":{"type":"string"}}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/UpdateMemberDto"}}}},"responses":{"200":{"description":""}},"summary":"updating member by id","tags":["Member"]},"delete":{"operationId":"MemberController_remove","parameters":[{"name":"id","required":true,"in":"path","schema":{"type":"string"}}],"responses":{"200":{"description":""}},"tags":["Member"]}},"/user/signup":{"post":{"operationId":"UserController_create","parameters":[],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/CreateUserDto"}}}},"responses":{"201":{"description":"User account created and data copied successfully."},"400":{"description":"Phone number does not belong to any member."},"409":{"description":"Email or phone number already bound to an account."}},"summary":"Register a new user account based on verified membership","tags":["User"]}},"/user":{"get":{"operationId":"UserController_getAllUsers","parameters":[{"name":"role","required":false,"in":"query","description":"Filter users by their system role","schema":{"$ref":"#/components/schemas/Role"}}],"responses":{"200":{"description":"User collection fetched successfully."}},"summary":"Retrieve a complete registry log of active application users","tags":["User"]}},"/user/{id}":{"get":{"operationId":"UserController_findOne","parameters":[{"name":"id","required":true,"in":"path","schema":{"type":"string"}}],"responses":{"200":{"description":""}},"tags":["User"]},"patch":{"operationId":"UserController_updateUser","parameters":[{"name":"id","required":true,"in":"path","schema":{"type":"string"}}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/UpdateUserDto"}}}},"responses":{"200":{"description":"Profile modified successfully."},"404":{"description":"Target user record reference not found."},"409":{"description":"Conflict on payload unique identifier parameters."}},"summary":"Modify an existing user profile record mapping configuration","tags":["User"]},"delete":{"operationId":"UserController_removeUser","parameters":[{"name":"id","required":true,"in":"path","schema":{"type":"string"}}],"responses":{"200":{"description":"User account terminated successfully."},"404":{"description":"Target user account reference ID not found."}},"summary":"Permanently remove a user login account credentials record","tags":["User"]}},"/members/{memberId}/school-profile":{"post":{"operationId":"MemberSchoolController_saveProfile","parameters":[{"name":"memberId","required":true,"in":"path","schema":{"type":"number"}}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/CreateSchoolInfoDto"}}}},"responses":{"201":{"description":""}},"tags":["MemberSchool"]},"get":{"operationId":"MemberSchoolController_getProfile","parameters":[{"name":"memberId","required":true,"in":"path","schema":{"type":"number"}}],"responses":{"200":{"description":""}},"tags":["MemberSchool"]},"patch":{"operationId":"MemberSchoolController_updateProfile","parameters":[{"name":"memberId","required":true,"in":"path","schema":{"type":"number"}}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/UpdateSchoolInfoDto"}}}},"responses":{"200":{"description":""}},"tags":["MemberSchool"]}},"/auth/login":{"post":{"operationId":"AuthController_login","parameters":[],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/LoginDto"}}}},"responses":{"201":{"description":""}},"summary":"Log in to obtain role-scoped bearer token payload","tags":["Auth"]}},"/gallery":{"post":{"operationId":"GalleryController_create","parameters":[],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/CreateGalleryDto"}}}},"responses":{"201":{"description":"The gallery item has been successfully created."},"403":{"description":"Forbidden. User lacks required roles."}},"security":[{"bearer":[]}],"summary":"Create a new gallery item","tags":["Gallery"]},"get":{"operationId":"GalleryController_findAll","parameters":[],"responses":{"200":{"description":"List of all gallery items."},"403":{"description":"Forbidden."}},"security":[{"bearer":[]}],"summary":"Retrieve all gallery items","tags":["Gallery"]}},"/gallery/{id}":{"get":{"operationId":"GalleryController_findOne","parameters":[{"name":"id","required":true,"in":"path","description":"The numeric ID of the gallery item","schema":{"type":"string"}}],"responses":{"200":{"description":"The found gallery item."},"404":{"description":"Gallery item not found."}},"security":[{"bearer":[]}],"summary":"Retrieve a single gallery item by ID","tags":["Gallery"]},"patch":{"operationId":"GalleryController_update","parameters":[{"name":"id","required":true,"in":"path","description":"The numeric ID of the gallery item to update","schema":{"type":"string"}}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/UpdateGalleryDto"}}}},"responses":{"200":{"description":"The gallery item has been successfully updated."},"404":{"description":"Gallery item not found."}},"security":[{"bearer":[]}],"summary":"Update a gallery item by ID","tags":["Gallery"]},"delete":{"operationId":"GalleryController_remove","parameters":[{"name":"id","required":true,"in":"path","description":"The numeric ID of the gallery item to delete","schema":{"type":"string"}}],"responses":{"200":{"description":"The gallery item has been successfully deleted."},"404":{"description":"Gallery item not found."}},"security":[{"bearer":[]}],"summary":"Delete a gallery item by ID","tags":["Gallery"]}},"/announcements":{"post":{"operationId":"AnnouncementController_create","parameters":[],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/CreateAnnouncementDto"}}}},"responses":{"201":{"description":"Announcement successfully created."},"400":{"description":"Bad Request. Validation failed."},"403":{"description":"Forbidden. Requires ADMIN role."}},"security":[{"bearer":[]}],"summary":"Create a new announcement","tags":["Announcements"]},"get":{"operationId":"AnnouncementController_findAll","parameters":[],"responses":{"200":{"description":"List of all announcements ordered by date."},"401":{"description":"Unauthorized."}},"security":[{"bearer":[]}],"summary":"Retrieve all announcements","tags":["Announcements"]}},"/announcements/{id}":{"get":{"operationId":"AnnouncementController_findOne","parameters":[{"name":"id","required":true,"in":"path","description":"Numeric ID of the announcement","schema":{"type":"number"}}],"responses":{"200":{"description":"The requested announcement record."},"404":{"description":"Announcement not found."}},"security":[{"bearer":[]}],"summary":"Retrieve a single announcement by ID","tags":["Announcements"]},"patch":{"operationId":"AnnouncementController_update","parameters":[{"name":"id","required":true,"in":"path","description":"Numeric ID of the announcement","schema":{"type":"number"}}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/UpdateAnnouncementDto"}}}},"responses":{"200":{"description":"Announcement successfully updated."},"403":{"description":"Forbidden. Requires ADMIN role."},"404":{"description":"Announcement not found."}},"security":[{"bearer":[]}],"summary":"Update an existing announcement by ID","tags":["Announcements"]},"delete":{"operationId":"AnnouncementController_remove","parameters":[{"name":"id","required":true,"in":"path","description":"Numeric ID of the announcement","schema":{"type":"number"}}],"responses":{"200":{"description":"Announcement successfully removed."},"403":{"description":"Forbidden. Requires ADMIN role."},"404":{"description":"Announcement not found."}},"security":[{"bearer":[]}],"summary":"Delete an announcement by ID","tags":["Announcements"]}},"/testimonies":{"post":{"operationId":"TestimonyController_create","parameters":[],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/CreateTestimonyDto"}}}},"responses":{"201":{"description":"Testimony successfully created."},"400":{"description":"Bad Request. Validation failed."},"403":{"description":"Forbidden. Requires ADMIN role."}},"security":[{"bearer":[]}],"summary":"Add a new graduate testimony","tags":["Testimonies"]},"get":{"operationId":"TestimonyController_findAll","parameters":[],"responses":{"200":{"description":"List of all testimonies ordered by year."},"401":{"description":"Unauthorized."}},"security":[{"bearer":[]}],"summary":"Retrieve all testimonies","tags":["Testimonies"]}},"/testimonies/{id}":{"get":{"operationId":"TestimonyController_findOne","parameters":[{"name":"id","required":true,"in":"path","description":"Numeric ID of the testimony","schema":{"type":"number"}}],"responses":{"200":{"description":"The requested testimony record."},"404":{"description":"Testimony not found."}},"security":[{"bearer":[]}],"summary":"Retrieve a specific testimony by ID","tags":["Testimonies"]},"patch":{"operationId":"TestimonyController_update","parameters":[{"name":"id","required":true,"in":"path","description":"Numeric ID of the testimony","schema":{"type":"number"}}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/UpdateTestimonyDto"}}}},"responses":{"200":{"description":"Testimony successfully updated."},"403":{"description":"Forbidden. Requires ADMIN role."},"404":{"description":"Testimony not found."}},"security":[{"bearer":[]}],"summary":"Update an existing testimony by ID","tags":["Testimonies"]},"delete":{"operationId":"TestimonyController_remove","parameters":[{"name":"id","required":true,"in":"path","description":"Numeric ID of the testimony","schema":{"type":"number"}}],"responses":{"200":{"description":"Testimony successfully removed."},"403":{"description":"Forbidden. Requires ADMIN role."},"404":{"description":"Testimony not found."}},"security":[{"bearer":[]}],"summary":"Delete a testimony by ID","tags":["Testimonies"]}}},"info":{"title":"Welude Birhan API","description":"The core backend API documentation for users and education profiles","version":"1.0","contact":{}},"tags":[{"name":"users","description":""}],"servers":[],"components":{"securitySchemes":{"bearer":{"scheme":"bearer","bearerFormat":"JWT","type":"http"}},"schemas":{"CreateMemberDto":{"type":"object","properties":{"Age":{"type":"number","example":20},"gender":{"type":"string","example":"MALE"},"fullname":{"type":"string","description":"The full legal name of the member","example":"Nahom Ketema"},"phoneNo":{"type":"string","description":"Valid phone number of their repentance father","example":"+251911223344"},"christianName":{"type":"string","description":"The baptismal/Christian name given to the member","example":"Haile Mariam"},"duration":{"type":"number","description":"The duration of their membership or service involvement in months","example":12,"minimum":0},"repentanceName":{"type":"string","description":"The name of the member’s spiritual/repentance father (Abba Neseha)","example":"Gibre Kidan"},"repentancePhone":{"type":"string","description":"Valid phone number of their repentance father","example":"+251911223344"},"familyName":{"type":"string","description":"Family or emergency contact person’s full name","example":"Abebe Ketema"},"familyPhone":{"type":"string","description":"Contact phone number for the family member or emergency contact","example":"+251912556677"},"familyAddress":{"type":"string","description":"Physical living address of the family","example":"Dire Dawa, Kebele 02"},"currentStatus":{"type":"string","description":"The active parish or structural status assignment of the member","enum":["STUDENT","YOUNG","FIRST_CLASS","SECOND_CLASS","THIRD_CLASS","SPECIAL_STANDARD","HONORARY_MEMBER","OUT_OF_TOWN"],"example":"STUDENT"}},"required":["Age","gender","fullname","phoneNo","christianName","duration","repentanceName","repentancePhone","familyName","familyPhone","familyAddress","currentStatus"]},"UpdateMemberDto":{"type":"object","properties":{"Age":{"type":"number","example":20},"gender":{"type":"string","example":"MALE"},"fullname":{"type":"string","description":"The full legal name of the member","example":"Nahom Ketema"},"phoneNo":{"type":"string","description":"Valid phone number of their repentance father","example":"+251911223344"},"christianName":{"type":"string","description":"The baptismal/Christian name given to the member","example":"Haile Mariam"},"duration":{"type":"number","description":"The duration of their membership or service involvement in months","example":12,"minimum":0},"repentanceName":{"type":"string","description":"The name of the member’s spiritual/repentance father (Abba Neseha)","example":"Gibre Kidan"},"repentancePhone":{"type":"string","description":"Valid phone number of their repentance father","example":"+251911223344"},"familyName":{"type":"string","description":"Family or emergency contact person’s full name","example":"Abebe Ketema"},"familyPhone":{"type":"string","description":"Contact phone number for the family member or emergency contact","example":"+251912556677"},"familyAddress":{"type":"string","description":"Physical living address of the family","example":"Dire Dawa, Kebele 02"},"currentStatus":{"type":"string","description":"The active parish or structural status assignment of the member","enum":["STUDENT","YOUNG","FIRST_CLASS","SECOND_CLASS","THIRD_CLASS","SPECIAL_STANDARD","HONORARY_MEMBER","OUT_OF_TOWN"],"example":"STUDENT"}}},"CreateUserDto":{"type":"object","properties":{"phone":{"type":"string","description":"The phone number used to verify membership status","example":"0911223344"},"email":{"type":"string","description":"The secure account email address","example":"user@example.com"},"password":{"type":"string","description":"Account password (minimum 6 characters)","example":"securePassword123","minLength":6},"role":{"type":"string","enum":["USER","MEMBER_USER","ADMIN"],"description":"The access level or role assigned to the user within the system.","example":"USER","default":"USER"}},"required":["phone","email","password","role"]},"Role":{"type":"string","enum":["USER","MEMBER_USER","ADMIN"]},"UpdateUserDto":{"type":"object","properties":{"phone":{"type":"string","description":"The phone number used to verify membership status","example":"0911223344"},"email":{"type":"string","description":"The secure account email address","example":"user@example.com"},"password":{"type":"string","description":"Account password (minimum 6 characters)","example":"securePassword123","minLength":6},"role":{"type":"string","enum":["USER","MEMBER_USER","ADMIN"],"description":"The access level or role assigned to the user within the system.","example":"USER","default":"USER"}}},"CreateSchoolInfoDto":{"type":"object","properties":{"status":{"type":"string","description":"The current education status of the member","enum":["SCHOOL","UNIVERSITY","GRADUATED"],"example":"UNIVERSITY"},"gradeLevel":{"type":"number","description":"The current school grade level. Mandatory if status is SCHOOL.","minimum":1,"maximum":12,"example":11},"instituteName":{"type":"string","description":"The name of the school, university, or institute","example":"Stanford University"},"major":{"type":"string","description":"The field of study or major (applicable for university/college)","example":"Computer Science"},"graduationYear":{"type":"number","description":"The year the member graduated. Mandatory if status is GRADUATED.","example":2026},"currentLocation":{"type":"string","description":"Tracks where the member is currently located or working if graduated","example":"Google (Software Engineer)"}},"required":["status"]},"UpdateSchoolInfoDto":{"type":"object","properties":{"status":{"type":"string","description":"The current education status of the member","enum":["SCHOOL","UNIVERSITY","GRADUATED"],"example":"UNIVERSITY"},"gradeLevel":{"type":"number","description":"The current school grade level. Mandatory if status is SCHOOL.","minimum":1,"maximum":12,"example":11},"instituteName":{"type":"string","description":"The name of the school, university, or institute","example":"Stanford University"},"major":{"type":"string","description":"The field of study or major (applicable for university/college)","example":"Computer Science"},"graduationYear":{"type":"number","description":"The year the member graduated. Mandatory if status is GRADUATED.","example":2026},"currentLocation":{"type":"string","description":"Tracks where the member is currently located or working if graduated","example":"Google (Software Engineer)"}}},"LoginDto":{"type":"object","properties":{"email":{"type":"string","example":"user@example.com"},"password":{"type":"string","example":"password123"}},"required":["email","password"]},"CreateGalleryDto":{"type":"object","properties":{"imageUrl":{"type":"string","description":"Direct public URL of the uploaded image","example":"https://example.com/uploads/annual-gathering.jpg"},"mediaTitle":{"type":"string","description":"Title of the gallery media item","example":"Annual Youth Conference 2026"},"category":{"type":"string","description":"Category or tag used to group media","example":"Conferences"},"eventDate":{"type":"string","description":"Timestamp when the event occurred in ISO 8601 format","example":"2026-09-30T10:00:00.000Z","format":"date-time"},"description":{"type":"string","description":"Optional description or notes about the event","example":"Highlights and key moments captured during the closing session."}},"required":["imageUrl","mediaTitle","category","eventDate"]},"UpdateGalleryDto":{"type":"object","properties":{}},"CreateAnnouncementDto":{"type":"object","properties":{"title":{"type":"string","description":"Headline or title of the announcement","example":"Youth Fellowship Annual General Assembly"},"category":{"type":"string","description":"Category or department classification","example":"Conference"},"eventDate":{"type":"string","description":"Scheduled date of the event in ISO 8601 string format","example":"2026-11-15T09:00:00.000Z","format":"date-time"},"targetPlace":{"type":"string","description":"Target audience, department, or designated assembly hall","example":"Main Sanctuary / Hall B"},"timeDuration":{"type":"string","description":"Expected time duration or active hours of the event","example":"3 hours (9:00 AM - 12:00 PM)"},"location":{"type":"string","description":"Physical or geographical location of the event","example":"Dire Dawa Community Center"},"description":{"type":"string","description":"Detailed description and instructions for attendees","example":"All registered youth members are expected to attend. Refreshments will be served."}},"required":["title","category","eventDate","targetPlace","timeDuration","location","description"]},"UpdateAnnouncementDto":{"type":"object","properties":{"title":{"type":"string","description":"Headline or title of the announcement","example":"Youth Fellowship Annual General Assembly"},"category":{"type":"string","description":"Category or department classification","example":"Conference"},"eventDate":{"type":"string","description":"Scheduled date of the event in ISO 8601 string format","example":"2026-11-15T09:00:00.000Z","format":"date-time"},"targetPlace":{"type":"string","description":"Target audience, department, or designated assembly hall","example":"Main Sanctuary / Hall B"},"timeDuration":{"type":"string","description":"Expected time duration or active hours of the event","example":"3 hours (9:00 AM - 12:00 PM)"},"location":{"type":"string","description":"Physical or geographical location of the event","example":"Dire Dawa Community Center"},"description":{"type":"string","description":"Detailed description and instructions for attendees","example":"All registered youth members are expected to attend. Refreshments will be served."}}},"CreateTestimonyDto":{"type":"object","properties":{"imageUrl":{"type":"string","description":"Direct public URL of the graduate’s photo","example":"https://example.com/uploads/graduates/john-doe.jpg"},"name":{"type":"string","description":"Full legal name of the graduate","example":"John Doe"},"baptismalName":{"type":"string","description":"Christian/Baptismal name of the graduate","example":"Gebre Kristos"},"graduateTitle":{"type":"string","description":"Degree or title earned by the graduate","example":"BSc in Software Engineering"},"year":{"type":"number","description":"Year of graduation","example":2026},"inspirationQuote":{"type":"string","description":"A personal quote, reflection, or Bible verse chosen by the graduate","example":"I can do all things through Christ who strengthens me. - Philippians 4:13"}},"required":["imageUrl","name","baptismalName","graduateTitle","year","inspirationQuote"]},"UpdateTestimonyDto":{"type":"object","properties":{"imageUrl":{"type":"string","description":"Direct public URL of the graduate’s photo","example":"https://example.com/uploads/graduates/john-doe.jpg"},"name":{"type":"string","description":"Full legal name of the graduate","example":"John Doe"},"baptismalName":{"type":"string","description":"Christian/Baptismal name of the graduate","example":"Gebre Kristos"},"graduateTitle":{"type":"string","description":"Degree or title earned by the graduate","example":"BSc in Software Engineering"},"year":{"type":"number","description":"Year of graduation","example":2026},"inspirationQuote":{"type":"string","description":"A personal quote, reflection, or Bible verse chosen by the graduate","example":"I can do all things through Christ who strengthens me. - Philippians 4:13"}}}}}}
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/": {
+      "get": {
+        "operationId": "AppController_getHello",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "App"
+        ]
+      }
+    },
+    "/upload/image": {
+      "post": {
+        "operationId": "UploadController_uploadFile",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Upload"
+        ]
+      }
+    },
+    "/member/creat_member": {
+      "post": {
+        "operationId": "MemberController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMemberDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "summary": "crating member",
+        "tags": [
+          "Member"
+        ]
+      }
+    },
+    "/member/all_member": {
+      "get": {
+        "operationId": "MemberController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "get all member",
+        "tags": [
+          "Member"
+        ]
+      }
+    },
+    "/member/{id}": {
+      "get": {
+        "operationId": "MemberController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "get all member by Id",
+        "tags": [
+          "Member"
+        ]
+      },
+      "patch": {
+        "operationId": "MemberController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMemberDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "updating member by id",
+        "tags": [
+          "Member"
+        ]
+      },
+      "delete": {
+        "operationId": "MemberController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Member"
+        ]
+      }
+    },
+    "/user/signup": {
+      "post": {
+        "operationId": "UserController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User account created and data copied successfully."
+          },
+          "400": {
+            "description": "Phone number does not belong to any member."
+          },
+          "409": {
+            "description": "Email or phone number already bound to an account."
+          }
+        },
+        "summary": "Register a new user account based on verified membership",
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/user": {
+      "get": {
+        "operationId": "UserController_getAllUsers",
+        "parameters": [
+          {
+            "name": "role",
+            "required": false,
+            "in": "query",
+            "description": "Filter users by their system role",
+            "schema": {
+              "$ref": "#/components/schemas/Role"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User collection fetched successfully."
+          }
+        },
+        "summary": "Retrieve a complete registry log of active application users",
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/user/{id}": {
+      "get": {
+        "operationId": "UserController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "User"
+        ]
+      },
+      "patch": {
+        "operationId": "UserController_updateUser",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Profile modified successfully."
+          },
+          "404": {
+            "description": "Target user record reference not found."
+          },
+          "409": {
+            "description": "Conflict on payload unique identifier parameters."
+          }
+        },
+        "summary": "Modify an existing user profile record mapping configuration",
+        "tags": [
+          "User"
+        ]
+      },
+      "delete": {
+        "operationId": "UserController_removeUser",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User account terminated successfully."
+          },
+          "404": {
+            "description": "Target user account reference ID not found."
+          }
+        },
+        "summary": "Permanently remove a user login account credentials record",
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/members/{memberId}/school-profile": {
+      "post": {
+        "operationId": "MemberSchoolController_saveProfile",
+        "parameters": [
+          {
+            "name": "memberId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSchoolInfoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "MemberSchool"
+        ]
+      },
+      "get": {
+        "operationId": "MemberSchoolController_getProfile",
+        "parameters": [
+          {
+            "name": "memberId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "MemberSchool"
+        ]
+      },
+      "patch": {
+        "operationId": "MemberSchoolController_updateProfile",
+        "parameters": [
+          {
+            "name": "memberId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSchoolInfoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "MemberSchool"
+        ]
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "operationId": "AuthController_login",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "summary": "Log in to obtain role-scoped bearer token payload",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/gallery": {
+      "post": {
+        "operationId": "GalleryController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "mediaTitle": {
+                    "type": "string",
+                    "example": "My Awesome Event"
+                  },
+                  "category": {
+                    "type": "string",
+                    "example": "Conference"
+                  },
+                  "eventDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2026-10-06T12:00:00Z"
+                  }
+                },
+                "required": [
+                  "image",
+                  "mediaTitle",
+                  "category",
+                  "eventDate"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create a new gallery item with an image",
+        "tags": [
+          "Gallery"
+        ]
+      },
+      "get": {
+        "operationId": "GalleryController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of all gallery items."
+          },
+          "403": {
+            "description": "Forbidden."
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Retrieve all gallery items",
+        "tags": [
+          "Gallery"
+        ]
+      }
+    },
+    "/gallery/{id}": {
+      "get": {
+        "operationId": "GalleryController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "The numeric ID of the gallery item",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The found gallery item."
+          },
+          "404": {
+            "description": "Gallery item not found."
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Retrieve a single gallery item by ID",
+        "tags": [
+          "Gallery"
+        ]
+      },
+      "patch": {
+        "operationId": "GalleryController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "The numeric ID of the gallery item to update",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The gallery item has been successfully updated."
+          },
+          "404": {
+            "description": "Gallery item not found."
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update a gallery item by ID (Image is optional)",
+        "tags": [
+          "Gallery"
+        ]
+      },
+      "delete": {
+        "operationId": "GalleryController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "The numeric ID of the gallery item to delete",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The gallery item has been successfully deleted."
+          },
+          "404": {
+            "description": "Gallery item not found."
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Delete a gallery item by ID",
+        "tags": [
+          "Gallery"
+        ]
+      }
+    },
+    "/announcements": {
+      "post": {
+        "operationId": "AnnouncementController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAnnouncementDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Announcement successfully created."
+          },
+          "400": {
+            "description": "Bad Request. Validation failed."
+          },
+          "403": {
+            "description": "Forbidden. Requires ADMIN role."
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create a new announcement",
+        "tags": [
+          "Announcements"
+        ]
+      },
+      "get": {
+        "operationId": "AnnouncementController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of all announcements ordered by date."
+          },
+          "401": {
+            "description": "Unauthorized."
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Retrieve all announcements",
+        "tags": [
+          "Announcements"
+        ]
+      }
+    },
+    "/announcements/{id}": {
+      "get": {
+        "operationId": "AnnouncementController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Numeric ID of the announcement",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested announcement record."
+          },
+          "404": {
+            "description": "Announcement not found."
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Retrieve a single announcement by ID",
+        "tags": [
+          "Announcements"
+        ]
+      },
+      "patch": {
+        "operationId": "AnnouncementController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Numeric ID of the announcement",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAnnouncementDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Announcement successfully updated."
+          },
+          "403": {
+            "description": "Forbidden. Requires ADMIN role."
+          },
+          "404": {
+            "description": "Announcement not found."
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update an existing announcement by ID",
+        "tags": [
+          "Announcements"
+        ]
+      },
+      "delete": {
+        "operationId": "AnnouncementController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Numeric ID of the announcement",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Announcement successfully removed."
+          },
+          "403": {
+            "description": "Forbidden. Requires ADMIN role."
+          },
+          "404": {
+            "description": "Announcement not found."
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Delete an announcement by ID",
+        "tags": [
+          "Announcements"
+        ]
+      }
+    },
+    "/testimonies": {
+      "post": {
+        "operationId": "TestimonyController_creat",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Nahom Ketema"
+                  },
+                  "baptismalName": {
+                    "type": "string",
+                    "example": "Gebre Kristos"
+                  },
+                  "graduateTitle": {
+                    "type": "string",
+                    "example": "Software Engineer"
+                  },
+                  "year": {
+                    "type": "integer",
+                    "example": 2026
+                  },
+                  "inspirationQuote": {
+                    "type": "string",
+                    "example": "With God, all things are possible."
+                  }
+                },
+                "required": [
+                  "image",
+                  "name",
+                  "baptismalName",
+                  "graduateTitle",
+                  "year",
+                  "inspirationQuote"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Add a new graduate testimony with an image",
+        "tags": [
+          "Testimonies"
+        ]
+      },
+      "get": {
+        "operationId": "TestimonyController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of all testimonies ordered by year."
+          },
+          "401": {
+            "description": "Unauthorized."
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Retrieve all testimonies",
+        "tags": [
+          "Testimonies"
+        ]
+      }
+    },
+    "/testimonies/{id}": {
+      "get": {
+        "operationId": "TestimonyController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Numeric ID of the testimony",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested testimony record."
+          },
+          "404": {
+            "description": "Testimony not found."
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Retrieve a specific testimony by ID",
+        "tags": [
+          "Testimonies"
+        ]
+      },
+      "patch": {
+        "operationId": "TestimonyController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Numeric ID of the testimony",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary",
+                    "nullable": true
+                  },
+                  "name": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "baptismalName": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "graduateTitle": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "year": {
+                    "type": "integer",
+                    "nullable": true
+                  },
+                  "inspirationQuote": {
+                    "type": "string",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Testimony successfully updated."
+          },
+          "403": {
+            "description": "Forbidden. Requires ADMIN role."
+          },
+          "404": {
+            "description": "Testimony not found."
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update an existing testimony by ID (Image is optional)",
+        "tags": [
+          "Testimonies"
+        ]
+      },
+      "delete": {
+        "operationId": "TestimonyController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Numeric ID of the testimony",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Testimony successfully removed."
+          },
+          "403": {
+            "description": "Forbidden. Requires ADMIN role."
+          },
+          "404": {
+            "description": "Testimony not found."
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Delete a testimony by ID",
+        "tags": [
+          "Testimonies"
+        ]
+      }
+    },
+    "/school-profile": {
+      "post": {
+        "operationId": "SchoolProfileController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSchoolProfileDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Profile created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SchoolProfileResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Create a school profile for an existing member",
+        "tags": [
+          "School Profile"
+        ]
+      },
+      "get": {
+        "operationId": "SchoolProfileController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SchoolProfileResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "List all school profiles",
+        "tags": [
+          "School Profile"
+        ]
+      }
+    },
+    "/school-profile/{id}": {
+      "get": {
+        "operationId": "SchoolProfileController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SchoolProfileResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get one school profile by id",
+        "tags": [
+          "School Profile"
+        ]
+      },
+      "patch": {
+        "operationId": "SchoolProfileController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSchoolProfileDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SchoolProfileResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Update a school profile",
+        "tags": [
+          "School Profile"
+        ]
+      },
+      "delete": {
+        "operationId": "SchoolProfileController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "Delete a school profile",
+        "tags": [
+          "School Profile"
+        ]
+      }
+    },
+    "/class": {
+      "post": {
+        "operationId": "ClassController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateClassDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClassResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Create a new class",
+        "tags": [
+          "Class"
+        ]
+      },
+      "get": {
+        "operationId": "ClassController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ClassResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Class"
+        ]
+      }
+    },
+    "/class/{id}": {
+      "get": {
+        "operationId": "ClassController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClassResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Class"
+        ]
+      },
+      "patch": {
+        "operationId": "ClassController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateClassDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClassResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Class"
+        ]
+      },
+      "delete": {
+        "operationId": "ClassController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Class"
+        ]
+      }
+    },
+    "/class-enrollment": {
+      "post": {
+        "operationId": "ClassEnrollmentController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateClassEnrollmentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClassEnrollmentResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Enroll a member into a class",
+        "tags": [
+          "Class Enrollment"
+        ]
+      },
+      "get": {
+        "description": "Supports filters: gradeLevel, section, memberId, year, status + pagination (page, limit).",
+        "operationId": "ClassEnrollmentController_findAll",
+        "parameters": [
+          {
+            "name": "gradeLevel",
+            "required": false,
+            "in": "query",
+            "description": "Grade level, e.g. \"Grade 1\"",
+            "schema": {
+              "example": "Grade 1",
+              "type": "string"
+            }
+          },
+          {
+            "name": "section",
+            "required": false,
+            "in": "query",
+            "description": "Section within the grade, e.g. \"A\"",
+            "schema": {
+              "example": "A",
+              "type": "string"
+            }
+          },
+          {
+            "name": "memberId",
+            "required": false,
+            "in": "query",
+            "description": "Member UUID to filter enrollments by a specific member",
+            "schema": {
+              "format": "uuid",
+              "example": "3f1a9c2e-7b4d-4e8a-9f10-2c6d5e8b1a23",
+              "type": "string"
+            }
+          },
+          {
+            "name": "year",
+            "required": false,
+            "in": "query",
+            "description": "Academic year of the enrollment",
+            "schema": {
+              "example": 2024,
+              "type": "number"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "description": "Enrollment status",
+            "schema": {
+              "example": "ACTIVE",
+              "type": "string",
+              "enum": [
+                "ACTIVE",
+                "INACTIVE",
+                "GRADUATED",
+                "TRANSFERRED"
+              ]
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Page number (1-based)",
+            "schema": {
+              "minimum": 1,
+              "default": 1,
+              "example": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Number of items per page",
+            "schema": {
+              "minimum": 1,
+              "default": 10,
+              "example": 10,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ClassEnrollmentResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "List enrollments",
+        "tags": [
+          "Class Enrollment"
+        ]
+      }
+    },
+    "/class-enrollment/class/{gradeLevel}": {
+      "get": {
+        "operationId": "ClassEnrollmentController_findByClass",
+        "parameters": [
+          {
+            "name": "gradeLevel",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "example": "Grade 1",
+              "type": "string"
+            }
+          },
+          {
+            "name": "section",
+            "required": false,
+            "in": "query",
+            "description": "Section within the grade, e.g. \"A\"",
+            "schema": {
+              "example": "A",
+              "type": "string"
+            }
+          },
+          {
+            "name": "memberId",
+            "required": false,
+            "in": "query",
+            "description": "Member UUID to filter enrollments by a specific member",
+            "schema": {
+              "format": "uuid",
+              "example": "3f1a9c2e-7b4d-4e8a-9f10-2c6d5e8b1a23",
+              "type": "string"
+            }
+          },
+          {
+            "name": "year",
+            "required": false,
+            "in": "query",
+            "description": "Academic year of the enrollment",
+            "schema": {
+              "example": 2024,
+              "type": "number"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "description": "Enrollment status",
+            "schema": {
+              "example": "ACTIVE",
+              "type": "string",
+              "enum": [
+                "ACTIVE",
+                "INACTIVE",
+                "GRADUATED",
+                "TRANSFERRED"
+              ]
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Page number (1-based)",
+            "schema": {
+              "minimum": 1,
+              "default": 1,
+              "example": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Number of items per page",
+            "schema": {
+              "minimum": 1,
+              "default": 10,
+              "example": 10,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ClassEnrollmentResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "List all enrollments for a given grade level (e.g. \"Grade 1\")",
+        "tags": [
+          "Class Enrollment"
+        ]
+      }
+    },
+    "/class-enrollment/{id}": {
+      "get": {
+        "operationId": "ClassEnrollmentController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClassEnrollmentResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get one enrollment by id",
+        "tags": [
+          "Class Enrollment"
+        ]
+      },
+      "patch": {
+        "operationId": "ClassEnrollmentController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateClassEnrollmentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClassEnrollmentResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Update an enrollment",
+        "tags": [
+          "Class Enrollment"
+        ]
+      },
+      "delete": {
+        "operationId": "ClassEnrollmentController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "Delete an enrollment",
+        "tags": [
+          "Class Enrollment"
+        ]
+      }
+    },
+    "/teachers": {
+      "post": {
+        "operationId": "TeacherController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTeacherDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The teacher has been successfully created."
+          },
+          "400": {
+            "description": "Validation failed."
+          },
+          "409": {
+            "description": "Email or phone number already exists."
+          }
+        },
+        "summary": "Create a new teacher",
+        "tags": [
+          "Teachers"
+        ]
+      },
+      "get": {
+        "operationId": "TeacherController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Returns an array of teachers."
+          }
+        },
+        "summary": "Get all teachers",
+        "tags": [
+          "Teachers"
+        ]
+      }
+    },
+    "/teachers/{id}": {
+      "get": {
+        "operationId": "TeacherController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "The teacher ID",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the found teacher."
+          },
+          "404": {
+            "description": "Teacher not found."
+          }
+        },
+        "summary": "Get a teacher by ID",
+        "tags": [
+          "Teachers"
+        ]
+      },
+      "delete": {
+        "operationId": "TeacherController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "The teacher ID",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The teacher has been successfully deleted."
+          },
+          "404": {
+            "description": "Teacher not found."
+          }
+        },
+        "summary": "Delete a teacher by ID",
+        "tags": [
+          "Teachers"
+        ]
+      },
+      "patch": {
+        "operationId": "TeacherController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "The teacher ID",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTeacherDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The teacher has been successfully updated."
+          },
+          "404": {
+            "description": "Teacher not found."
+          },
+          "409": {
+            "description": "Email or phone number already exists on another record."
+          }
+        },
+        "summary": "Update a teacher by ID",
+        "tags": [
+          "Teachers"
+        ]
+      }
+    },
+    "/cources": {
+      "post": {
+        "operationId": "CourcesController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCourceDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The course has been successfully created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "id": 1,
+                    "courseName": "Introduction to Computer Science",
+                    "craditHours": 4,
+                    "cratedAt": "2026-10-13T10:00:00.000Z",
+                    "updatedAt": "2026-10-13T10:00:00.000Z"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Create a new course",
+        "tags": [
+          "Cources"
+        ]
+      },
+      "get": {
+        "operationId": "CourcesController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Returns an array of courses."
+          }
+        },
+        "summary": "Get all courses",
+        "tags": [
+          "Cources"
+        ]
+      }
+    },
+    "/cources/{id}": {
+      "get": {
+        "operationId": "CourcesController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "The course ID",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the found course."
+          },
+          "404": {
+            "description": "Course not found."
+          }
+        },
+        "summary": "Get a course by ID",
+        "tags": [
+          "Cources"
+        ]
+      },
+      "patch": {
+        "operationId": "CourcesController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "The course ID",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCourceDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The course has been successfully updated."
+          },
+          "404": {
+            "description": "Course not found."
+          }
+        },
+        "summary": "Update a course by ID",
+        "tags": [
+          "Cources"
+        ]
+      },
+      "delete": {
+        "operationId": "CourcesController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "The course ID",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The course has been successfully deleted."
+          },
+          "404": {
+            "description": "Course not found."
+          }
+        },
+        "summary": "Delete a course by ID",
+        "tags": [
+          "Cources"
+        ]
+      }
+    },
+    "/assign-course-for-class": {
+      "post": {
+        "operationId": "AssignCourseForClassController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAssignCourseForClassDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The assignment has been successfully created."
+          },
+          "400": {
+            "description": "Invalid input data."
+          }
+        },
+        "summary": "Create a new course assignment for a class",
+        "tags": [
+          "Class Course Assignments"
+        ]
+      },
+      "get": {
+        "operationId": "AssignCourseForClassController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of all class course assignments."
+          }
+        },
+        "summary": "Retrieve all course assignments",
+        "tags": [
+          "Class Course Assignments"
+        ]
+      }
+    },
+    "/assign-course-for-class/{id}": {
+      "get": {
+        "operationId": "AssignCourseForClassController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "The ID of the assignment",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The found assignment."
+          },
+          "404": {
+            "description": "Assignment not found."
+          }
+        },
+        "summary": "Get a specific course assignment by ID",
+        "tags": [
+          "Class Course Assignments"
+        ]
+      },
+      "patch": {
+        "operationId": "AssignCourseForClassController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "The ID of the assignment",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAssignCourseForClassDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The assignment has been successfully updated."
+          },
+          "404": {
+            "description": "Assignment not found."
+          }
+        },
+        "summary": "Update a specific course assignment",
+        "tags": [
+          "Class Course Assignments"
+        ]
+      },
+      "delete": {
+        "operationId": "AssignCourseForClassController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "The ID of the assignment",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The assignment has been successfully deleted."
+          },
+          "404": {
+            "description": "Assignment not found."
+          }
+        },
+        "summary": "Delete a specific course assignment",
+        "tags": [
+          "Class Course Assignments"
+        ]
+      }
+    },
+    "/assign-teacher-for-class": {
+      "post": {
+        "operationId": "AssignTeacherForClassController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAssignTeacherForClassDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Teacher assigned successfully, returns the assignment and a list of students.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "message": "Teacher assigned successfully",
+                    "assignment": {
+                      "teacherId": 205,
+                      "teacherName": "John Doe",
+                      "courseId": 101,
+                      "courseName": "Mathematics",
+                      "gradeLevel": "GRADE 10"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed or assignment already exists."
+          },
+          "404": {
+            "description": "Teacher, Course, or Grade Level not found."
+          }
+        },
+        "summary": "Assign a teacher and return enrolled students",
+        "tags": [
+          "Teacher Course Assignments"
+        ]
+      },
+      "get": {
+        "operationId": "AssignTeacherForClassController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of all teacher assignments."
+          }
+        },
+        "summary": "Retrieve all teacher assignments",
+        "tags": [
+          "Teacher Course Assignments"
+        ]
+      }
+    },
+    "/assign-teacher-for-class/{id}": {
+      "get": {
+        "operationId": "AssignTeacherForClassController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "The ID of the assignment",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The found teacher assignment."
+          },
+          "404": {
+            "description": "Assignment not found."
+          }
+        },
+        "summary": "Get a specific teacher assignment by ID",
+        "tags": [
+          "Teacher Course Assignments"
+        ]
+      },
+      "patch": {
+        "operationId": "AssignTeacherForClassController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "The ID of the assignment",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAssignTeacherForClassDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The assignment has been successfully updated."
+          },
+          "404": {
+            "description": "Assignment not found."
+          }
+        },
+        "summary": "Update a specific teacher assignment",
+        "tags": [
+          "Teacher Course Assignments"
+        ]
+      },
+      "delete": {
+        "operationId": "AssignTeacherForClassController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "The ID of the assignment",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The assignment has been successfully deleted."
+          },
+          "404": {
+            "description": "Assignment not found."
+          }
+        },
+        "summary": "Remove a specific teacher assignment",
+        "tags": [
+          "Teacher Course Assignments"
+        ]
+      }
+    },
+    "/assign-teacher-for-class/teacher/{teacherId}/students": {
+      "get": {
+        "operationId": "AssignTeacherForClassController_getStudentsByTeacherId",
+        "parameters": [
+          {
+            "name": "teacherId",
+            "required": true,
+            "in": "path",
+            "description": "The ID of the teacher",
+            "schema": {
+              "example": 205,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of enrolled students for the teachers assigned class.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "teacherId": 205,
+                    "teacherName": "John Doe",
+                    "gradeLevel": "GRADE 10",
+                    "studentsEnrolled": 2,
+                    "students": [
+                      {
+                        "id": 1,
+                        "studentId": 501,
+                        "gradeLevel": "GRADE 10",
+                        "enrollmentDate": "2023-09-01T00:00:00.000Z"
+                      },
+                      {
+                        "id": 2,
+                        "studentId": 502,
+                        "gradeLevel": "GRADE 10",
+                        "enrollmentDate": "2023-09-02T00:00:00.000Z"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Teacher assignment not found."
+          }
+        },
+        "summary": "Get all enrolled students for a specific teacher based on their assigned grade level",
+        "tags": [
+          "Teacher Course Assignments"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Welude Birhan API",
+    "description": "The core backend API documentation for users and education profiles",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [
+    {
+      "name": "users",
+      "description": ""
+    }
+  ],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      }
+    },
+    "schemas": {
+      "CreateMemberDto": {
+        "type": "object",
+        "properties": {
+          "Age": {
+            "type": "number",
+            "example": 20
+          },
+          "gender": {
+            "type": "string",
+            "example": "MALE"
+          },
+          "fullname": {
+            "type": "string",
+            "description": "The full legal name of the member",
+            "example": "Nahom Ketema"
+          },
+          "phoneNo": {
+            "type": "string",
+            "description": "Valid phone number of their repentance father",
+            "example": "+251911223344"
+          },
+          "christianName": {
+            "type": "string",
+            "description": "The baptismal/Christian name given to the member",
+            "example": "Haile Mariam"
+          },
+          "duration": {
+            "type": "number",
+            "description": "The duration of their membership or service involvement in months",
+            "example": 12,
+            "minimum": 0
+          },
+          "repentanceName": {
+            "type": "string",
+            "description": "The name of the member\u2019s spiritual/repentance father (Abba Neseha)",
+            "example": "Gibre Kidan"
+          },
+          "repentancePhone": {
+            "type": "string",
+            "description": "Valid phone number of their repentance father",
+            "example": "+251911223344"
+          },
+          "familyName": {
+            "type": "string",
+            "description": "Family or emergency contact person\u2019s full name",
+            "example": "Abebe Ketema"
+          },
+          "familyPhone": {
+            "type": "string",
+            "description": "Contact phone number for the family member or emergency contact",
+            "example": "+251912556677"
+          },
+          "familyAddress": {
+            "type": "string",
+            "description": "Physical living address of the family",
+            "example": "Dire Dawa, Kebele 02"
+          },
+          "currentStatus": {
+            "type": "string",
+            "description": "The active parish or structural status assignment of the member",
+            "enum": [
+              "STUDENT",
+              "YOUNG",
+              "FIRST_CLASS",
+              "SECOND_CLASS",
+              "THIRD_CLASS",
+              "SPECIAL_STANDARD",
+              "HONORARY_MEMBER",
+              "OUT_OF_TOWN"
+            ],
+            "example": "STUDENT"
+          }
+        },
+        "required": [
+          "Age",
+          "gender",
+          "fullname",
+          "phoneNo",
+          "christianName",
+          "duration",
+          "repentanceName",
+          "repentancePhone",
+          "familyName",
+          "familyPhone",
+          "familyAddress",
+          "currentStatus"
+        ]
+      },
+      "UpdateMemberDto": {
+        "type": "object",
+        "properties": {
+          "Age": {
+            "type": "number",
+            "example": 20
+          },
+          "gender": {
+            "type": "string",
+            "example": "MALE"
+          },
+          "fullname": {
+            "type": "string",
+            "description": "The full legal name of the member",
+            "example": "Nahom Ketema"
+          },
+          "phoneNo": {
+            "type": "string",
+            "description": "Valid phone number of their repentance father",
+            "example": "+251911223344"
+          },
+          "christianName": {
+            "type": "string",
+            "description": "The baptismal/Christian name given to the member",
+            "example": "Haile Mariam"
+          },
+          "duration": {
+            "type": "number",
+            "description": "The duration of their membership or service involvement in months",
+            "example": 12,
+            "minimum": 0
+          },
+          "repentanceName": {
+            "type": "string",
+            "description": "The name of the member\u2019s spiritual/repentance father (Abba Neseha)",
+            "example": "Gibre Kidan"
+          },
+          "repentancePhone": {
+            "type": "string",
+            "description": "Valid phone number of their repentance father",
+            "example": "+251911223344"
+          },
+          "familyName": {
+            "type": "string",
+            "description": "Family or emergency contact person\u2019s full name",
+            "example": "Abebe Ketema"
+          },
+          "familyPhone": {
+            "type": "string",
+            "description": "Contact phone number for the family member or emergency contact",
+            "example": "+251912556677"
+          },
+          "familyAddress": {
+            "type": "string",
+            "description": "Physical living address of the family",
+            "example": "Dire Dawa, Kebele 02"
+          },
+          "currentStatus": {
+            "type": "string",
+            "description": "The active parish or structural status assignment of the member",
+            "enum": [
+              "STUDENT",
+              "YOUNG",
+              "FIRST_CLASS",
+              "SECOND_CLASS",
+              "THIRD_CLASS",
+              "SPECIAL_STANDARD",
+              "HONORARY_MEMBER",
+              "OUT_OF_TOWN"
+            ],
+            "example": "STUDENT"
+          }
+        }
+      },
+      "CreateUserDto": {
+        "type": "object",
+        "properties": {
+          "phone": {
+            "type": "string",
+            "description": "The phone number used to verify membership status",
+            "example": "0911223344"
+          },
+          "email": {
+            "type": "string",
+            "description": "The secure account email address",
+            "example": "user@example.com"
+          },
+          "password": {
+            "type": "string",
+            "description": "Account password (minimum 6 characters)",
+            "example": "securePassword123",
+            "minLength": 6
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "USER",
+              "MEMBER_USER",
+              "ADMIN",
+              "EducationHub",
+              "Teacher"
+            ],
+            "description": "The access level or role assigned to the user within the system.",
+            "example": "USER",
+            "default": "USER"
+          }
+        },
+        "required": [
+          "phone",
+          "email",
+          "password",
+          "role"
+        ]
+      },
+      "Role": {
+        "type": "string",
+        "enum": [
+          "USER",
+          "MEMBER_USER",
+          "ADMIN",
+          "EducationHub",
+          "Teacher"
+        ]
+      },
+      "UpdateUserDto": {
+        "type": "object",
+        "properties": {
+          "phone": {
+            "type": "string",
+            "description": "The phone number used to verify membership status",
+            "example": "0911223344"
+          },
+          "email": {
+            "type": "string",
+            "description": "The secure account email address",
+            "example": "user@example.com"
+          },
+          "password": {
+            "type": "string",
+            "description": "Account password (minimum 6 characters)",
+            "example": "securePassword123",
+            "minLength": 6
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "USER",
+              "MEMBER_USER",
+              "ADMIN",
+              "EducationHub",
+              "Teacher"
+            ],
+            "description": "The access level or role assigned to the user within the system.",
+            "example": "USER",
+            "default": "USER"
+          }
+        }
+      },
+      "CreateSchoolInfoDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "The current education status of the member",
+            "enum": [
+              "SCHOOL",
+              "UNIVERSITY",
+              "GRADUATED"
+            ],
+            "example": "UNIVERSITY"
+          },
+          "gradeLevel": {
+            "type": "number",
+            "description": "The current school grade level. Mandatory if status is SCHOOL.",
+            "minimum": 1,
+            "maximum": 12,
+            "example": 11
+          },
+          "instituteName": {
+            "type": "string",
+            "description": "The name of the school, university, or institute",
+            "example": "Stanford University"
+          },
+          "major": {
+            "type": "string",
+            "description": "The field of study or major (applicable for university/college)",
+            "example": "Computer Science"
+          },
+          "graduationYear": {
+            "type": "number",
+            "description": "The year the member graduated. Mandatory if status is GRADUATED.",
+            "example": 2026
+          },
+          "currentLocation": {
+            "type": "string",
+            "description": "Tracks where the member is currently located or working if graduated",
+            "example": "Google (Software Engineer)"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "UpdateSchoolInfoDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "The current education status of the member",
+            "enum": [
+              "SCHOOL",
+              "UNIVERSITY",
+              "GRADUATED"
+            ],
+            "example": "UNIVERSITY"
+          },
+          "gradeLevel": {
+            "type": "number",
+            "description": "The current school grade level. Mandatory if status is SCHOOL.",
+            "minimum": 1,
+            "maximum": 12,
+            "example": 11
+          },
+          "instituteName": {
+            "type": "string",
+            "description": "The name of the school, university, or institute",
+            "example": "Stanford University"
+          },
+          "major": {
+            "type": "string",
+            "description": "The field of study or major (applicable for university/college)",
+            "example": "Computer Science"
+          },
+          "graduationYear": {
+            "type": "number",
+            "description": "The year the member graduated. Mandatory if status is GRADUATED.",
+            "example": 2026
+          },
+          "currentLocation": {
+            "type": "string",
+            "description": "Tracks where the member is currently located or working if graduated",
+            "example": "Google (Software Engineer)"
+          }
+        }
+      },
+      "LoginDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "user@example.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "password123"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      },
+      "CreateAnnouncementDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Headline or title of the announcement",
+            "example": "Youth Fellowship Annual General Assembly"
+          },
+          "category": {
+            "type": "string",
+            "description": "Category or department classification",
+            "example": "Conference"
+          },
+          "eventDate": {
+            "type": "string",
+            "description": "Scheduled date of the event in ISO 8601 string format",
+            "example": "2026-11-15T09:00:00.000Z",
+            "format": "date-time"
+          },
+          "targetPlace": {
+            "type": "string",
+            "description": "Target audience, department, or designated assembly hall",
+            "example": "Main Sanctuary / Hall B"
+          },
+          "timeDuration": {
+            "type": "string",
+            "description": "Expected time duration or active hours of the event",
+            "example": "3 hours (9:00 AM - 12:00 PM)"
+          },
+          "location": {
+            "type": "string",
+            "description": "Physical or geographical location of the event",
+            "example": "Dire Dawa Community Center"
+          },
+          "description": {
+            "type": "string",
+            "description": "Detailed description and instructions for attendees",
+            "example": "All registered youth members are expected to attend. Refreshments will be served."
+          }
+        },
+        "required": [
+          "title",
+          "category",
+          "eventDate",
+          "targetPlace",
+          "timeDuration",
+          "location",
+          "description"
+        ]
+      },
+      "UpdateAnnouncementDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Headline or title of the announcement",
+            "example": "Youth Fellowship Annual General Assembly"
+          },
+          "category": {
+            "type": "string",
+            "description": "Category or department classification",
+            "example": "Conference"
+          },
+          "eventDate": {
+            "type": "string",
+            "description": "Scheduled date of the event in ISO 8601 string format",
+            "example": "2026-11-15T09:00:00.000Z",
+            "format": "date-time"
+          },
+          "targetPlace": {
+            "type": "string",
+            "description": "Target audience, department, or designated assembly hall",
+            "example": "Main Sanctuary / Hall B"
+          },
+          "timeDuration": {
+            "type": "string",
+            "description": "Expected time duration or active hours of the event",
+            "example": "3 hours (9:00 AM - 12:00 PM)"
+          },
+          "location": {
+            "type": "string",
+            "description": "Physical or geographical location of the event",
+            "example": "Dire Dawa Community Center"
+          },
+          "description": {
+            "type": "string",
+            "description": "Detailed description and instructions for attendees",
+            "example": "All registered youth members are expected to attend. Refreshments will be served."
+          }
+        }
+      },
+      "CreateSchoolProfileDto": {
+        "type": "object",
+        "properties": {
+          "phoneNumber": {
+            "type": "string",
+            "description": "Phone number used to verify an existing member",
+            "example": "+251912345678"
+          }
+        },
+        "required": [
+          "phoneNumber"
+        ]
+      },
+      "SchoolProfileResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "3f1c9c2e-4c8a-4a9d-9e2f-7b1c5d6a8f10",
+            "format": "uuid"
+          },
+          "memberId": {
+            "type": "number",
+            "example": 1
+          },
+          "studentId": {
+            "type": "string",
+            "example": "stud-7-001"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "example": "+251912345678"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "example": "2024-06-01T10:15:30.000Z"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "example": "2024-06-05T12:45:10.000Z"
+          }
+        },
+        "required": [
+          "id",
+          "memberId",
+          "studentId",
+          "phoneNumber",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "UpdateSchoolProfileDto": {
+        "type": "object",
+        "properties": {
+          "phoneNumber": {
+            "type": "string",
+            "description": "Phone number used to verify an existing member",
+            "example": "+251912345678"
+          }
+        }
+      },
+      "CreateClassDto": {
+        "type": "object",
+        "properties": {
+          "gradeLevel": {
+            "type": "string",
+            "description": "Grade level of the class",
+            "example": "Grade 10",
+            "minLength": 1,
+            "maxLength": 50
+          },
+          "section": {
+            "type": "string",
+            "description": "Section identifier within the grade level",
+            "example": "A",
+            "minLength": 1,
+            "maxLength": 10
+          }
+        },
+        "required": [
+          "gradeLevel",
+          "section"
+        ]
+      },
+      "ClassResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the class (UUID)",
+            "example": "3f1c9c2e-4c8a-4a9d-9e2f-7b1c5d6a8f10",
+            "format": "uuid"
+          },
+          "gradeLevel": {
+            "type": "string",
+            "description": "Grade level",
+            "example": "Grade 10"
+          },
+          "section": {
+            "type": "string",
+            "description": "Section",
+            "example": "A"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Record creation timestamp",
+            "example": "2024-06-01T10:15:30.000Z"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Record last update timestamp",
+            "example": "2024-06-05T12:45:10.000Z"
+          }
+        },
+        "required": [
+          "id",
+          "gradeLevel",
+          "section",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "UpdateClassDto": {
+        "type": "object",
+        "properties": {
+          "gradeLevel": {
+            "type": "string",
+            "description": "Grade level of the class",
+            "example": "Grade 10",
+            "minLength": 1,
+            "maxLength": 50
+          },
+          "section": {
+            "type": "string",
+            "description": "Section identifier within the grade level",
+            "example": "A",
+            "minLength": 1,
+            "maxLength": 10
+          }
+        }
+      },
+      "CreateClassEnrollmentDto": {
+        "type": "object",
+        "properties": {
+          "gradeLevel": {
+            "type": "string",
+            "description": "Class lavel the student is enrol",
+            "example": "Grade 1",
+            "format": "like grade 1"
+          },
+          "section": {
+            "type": "string",
+            "description": "Class section the student is enrol",
+            "example": " A",
+            "format": "A"
+          },
+          "memberId": {
+            "type": "number",
+            "description": "Member ID of the student",
+            "example": 12
+          },
+          "studentId": {
+            "type": "string",
+            "description": "Student ID (e.g. stud-7-001)",
+            "example": "stud-7-001"
+          },
+          "fullname": {
+            "type": "string",
+            "description": "Full name of the student",
+            "example": "Abebe Bekele"
+          },
+          "year": {
+            "type": "number",
+            "description": "Academic year of enrollment",
+            "example": 2024
+          },
+          "status": {
+            "type": "string",
+            "description": "Enrollment status",
+            "example": "ACTIVE",
+            "enum": [
+              "ACTIVE",
+              "INACTIVE",
+              "GRADUATED",
+              "SUSPENDED"
+            ]
+          }
+        },
+        "required": [
+          "gradeLevel",
+          "section",
+          "memberId",
+          "studentId",
+          "fullname",
+          "year",
+          "status"
+        ]
+      },
+      "ClassEnrollmentResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "3f1c9c2e-4c8a-4a9d-9e2f-7b1c5d6a8f10",
+            "format": "uuid"
+          },
+          "classId": {
+            "type": "string",
+            "example": "3f1c9c2e-4c8a-4a9d-9e2f-7b1c5d6a8f10",
+            "format": "uuid"
+          },
+          "memberId": {
+            "type": "number",
+            "example": 12
+          },
+          "studentId": {
+            "type": "string",
+            "example": "stud-7-001"
+          },
+          "fullname": {
+            "type": "string",
+            "example": "Abebe Bekele"
+          },
+          "year": {
+            "type": "number",
+            "example": 2024
+          },
+          "status": {
+            "type": "string",
+            "example": "ACTIVE"
+          },
+          "enrolledAt": {
+            "format": "date-time",
+            "type": "string",
+            "example": "2024-09-01T08:00:00.000Z"
+          }
+        },
+        "required": [
+          "id",
+          "classId",
+          "memberId",
+          "studentId",
+          "fullname",
+          "year",
+          "status",
+          "enrolledAt"
+        ]
+      },
+      "UpdateClassEnrollmentDto": {
+        "type": "object",
+        "properties": {
+          "gradeLevel": {
+            "type": "string",
+            "description": "Class lavel the student is enrol",
+            "example": "Grade 1",
+            "format": "like grade 1"
+          },
+          "section": {
+            "type": "string",
+            "description": "Class section the student is enrol",
+            "example": " A",
+            "format": "A"
+          },
+          "memberId": {
+            "type": "number",
+            "description": "Member ID of the student",
+            "example": 12
+          },
+          "studentId": {
+            "type": "string",
+            "description": "Student ID (e.g. stud-7-001)",
+            "example": "stud-7-001"
+          },
+          "fullname": {
+            "type": "string",
+            "description": "Full name of the student",
+            "example": "Abebe Bekele"
+          },
+          "year": {
+            "type": "number",
+            "description": "Academic year of enrollment",
+            "example": 2024
+          },
+          "status": {
+            "type": "string",
+            "description": "Enrollment status",
+            "example": "ACTIVE",
+            "enum": [
+              "ACTIVE",
+              "INACTIVE",
+              "GRADUATED",
+              "SUSPENDED"
+            ]
+          }
+        }
+      },
+      "CreateTeacherDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Full name of the teacher",
+            "example": "Jane Smith"
+          },
+          "email": {
+            "type": "string",
+            "description": "Unique email address",
+            "example": "jane.smith@school.edu"
+          },
+          "phone": {
+            "type": "string",
+            "description": "Unique phone number",
+            "example": "+1234567890"
+          },
+          "department": {
+            "type": "string",
+            "description": "Department name",
+            "example": "Science"
+          }
+        },
+        "required": [
+          "name",
+          "email",
+          "phone"
+        ]
+      },
+      "UpdateTeacherDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Full name of the teacher",
+            "example": "Jane Smith"
+          },
+          "email": {
+            "type": "string",
+            "description": "Unique email address",
+            "example": "jane.smith@school.edu"
+          },
+          "phone": {
+            "type": "string",
+            "description": "Unique phone number",
+            "example": "+1234567890"
+          },
+          "department": {
+            "type": "string",
+            "description": "Department name",
+            "example": "Science"
+          }
+        }
+      },
+      "CreateCourceDto": {
+        "type": "object",
+        "properties": {
+          "courseName": {
+            "type": "string",
+            "description": "The name of the course",
+            "example": "Introduction to Computer Science"
+          },
+          "craditHours": {
+            "type": "number",
+            "description": "The number of credit hours for the course",
+            "example": 4
+          }
+        },
+        "required": [
+          "courseName",
+          "craditHours"
+        ]
+      },
+      "UpdateCourceDto": {
+        "type": "object",
+        "properties": {
+          "courseName": {
+            "type": "string",
+            "description": "The name of the course",
+            "example": "Introduction to Computer Science"
+          },
+          "craditHours": {
+            "type": "number",
+            "description": "The number of credit hours for the course",
+            "example": 4
+          }
+        }
+      },
+      "CreateAssignCourseForClassDto": {
+        "type": "object",
+        "properties": {
+          "courseId": {
+            "type": "number",
+            "description": "The unique identifier of the course",
+            "example": 101
+          },
+          "courseName": {
+            "type": "string",
+            "description": "The name of the assigned course",
+            "example": "Introduction to Computer Science"
+          },
+          "classLevel": {
+            "type": "string",
+            "description": "The academic level or grade of the class",
+            "example": "Freshman"
+          }
+        },
+        "required": [
+          "courseId",
+          "courseName",
+          "classLevel"
+        ]
+      },
+      "UpdateAssignCourseForClassDto": {
+        "type": "object",
+        "properties": {
+          "courseId": {
+            "type": "number",
+            "description": "The unique identifier of the course",
+            "example": 101
+          },
+          "courseName": {
+            "type": "string",
+            "description": "The name of the assigned course",
+            "example": "Introduction to Computer Science"
+          },
+          "classLevel": {
+            "type": "string",
+            "description": "The academic level or grade of the class",
+            "example": "Freshman"
+          }
+        }
+      },
+      "CreateAssignTeacherForClassDto": {
+        "type": "object",
+        "properties": {
+          "teacherId": {
+            "type": "number",
+            "description": "The unique identifier of the teacher",
+            "example": 205
+          },
+          "teacherName": {
+            "type": "string",
+            "description": "The name of the teacher being assigned",
+            "example": "John Doe"
+          },
+          "courseId": {
+            "type": "number",
+            "description": "The unique identifier of the course",
+            "example": 101
+          },
+          "courseName": {
+            "type": "string",
+            "description": "The name of the assigned course",
+            "example": "Introduction to Computer Science"
+          },
+          "gradeLevel": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "teacherId",
+          "teacherName",
+          "courseId",
+          "courseName",
+          "gradeLevel"
+        ]
+      },
+      "UpdateAssignTeacherForClassDto": {
+        "type": "object",
+        "properties": {
+          "teacherId": {
+            "type": "number",
+            "description": "The unique identifier of the teacher",
+            "example": 205
+          },
+          "teacherName": {
+            "type": "string",
+            "description": "The name of the teacher being assigned",
+            "example": "John Doe"
+          },
+          "courseId": {
+            "type": "number",
+            "description": "The unique identifier of the course",
+            "example": 101
+          },
+          "courseName": {
+            "type": "string",
+            "description": "The name of the assigned course",
+            "example": "Introduction to Computer Science"
+          },
+          "gradeLevel": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

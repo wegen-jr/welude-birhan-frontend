@@ -1,10 +1,11 @@
-import React, { useState } from "react";
-import { useLanguage } from "../../Contexts/LanguageContext";
+import { useState } from "react";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { toast } from "react-toastify";
 import PhoneInputModule from "react-phone-input-2";
 import { isValidPhoneNumber } from "libphonenumber-js";
 import { useOutletContext } from "react-router-dom";
 import "react-phone-input-2/lib/style.css";
+import { apiClient } from "../../services/api";
 
 // Safely unwrap the CommonJS default export for Vite
 const PhoneInput = PhoneInputModule.default || PhoneInputModule;
@@ -52,17 +53,9 @@ export default function Registration() {
       [name]: value,
     });
   };
-
-  // Handle field blur for validation
-  const handleBlur = (fieldName) => {
-    setTouchedFields({
-      ...touchedFields,
-      [fieldName]: true,
-    });
-  };
-
+ 
   // Phone input handlers
-  const handlePhoneChange = (phoneNumber, countryData) => {
+  const handlePhoneChange = (phoneNumber) => {
     // Store with + prefix for consistency
     const fullNumber = phoneNumber.startsWith('+') ? phoneNumber : `+${phoneNumber}`;
     setFormData({
@@ -80,7 +73,7 @@ export default function Registration() {
     });
   };
 
-  const handleRepentancePhoneChange = (phoneNumber, countryData) => {
+  const handleRepentancePhoneChange = (phoneNumber) => {
     const fullNumber = phoneNumber.startsWith('+') ? phoneNumber : `+${phoneNumber}`;
     setFormData({
       ...formData,
@@ -97,7 +90,7 @@ export default function Registration() {
     });
   };
 
-  const handleFamilyPhoneChange = (phoneNumber, countryData) => {
+  const handleFamilyPhoneChange = (phoneNumber) => {
     const fullNumber = phoneNumber.startsWith('+') ? phoneNumber : `+${phoneNumber}`;
     setFormData({
       ...formData,
@@ -256,38 +249,12 @@ export default function Registration() {
 
       
 
-      // Try the first endpoint first
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'https://welude-birhan-1.onrender.com'}/member/creat_member`, {
-        method: "POST",
-        headers: { 
-          "Content-Type": "application/json",
-          "Accept": "application/json"
-        },
-        body: JSON.stringify(submitData),
+      const data = await apiClient('/member/creat_member', {
+        method: 'POST',
+        body: submitData
       });
 
-      console.log("Response status:", response.status); // Debug log
-
-      // Check if response is OK
-      if (!response.ok) {
-        let errorMessage = `Server error: ${response.status}`;
-        try {
-          const errorData = await response.json();
-          errorMessage = errorData.message || errorData.error || errorMessage;
-        } catch (e) {
-          // If response is not JSON, try to get text
-          try {
-            const text = await response.text();
-            if (text) errorMessage = text;
-          } catch (e2) {
-            // Ignore
-          }
-        }
-        throw new Error(errorMessage);
-      }
-
-      const data = await response.json();
-      toast.success(data.message );
+      toast.success(data.message || "Member created successfully");
       
       // Reset form on success
       setFormData({

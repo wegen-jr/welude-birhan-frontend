@@ -1,4 +1,3 @@
-import React from 'react';
 export function ChoirHub() {
   return (
     <div className="space-y-8">

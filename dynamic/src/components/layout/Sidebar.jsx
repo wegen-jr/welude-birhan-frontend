@@ -19,12 +19,15 @@ function cn(...inputs) {
 
 export function Sidebar({ role }) {
   const adminLinks = [
-    { to: '/admin', icon: LayoutDashboard, label: 'Dashboard' },
-    { to: '/admin/secretariat', icon: Users, label: 'Secretariat / HR' },
-    { to: '/admin/education', icon: BookOpen, label: 'Education' },
-    { to: '/admin/choir', icon: Music, label: 'Choir & Arts' },
-    { to: '/admin/pr', icon: Megaphone, label: 'PR & Comms' },
-    { to: '/admin/finance', icon: DollarSign, label: 'Finance' },
+    { to: '/dashboard/admin', icon: LayoutDashboard, label: 'Dashboard' },
+    { to: '/dashboard/education', icon: BookOpen, label: 'Education Hub' },
+    { to: '/dashboard/teachers', icon: Users, label: 'Teacher Management' },
+    { to: '/dashboard/courses', icon: BookOpen, label: 'Courses' },
+    { to: '/dashboard/student-enrollment', icon: GraduationCap, label: 'Student Enrollment' },
+    { to: '/dashboard/secretariat', icon: Users, label: 'Secretariat / HR' },
+    { to: '/dashboard/choir', icon: Music, label: 'Choir & Arts' },
+    { to: '/dashboard/pr', icon: Megaphone, label: 'PR & Comms' },
+    { to: '/dashboard/finance', icon: DollarSign, label: 'Finance' },
   ];
 
   const teacherLinks = [
