@@ -32,7 +32,10 @@ export function useMembers() {
     }, []);
 
     useEffect(() => {
-        fetchMembers();
+        const timer = setTimeout(() => {
+            fetchMembers();
+        }, 0);
+        return () => clearTimeout(timer);
     }, [fetchMembers]);
 
     const searchMembers = useCallback((query) => {
@@ -73,6 +76,19 @@ export function useMembers() {
         );
     }, []);
 
+    const removeMember = useCallback(async (id) => {
+        try {
+            await memberService.deleteMember(id);
+            setMembers((prev) => prev.filter((m) => (m._id || m.id) !== id));
+            setFilteredMembers((prev) => prev.filter((m) => (m._id || m.id) !== id));
+            toast.success('Member deleted successfully');
+            return true;
+        } catch (err) {
+            toast.error(err.message || 'Failed to delete member');
+            return false;
+        }
+    }, []);
+
     return {
         members,
         filteredMembers,
@@ -81,6 +97,7 @@ export function useMembers() {
         searchMembers,
         resetFilter,
         updateLocalMember,
+        removeMember,
         refreshMembers: fetchMembers,
     };
 }

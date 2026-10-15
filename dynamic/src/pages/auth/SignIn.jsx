@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { useLanguage } from "../../Contexts/LanguageContext";
-import AuthCard from "../../Components/auth/AuthCard";
-import { useAuth } from "../../hooks/useAuth";
+import { useLanguage } from "@/contexts/LanguageContext";
+import AuthCard from "@/components/auth/AuthCard";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
@@ -28,6 +28,10 @@ export default function SignIn() {
     const token = res.data?.access_token;
     const user = res.data?.user;
 
+    if (user && user.role === 'EducationHub') {
+      user.role = 'EDUCATION_LEADER';
+    }
+
     // Make sure required data exists
     if (!token || !user) {
       toast.error("Invalid login response from server");
@@ -40,8 +44,11 @@ export default function SignIn() {
 
     toast.success("Logged in successfully");
 
+    // Roles that belong in the dashboard layout
+    const dashboardRoles = ["ADMIN", "TEACHER", "STUDENT", "CHOIR_LEADER", "EDUCATION_LEADER", "FINANCE_LEADER", "PR_LEADER", "SECRETARIAT_LEADER"];
+
     // Redirect according to role
-    if (user.role === "ADMIN") {
+    if (dashboardRoles.includes(user.role)) {
       navigate("/dashboard", { replace: true });
     } else if (user.role === "MEMBER_USER") {
       navigate("/media", { replace: true });
@@ -56,6 +63,7 @@ export default function SignIn() {
       subtitle={t.signIn.subtitle}
       forgotPassword={t.signIn.forgotPassword}
       noAccount={t.signIn.noAccount}
+      signUp={t.signIn.signUp}
     >
       <ToastContainer />
 

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useContent } from '../Contexts/ContentContext';
-import { useLanguage } from '../Contexts/LanguageContext';
-import logo from '../assets/logo.png';
+import { useContent } from '@/contexts/ContentContext';
+import { useLanguage } from '@/contexts/LanguageContext';
+import logo from '@/assets/logo.png';
 import {
   ArrowLeft,
   PlusCircle,

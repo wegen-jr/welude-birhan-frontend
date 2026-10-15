@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useCms } from '../../Contexts/CmsContext.jsx';
+import { useCms } from '@/contexts/CmsContext';
 import {
   Image, Video, Sparkles, Filter, Calendar, Eye, X, Quote,
   Play, ExternalLink, User, PlusCircle, Church

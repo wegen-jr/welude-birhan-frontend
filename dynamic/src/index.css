@@ -1,1 +1,15 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Fix for dropdown list coloring in dark/light modes */
+select option {
+  background-color: #ffffff;
+  color: #0f172a;
+}
+
+.dark select option,
+select.text-white option {
+  background-color: #081226;
+  color: #f8fafc;
+}
+

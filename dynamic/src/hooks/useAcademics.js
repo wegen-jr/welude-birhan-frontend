@@ -37,7 +37,10 @@ export const useAcademics = () => {
   };
 
   useEffect(() => {
-    fetchClasses();
+    const timer = setTimeout(() => {
+      fetchClasses();
+    }, 0);
+    return () => clearTimeout(timer);
   }, [fetchClasses]);
 
   return { classes, loading, fetchClasses, recordAttendance, submitGrades };

@@ -39,7 +39,7 @@ export function useRoleAssign(onSuccess) {
             phone: phone, // exact phone string stored in the database
             email: email.trim(),
             password: password,
-            role: role ? role.toUpperCase() : 'USER',
+            role: role ? role : 'USER',
         };
 
         setSubmitting(true);

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useCms } from '../../Contexts/CmsContext.jsx';
+import { useCms } from '@/contexts/CmsContext';
 import { Calendar, Clock, MapPin, Users, BookOpen, Music, Check, ChevronRight } from 'lucide-react';
 
 export default function ProgramsSection() {

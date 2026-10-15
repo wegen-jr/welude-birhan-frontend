@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Search, CheckCircle, XCircle, Key } from 'lucide-react';
 import { useMembers } from '../../hooks/useMembers';
 
@@ -6,18 +6,13 @@ export function SecretariatHub() {
   const { members, loading, approveMember, rejectMember } = useMembers();
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Dummy data for demonstration
-  const dummyMembers = [
-    { id: 1, name: 'Abebe Kebede', baptismName: 'Gebre Mariam', phone: '0911223344', status: 'pending' },
-    { id: 2, name: 'Chala Tolosa', baptismName: 'Wolde Michael', phone: '0922334455', status: 'approved' },
-  ];
-
-  const displayMembers = members.length > 0 ? members : dummyMembers;
+  const displayMembers = Array.isArray(members) ? members : [];
   const filtered = displayMembers.filter(m => 
-    m.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    m.baptismName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    m.phone.includes(searchTerm)
+    (m.name || m.fullname || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (m.baptismName || m.christianName || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (m.phone || m.phoneNo || '').includes(searchTerm)
   );
+
 
   return (
     <div className="space-y-8">
@@ -82,7 +77,10 @@ export function SecretariatHub() {
               ))}
             </tbody>
           </table>
-          {filtered.length === 0 && (
+          {loading && (
+            <div className="py-8 text-center text-slate-400">Loading members...</div>
+          )}
+          {!loading && filtered.length === 0 && (
             <div className="py-8 text-center text-slate-500">No members found</div>
           )}
         </div>

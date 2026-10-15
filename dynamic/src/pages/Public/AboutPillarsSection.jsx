@@ -1,5 +1,5 @@
 import React from 'react';
-import { useCms } from '../../Contexts/CmsContext.jsx';
+import { useCms } from '@/contexts/CmsContext';
 import {
   Church, Eye, Scroll, Heart, Target, Sparkles, CheckCircle2,
   Calendar, MapPin, Award, BookOpen

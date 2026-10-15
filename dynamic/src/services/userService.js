@@ -16,7 +16,7 @@ export const userService = {
                 phone: formatPhone(phone),
                 email,
                 password,
-                role: role ? role.toUpperCase() : role,
+                role: role,
             },
         }),
 
@@ -24,6 +24,6 @@ export const userService = {
     getUserById: (id) => apiClient(`/user/${id}`),
     assignRole: (userId, role) => apiClient(`/user/${userId}`, {
         method: 'PATCH',
-        body: { role: role ? role.toUpperCase() : role }
+        body: { role: role }
     }),
 };

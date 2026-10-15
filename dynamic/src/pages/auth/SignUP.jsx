@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import AuthCard from "../../Components/auth/AuthCard";
-import { useAuth } from "../../hooks/useAuth";
-import { useLanguage } from "../../Contexts/LanguageContext";
+import AuthCard from "@/components/auth/AuthCard";
+import { useAuth } from "@/hooks/useAuth";
+import { useLanguage } from "@/contexts/LanguageContext";
 import PhoneInputModule from "react-phone-input-2";
 import { isValidPhoneNumber } from "libphonenumber-js";
 import "react-phone-input-2/lib/style.css";

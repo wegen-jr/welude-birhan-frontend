@@ -1,0 +1,13 @@
+export { default as AssignClassModal } from './AssignClassModal';
+export { default as AssignTeacherModal } from './AssignTeacherModal';
+export { default as ClassCourseManager } from './ClassCourseManager';
+export { default as ClassEnrollment } from './ClassEnrollment';
+export { default as ClassOverview } from './ClassOverview';
+export { default as EditTeacherModal } from './EditTeacherModal';
+export { default as EnrolledStudentTable } from './EnrolledStudentTable';
+export { default as SelectedClassDetails } from './SelectedClassDetails';
+export { default as StudentIdGeneration } from './StudentIdGeneration';
+export { default as TeacherDirectoryTable } from './TeacherDirectoryTable';
+export { default as TeacherManagement } from './TeacherManagement';
+export { default as TeacherRegistrationForm } from './TeacherRegistrationForm';
+export { default as TeacherStudentsModal } from './TeacherStudentsModal';

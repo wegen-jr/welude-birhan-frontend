@@ -1,7 +1,1 @@
-import en from './en.json';
-import am from './am.json';
-
-export const translations = {
-  en,
-  am
-};
+export { translations, default } from '../locales';

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useCms } from '../../Contexts/CmsContext.jsx';
+import { useCms } from '@/contexts/CmsContext';
 import { MapPin, Phone, Mail, Clock, Send, CheckCircle2, Church } from 'lucide-react';
 
 export default function ContactSection() {

@@ -1,11 +1,11 @@
 import React from 'react';
-import { useCms } from '../../Contexts/CmsContext';
-import logo from '../../assets/logo.png';
-import OverviewTab from '../../Components/cms/tabs/OverviewTab';
-import AboutTab from '../../Components/cms/tabs/AboutTab';
-import MediaTab from '../../Components/cms/tabs/MediaTab';
-import EventsTab from '../../Components/cms/tabs/EventsTab';
-import TestimonialsTab from '../../Components/cms/tabs/TestimonialsTab';
+import { useCms } from '@/contexts/CmsContext';
+import logo from '@/assets/logo.png';
+import OverviewTab from '@/components/cms/tabs/OverviewTab';
+import AboutTab from '@/components/cms/tabs/AboutTab';
+import MediaTab from '@/components/cms/tabs/MediaTab';
+import EventsTab from '@/components/cms/tabs/EventsTab';
+import TestimonialsTab from '@/components/cms/tabs/TestimonialsTab';
 import {
   LayoutDashboard, Church, Image, Calendar, MessageSquareQuote,
   ArrowLeft, LogOut, ExternalLink, RotateCcw, ShieldCheck, Sparkles
