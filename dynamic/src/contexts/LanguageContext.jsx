@@ -1,25 +1,34 @@
-// src/context/LanguageContext.jsx
+// src/contexts/LanguageContext.jsx
 import React, { createContext, useState, useContext } from 'react';
 import { translations } from '../locales';
 
 // 1. Create the Context
-const LanguageContext = createContext();
+export const LanguageContext = createContext(null);
 
 // 2. Create the Provider Component
 export function LanguageProvider({ children }) {
   // Set default language to 'en'
   const [language, setLanguage] = useState('en'); 
 
-  // A helper function to change the language safely
+  // A helper function to change the language safely (supports both toggleLanguage() and toggleLanguage('am'))
   const toggleLanguage = (lang) => {
-    setLanguage(lang);
+    setLanguage((prev) => {
+      if (typeof lang === 'string') return lang;
+      return prev === 'en' ? 'am' : 'en';
+    });
   };
 
-  // The 't' variable holds the exact dictionary for the current language
-  const t = translations[language];
+  // Proxy to safely fall back to English if a key is missing in the chosen language
+  const currentDict = translations[language] || translations['en'] || {};
+  const t = new Proxy(currentDict, {
+    get(target, prop) {
+      if (prop in target) return target[prop];
+      return translations['en']?.[prop];
+    }
+  });
 
   return (
-    <LanguageContext.Provider value={{ language, toggleLanguage, t }}>
+    <LanguageContext.Provider value={{ language, setLanguage, toggleLanguage, t }}>
       {children}
     </LanguageContext.Provider>
   );
@@ -27,5 +36,17 @@ export function LanguageProvider({ children }) {
 
 // 3. Create a custom hook so components can easily use it
 export function useLanguage() {
-  return useContext(LanguageContext);
+  const context = useContext(LanguageContext);
+  if (!context) {
+    const fallbackDict = translations['en'] || {};
+    return {
+      language: 'en',
+      setLanguage: () => {},
+      toggleLanguage: () => {},
+      t: fallbackDict,
+    };
+  }
+  return context;
 }
+
+export default LanguageProvider;

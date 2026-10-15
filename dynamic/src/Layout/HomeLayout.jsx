@@ -7,10 +7,17 @@ import { ArrowLeft, LayoutDashboard } from 'lucide-react';
 export default function HomeLayout() {
   const navigate = useNavigate();
   const location = useLocation();
-  const user=JSON.parse(localStorage.getItem("user"))
-  console.log("user",user)
-  const returnTo=location.state?.from
-  const showAdminButton=isAdmin(user)&& Boolean(returnTo)
+  let user = null;
+  try {
+    const raw = localStorage.getItem("user");
+    if (raw && raw !== "undefined") {
+      user = JSON.parse(raw);
+    }
+  } catch {
+    user = null;
+  }
+  const returnTo = location.state?.from;
+  const showAdminButton = isAdmin(user) && Boolean(returnTo);
   console.log("showAdminButton",showAdminButton)
   return (
     <div className="min-h-screen flex flex-col bg-[#081226] text-slate-100 selection:bg-amber-500 selection:text-slate-950">

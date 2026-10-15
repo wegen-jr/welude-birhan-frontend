@@ -9,7 +9,15 @@ export default function SideBar({ isDarkMode, toggleTheme }) {
     const location = useLocation();
     const nextLanguage = language === 'en' ? 'am' : 'en';
 
-    const user = JSON.parse(localStorage.getItem("user"));
+    let user = null;
+    try {
+      const raw = localStorage.getItem("user");
+      if (raw && raw !== "undefined") {
+        user = JSON.parse(raw);
+      }
+    } catch {
+      user = null;
+    }
     const role = user?.role || '';
 
     const allItems = {

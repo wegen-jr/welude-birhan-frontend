@@ -570,7 +570,27 @@ export function CmsProvider({ children }) {
 export function useCms() {
   const context = useContext(CmsContext);
   if (!context) {
-    throw new Error('useCms must be used within CmsProvider');
+    console.warn('useCms must be used within CmsProvider. Providing fallback.');
+    return {
+      language: 'en',
+      setLanguage: () => {},
+      toggleLanguage: () => {},
+      aboutData: INITIAL_ABOUT_DATA,
+      publishedGridEvents: INITIAL_EVENTS,
+      galleryItems: INITIAL_GALLERY,
+      testimonials: INITIAL_TESTIMONIALS,
+      publishedTestimonials: INITIAL_TESTIMONIALS,
+      activeNavSection: 'home',
+      setActiveNavSection: () => {},
+      currentView: 'public',
+      setCurrentView: () => {},
+      isAuthenticated: false,
+      user: null,
+      openLoginModal: () => {},
+      closeLoginModal: () => {},
+      isLoginModalOpen: false,
+      stats: { totalEvents: 0, totalMedia: 0, totalTestimonials: 0, pendingReviews: 0 },
+    };
   }
   return context;
 }

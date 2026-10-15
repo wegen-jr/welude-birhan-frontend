@@ -120,9 +120,10 @@ function App() {
             </Route>
           </Route>
 
-          <Route path="/unauthorized" element={<div>Unauthorized Access</div>} />
-          <Route path="*" element={<div>404 Not Found</div>} />
         </Route>
+
+        <Route path="/unauthorized" element={<div className="min-h-screen bg-[#081226] text-white flex items-center justify-center text-xl">Unauthorized Access</div>} />
+        <Route path="*" element={<div className="min-h-screen bg-[#081226] text-white flex items-center justify-center text-xl">404 Not Found</div>} />
       </Routes>
     </Router>
   );
