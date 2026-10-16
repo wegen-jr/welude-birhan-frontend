@@ -51,24 +51,24 @@ export default function Dashboard() {
   });
 
   const genderData = [
-    { name: 'Male', value: totalMale },
-    { name: 'Female', value: totalFemale },
+    { name: t.dashboard?.male || 'Male', value: totalMale },
+    { name: t.dashboard?.female || 'Female', value: totalFemale },
   ];
   const PIE_COLORS = ['#3b82f6', '#f59e0b'];
 
   const ageData = [
-    { name: '0-18 yrs', members: age0_18 },
-    { name: '19-30 yrs', members: age19_30 },
-    { name: '31-45 yrs', members: age31_45 },
-    { name: '46+ yrs', members: age46_plus },
+    { name: t.dashboard?.age0_18 || '0-18 yrs', members: age0_18 },
+    { name: t.dashboard?.age19_30 || '19-30 yrs', members: age19_30 },
+    { name: t.dashboard?.age31_45 || '31-45 yrs', members: age31_45 },
+    { name: t.dashboard?.age46_plus || '46+ yrs', members: age46_plus },
   ];
 
   return (
     <div className={`p-6 lg:p-10 w-full min-h-screen font-sans transition-colors duration-300 ${isDarkMode ? 'bg-[#081226] text-slate-100' : 'bg-slate-50 text-slate-800'}`}>
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h2 className={`text-3xl font-bold font-serif capitalize ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>{t.dashboard.title}</h2>
-          <p className={`mt-1 text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Overview and statistics for Welude Birhan members</p>
+          <h2 className={`text-3xl font-bold font-serif capitalize ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>{t.dashboard?.title || 'Members statistics'}</h2>
+          <p className={`mt-1 text-sm ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>{t.dashboard?.subtitle || 'Overview and statistics for Welude Birhan members'}</p>
         </div>
       </div>
 
@@ -81,7 +81,7 @@ export default function Dashboard() {
             <Users className="w-8 h-8" />
           </div>
           <div>
-            <p className={`text-sm font-medium capitalize mb-1 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>{t.dashboard.totalMembers}</p>
+            <p className={`text-sm font-medium capitalize mb-1 ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>{t.dashboard?.totalMembers || 'total members'}</p>
             <p className={`font-extrabold text-3xl ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>{loading ? '...' : totalMembers}</p>
           </div>
         </div>
@@ -92,7 +92,7 @@ export default function Dashboard() {
             <Activity className="w-8 h-8" />
           </div>
           <div>
-            <p className={`text-sm font-medium capitalize mb-1 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>{t.dashboard.totalMale}</p>
+            <p className={`text-sm font-medium capitalize mb-1 ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>{t.dashboard?.totalMale || 'total male'}</p>
             <p className={`font-extrabold text-3xl ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>{totalMale}</p>
           </div>
         </div>
@@ -103,7 +103,7 @@ export default function Dashboard() {
             <UserPlus className="w-8 h-8" />
           </div>
           <div>
-            <p className={`text-sm font-medium capitalize mb-1 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>{t.dashboard.totalFemale}</p>
+            <p className={`text-sm font-medium capitalize mb-1 ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>{t.dashboard?.totalFemale || 'total female'}</p>
             <p className={`font-extrabold text-3xl ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>{totalFemale}</p>
           </div>
         </div>
@@ -115,7 +115,7 @@ export default function Dashboard() {
 
         {/* PIE CHART CONTAINER */}
         <div className={`p-6 rounded-3xl shadow-xl flex flex-col h-[400px] border ${isDarkMode ? 'bg-[#0b1b3d] border-white/10' : 'bg-white border-slate-200'}`}>
-          <h3 className={`text-lg font-bold mb-6 capitalize ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>{t.dashboard.genderDistribution}</h3>
+          <h3 className={`text-lg font-bold mb-6 capitalize ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>{t.dashboard?.genderDistribution || 'gender distribution'}</h3>
           <div className="w-full flex-1">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
@@ -131,11 +131,11 @@ export default function Dashboard() {
                   labelLine={false}
                 >
                   {genderData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={PIE_COLORS[index % PIE_COLORS.length]} stroke={isDarkMode ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)"} strokeWidth={2} />
+                    <Cell key={`cell-${index}`} fill={PIE_COLORS[index % PIE_COLORS.length]} stroke={isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.05)"} strokeWidth={2} />
                   ))}
                 </Pie>
                 <Tooltip
-                  contentStyle={{ backgroundColor: isDarkMode ? '#081226' : '#ffffff', borderColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)', color: isDarkMode ? '#f8fafc' : '#0f172a', borderRadius: '12px' }}
+                  contentStyle={{ backgroundColor: isDarkMode ? '#0b1b3d' : '#ffffff', borderColor: isDarkMode ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.1)', color: isDarkMode ? '#f8fafc' : '#0f172a', borderRadius: '12px' }}
                   itemStyle={{ color: isDarkMode ? '#f8fafc' : '#0f172a' }}
                 />
                 <Legend verticalAlign="bottom" height={36} iconType="circle" wrapperStyle={{ color: isDarkMode ? '#f8fafc' : '#0f172a' }} />
@@ -146,18 +146,18 @@ export default function Dashboard() {
 
         {/* BAR CHART CONTAINER */}
         <div className={`p-6 rounded-3xl shadow-xl flex flex-col h-[400px] border ${isDarkMode ? 'bg-[#0b1b3d] border-white/10' : 'bg-white border-slate-200'}`}>
-          <h3 className={`text-lg font-bold mb-6 capitalize ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>{t.dashboard.membersAge}</h3>
+          <h3 className={`text-lg font-bold mb-6 capitalize ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>{t.dashboard?.membersAge || 'members by age group'}</h3>
           <div className="w-full flex-1">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={ageData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke={isDarkMode ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)"} vertical={false} />
-                <XAxis dataKey="name" tick={{ fill: '#94a3b8', fontSize: 12 }} axisLine={false} tickLine={false} dy={10} />
-                <YAxis tick={{ fill: '#94a3b8', fontSize: 12 }} axisLine={false} tickLine={false} />
+                <CartesianGrid strokeDasharray="3 3" stroke={isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.05)"} vertical={false} />
+                <XAxis dataKey="name" tick={{ fill: isDarkMode ? '#cbd5e1' : '#64748b', fontSize: 12 }} axisLine={false} tickLine={false} dy={10} />
+                <YAxis tick={{ fill: isDarkMode ? '#cbd5e1' : '#64748b', fontSize: 12 }} axisLine={false} tickLine={false} />
                 <Tooltip
                   cursor={{ fill: isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' }}
-                  contentStyle={{ backgroundColor: isDarkMode ? '#081226' : '#ffffff', borderColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)', color: isDarkMode ? '#f8fafc' : '#0f172a', borderRadius: '12px' }}
+                  contentStyle={{ backgroundColor: isDarkMode ? '#0b1b3d' : '#ffffff', borderColor: isDarkMode ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.1)', color: isDarkMode ? '#f8fafc' : '#0f172a', borderRadius: '12px' }}
                 />
-                <Bar dataKey="members" fill="#f59e0b" radius={[6, 6, 0, 0]} maxBarSize={50} />
+                <Bar name={t.dashboard?.membersCount || 'Members'} dataKey="members" fill="#f59e0b" radius={[6, 6, 0, 0]} maxBarSize={50} />
               </BarChart>
             </ResponsiveContainer>
           </div>

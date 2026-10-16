@@ -38,16 +38,8 @@ import Events from './pages/CMS/Events';
 import Testimonials from './pages/CMS/Testimonials';
 
 // Academic & Departmental Hubs
-import AuditLogs from './pages/admin/AuditLogs';
-import { ChoirHub } from './pages/admin/ChoirHub';
 import { EducationHub } from './pages/admin/EducationHub';
 import StudentEnrollment from './pages/admin/StudentEnrollment';
-import SundaySchoolDashboard from './pages/admin/SundaySchool/SundaySchoolDashboard';
-import { FinanceHub } from './pages/admin/FinanceHub';
-import { PRHub } from './pages/admin/PRHub';
-import { SecretariatHub } from './pages/admin/SecretariatHub';
-import { TeacherDashboard } from './pages/teacher/TeacherDashboard';
-import { StudentDashboard } from './pages/student/StudentDashboard';
 import TeacherManagementPage from './pages/admin/TeacherManagementPage';
 import CourseManagementPage from './pages/admin/CourseManagementPage';
 
@@ -91,22 +83,15 @@ function App() {
               <Route path="admin" element={<RoleGuard allowedRoles={["ADMIN"]}><Dashboard /></RoleGuard>} />
               <Route path="registration" element={<RoleGuard allowedRoles={["ADMIN"]}><Registration /></RoleGuard>} />
               <Route path="roleAssignemet" element={<RoleGuard allowedRoles={["ADMIN"]}><RoleAssignment /></RoleGuard>} />
-              <Route path="audit-logs" element={<RoleGuard allowedRoles={["ADMIN"]}><AuditLogs /></RoleGuard>} />
               <Route path="settings" element={<Settings />} />
               <Route path="settings/profile" element={<Profile />} />
               <Route path="settings/credentialsChanger" element={<EmailPasswordChanger />} />
 
-              <Route path="teacher" element={<RoleGuard allowedRoles={["ADMIN", "TEACHER"]}><TeacherDashboard /></RoleGuard>} />
-              <Route path="student" element={<RoleGuard allowedRoles={["ADMIN", "STUDENT"]}><StudentDashboard /></RoleGuard>} />
-              <Route path="choir" element={<RoleGuard allowedRoles={["ADMIN", "CHOIR_LEADER"]}><ChoirHub /></RoleGuard>} />
+              <Route path="teacher" element={<Navigate to="/dashboard/admin" replace />} />
               <Route path="education" element={<RoleGuard allowedRoles={["ADMIN", "EDUCATION_LEADER"]}><EducationHub /></RoleGuard>} />
               <Route path="teachers" element={<RoleGuard allowedRoles={["ADMIN", "EDUCATION_LEADER"]}><TeacherManagementPage /></RoleGuard>} />
               <Route path="courses" element={<RoleGuard allowedRoles={["ADMIN", "EDUCATION_LEADER"]}><CourseManagementPage /></RoleGuard>} />
               <Route path="student-enrollment" element={<RoleGuard allowedRoles={["ADMIN", "EDUCATION_LEADER"]}><StudentEnrollment /></RoleGuard>} />
-              <Route path="sunday-school" element={<RoleGuard allowedRoles={["ADMIN", "EDUCATION_LEADER"]}><SundaySchoolDashboard /></RoleGuard>} />
-              <Route path="finance" element={<RoleGuard allowedRoles={["ADMIN", "FINANCE_LEADER"]}><FinanceHub /></RoleGuard>} />
-              <Route path="pr" element={<RoleGuard allowedRoles={["ADMIN", "PR_LEADER"]}><PRHub /></RoleGuard>} />
-              <Route path="secretariat" element={<RoleGuard allowedRoles={["ADMIN", "SECRETARIAT_LEADER"]}><SecretariatHub /></RoleGuard>} />
             </Route>
           </Route>
 

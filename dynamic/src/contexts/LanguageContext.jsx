@@ -7,14 +7,26 @@ export const LanguageContext = createContext(null);
 
 // 2. Create the Provider Component
 export function LanguageProvider({ children }) {
-  // Set default language to 'en'
-  const [language, setLanguage] = useState('en'); 
+  // Set default language to saved language or 'en'
+  const [language, setLanguage] = useState(() => {
+    try {
+      const saved = localStorage.getItem('welude_language');
+      return saved === 'am' || saved === 'en' ? saved : 'en';
+    } catch {
+      return 'en';
+    }
+  }); 
 
   // A helper function to change the language safely (supports both toggleLanguage() and toggleLanguage('am'))
   const toggleLanguage = (lang) => {
     setLanguage((prev) => {
-      if (typeof lang === 'string') return lang;
-      return prev === 'en' ? 'am' : 'en';
+      const next = typeof lang === 'string' ? lang : (prev === 'en' ? 'am' : 'en');
+      try {
+        localStorage.setItem('welude_language', next);
+      } catch {
+        // ignore local storage errors
+      }
+      return next;
     });
   };
 

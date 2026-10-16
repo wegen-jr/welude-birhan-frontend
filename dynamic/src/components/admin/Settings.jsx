@@ -24,7 +24,7 @@ export default function Settings() {
                 
                 <div className={`flex flex-col items-center justify-center p-8 border-b ${isDarkMode ? 'border-white/10' : 'border-slate-200'}`}>
                     <img src={profile} alt="profile picture" className={`w-24 h-24 rounded-full shadow-lg border-4 ${isDarkMode ? 'border-white/10' : 'border-slate-100'}`} />
-                    <h2 className={`mt-4 text-xl font-bold font-serif ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>Admin Settings</h2>
+                    <h2 className={`mt-4 text-xl font-bold font-serif ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>{t.setting?.adminSettings || 'Admin Settings'}</h2>
                 </div>
                 
                 <div className="flex flex-col p-6">
@@ -42,7 +42,7 @@ export default function Settings() {
                     </button>
                     <button onClick={() => navigate('/dashboard/settings/profile')} className={buttonClass}>
                         <SettingsIcon className={iconClass} />
-                        <p className={textClass}>Account Setup</p>
+                        <p className={textClass}>{t.setting?.accountSetup || 'Account Setup'}</p>
                     </button>
                     
                     <div className={`my-8 border-t ${isDarkMode ? 'border-white/10' : 'border-slate-200'}`} />

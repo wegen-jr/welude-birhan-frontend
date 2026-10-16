@@ -33,7 +33,7 @@ export default function AdminLayout() {
         <SideBar isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
       </aside>
       <div className='flex-1 overflow-y-auto relative'> 
-        <Outlet context={{ isDarkMode }} />
+        <Outlet context={{ isDarkMode, toggleTheme }} />
       </div>
     </div>
   );

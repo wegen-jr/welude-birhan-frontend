@@ -358,7 +358,7 @@ export default function Registration() {
               dropdownClass={isDarkMode ? '!bg-[#0b1b3d] !text-white !border-white/10' : '!bg-white !text-slate-900 !border-slate-200'}
             />
             {touchedFields.phoneNo && !isPhoneValid && (
-              <p className="text-red-400 text-sm mt-1">Please enter a valid phone number</p>
+              <p className="text-red-400 text-sm mt-1">{t.registration?.invalidPhone || "Please enter a valid phone number"}</p>
             )}
           </div>
 
@@ -399,7 +399,7 @@ export default function Registration() {
               dropdownClass={isDarkMode ? '!bg-[#0b1b3d] !text-white !border-white/10' : '!bg-white !text-slate-900 !border-slate-200'}
             />
             {touchedFields.repentancePhone && !isRepentancePhoneValid && (
-              <p className="text-red-400 text-sm mt-1">Please enter a valid phone number</p>
+              <p className="text-red-400 text-sm mt-1">{t.registration?.invalidPhone || "Please enter a valid phone number"}</p>
             )}
           </div>
 
@@ -429,7 +429,7 @@ export default function Registration() {
               dropdownClass={isDarkMode ? '!bg-[#0b1b3d] !text-white !border-white/10' : '!bg-white !text-slate-900 !border-slate-200'}
             />
             {touchedFields.familyPhone && !isFamilyPhoneValid && (
-              <p className="text-red-400 text-sm mt-1">Please enter a valid phone number</p>
+              <p className="text-red-400 text-sm mt-1">{t.registration?.invalidPhone || "Please enter a valid phone number"}</p>
             )}
           </div>
 
@@ -449,11 +449,11 @@ export default function Registration() {
             className={`w-full md:col-span-2 px-5 py-3.5 rounded-xl transition-all outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 border ${isDarkMode ? 'bg-white/5 border-white/10 text-white' : 'bg-slate-50 border-slate-200 text-slate-900'}`}
             required
           >
-            <option value="" disabled>
+            <option value="" disabled className="bg-white text-slate-900 dark:bg-[#0b1b3d] dark:text-white">
              {t.registration.statusDefault}
             </option>
             {status.map((item) => (
-              <option key={item} value={item}>
+              <option key={item} value={item} className="bg-white text-slate-900 dark:bg-[#0b1b3d] dark:text-white">
                  {statusLabels[item] || item}
               </option>
             ))}
@@ -465,7 +465,7 @@ export default function Registration() {
           disabled={isSubmitting}
           className="w-full mt-8 bg-amber-500 text-slate-900 font-bold py-3.5 rounded-xl hover:bg-amber-400 hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg shadow-amber-500/20"
         >
-          {isSubmitting ? "Registering..." : t.registration.register}
+          {isSubmitting ? (t.registration?.registering || "Registering...") : t.registration.register}
         </button>
       </form>
     </div>

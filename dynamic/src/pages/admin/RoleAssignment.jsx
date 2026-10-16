@@ -296,40 +296,40 @@ export default function RoleAssignment() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           {/* Selected Member Profile & DB Phone Sync */}
           <div>
-            <h2 className={`text-xl mb-6 font-bold capitalize ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>Selected Member Profile</h2>
+            <h2 className={`text-xl mb-6 font-bold capitalize ${isDarkMode ? 'text-slate-200' : 'text-slate-700'}`}>{t?.roleAssign?.selectedProfile || 'Selected Member Profile'}</h2>
             {selectedMember ? (
               <div className={`p-6 rounded-2xl border ${isDarkMode ? 'bg-white/5 border-white/10 text-white' : 'bg-slate-50 border-slate-200 text-slate-900'}`}>
                 <div className="grid grid-cols-2 gap-4 mb-6">
                   <div>
-                    <p className="text-xs text-slate-500 uppercase font-bold">Full Name</p>
+                    <p className={`text-xs uppercase font-bold ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>{t?.roleAssign?.fullname || 'Full Name'}</p>
                     <p className="font-medium">{selectedMember.fullname || selectedMember.name || '-'}</p>
                   </div>
                   <div>
-                    <p className="text-xs text-slate-500 uppercase font-bold">Christian Name</p>
+                    <p className={`text-xs uppercase font-bold ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>{t?.roleAssign?.chrstianName || 'Christian Name'}</p>
                     <p className="font-medium">{selectedMember.christianName || selectedMember.christian_name || '-'}</p>
                   </div>
                   <div>
-                    <p className="text-xs text-slate-500 uppercase font-bold">Age</p>
+                    <p className={`text-xs uppercase font-bold ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>{t?.roleAssign?.age || 'Age'}</p>
                     <p className="font-medium font-mono">{selectedMember.Age ?? selectedMember.age ?? '-'}</p>
                   </div>
                   <div>
-                    <p className="text-xs text-slate-500 uppercase font-bold">Sex (Gender)</p>
+                    <p className={`text-xs uppercase font-bold ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>{t?.roleAssign?.sex || 'Sex (Gender)'}</p>
                     <p className="font-medium capitalize">{selectedMember.gender || selectedMember.sex || '-'}</p>
                   </div>
                   <div>
-                    <p className="text-xs text-slate-500 uppercase font-bold">Current Status</p>
-                    <span className={`px-2 py-1 text-xs rounded-md font-bold mt-1 inline-block ${selectedMember.currentStatus === 'ACTIVE' || selectedMember.status === 'ACTIVE' ? 'bg-green-500/20 text-green-500' : 'bg-amber-500/20 text-amber-500'}`}>
+                    <p className={`text-xs uppercase font-bold ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>{t?.roleAssign?.status || 'Current Status'}</p>
+                    <span className={`px-2 py-1 text-xs rounded-md font-bold mt-1 inline-block ${selectedMember.currentStatus === 'ACTIVE' || selectedMember.status === 'ACTIVE' ? 'bg-green-500/20 text-green-400' : 'bg-amber-500/20 text-amber-400'}`}>
                       {selectedMember.currentStatus || selectedMember.status || '-'}
                     </span>
                   </div>
                   <div>
-                    <p className="text-xs text-slate-500 uppercase font-bold">Phone</p>
+                    <p className={`text-xs uppercase font-bold ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>{t?.roleAssign?.phone || 'Phone'}</p>
                     <p className="font-medium font-mono text-xs mt-1">{selectedMember.phoneNo || selectedMember.phone || '-'}</p>
                   </div>
                 </div>
 
                 <div className="border-t pt-4 border-slate-200 dark:border-white/10">
-                  <label className={`block mb-2 text-sm font-medium ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>Registered Phone Number (DB Sync)</label>
+                  <label className={`block mb-2 text-sm font-medium ${isDarkMode ? 'text-slate-200' : 'text-slate-600'}`}>{t?.roleAssign?.updatePhone || 'Registered Phone Number (DB Sync)'}</label>
                   <div className="flex gap-3">
                     <div className="flex-1">
                       <PhoneInput
@@ -346,9 +346,9 @@ export default function RoleAssignment() {
                     <button
                       onClick={handleUpdateDbPhone}
                       disabled={updatingPhone || !dbPhone || dbPhone === (selectedMember.phoneNo || selectedMember.phone)}
-                      className="bg-blue-600 text-white font-bold px-4 py-2.5 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 text-sm whitespace-nowrap"
+                      className="bg-blue-600 text-white font-bold px-4 py-2.5 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 text-sm whitespace-nowrap cursor-pointer"
                     >
-                      {updatingPhone ? 'Updating...' : 'Update DB Phone'}
+                      {updatingPhone ? (t?.roleAssign?.updating || 'Updating...') : (t?.roleAssign?.updatePhone || 'Update DB Phone')}
                     </button>
                   </div>
                 </div>
@@ -356,18 +356,18 @@ export default function RoleAssignment() {
             ) : (
               <div className={`p-10 rounded-2xl border border-dashed flex flex-col items-center justify-center text-center ${isDarkMode ? 'border-white/20 bg-white/5' : 'border-slate-300 bg-slate-50'}`}>
                 <div className="text-4xl mb-4 opacity-50">👤</div>
-                <p className={isDarkMode ? 'text-slate-400' : 'text-slate-500'}>Select a member from the directory below to view their profile and update their database record.</p>
+                <p className={isDarkMode ? 'text-slate-300' : 'text-slate-600'}>{t?.roleAssign?.selectMemberHint || 'Select a member from the directory below to view their profile and update their database record.'}</p>
               </div>
             )}
           </div>
 
           {/* Role & Credentials Form */}
           <div>
-            <h2 className={`text-xl mb-6 font-bold capitalize ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>Assign Role & Credentials</h2>
+            <h2 className={`text-xl mb-6 font-bold capitalize ${isDarkMode ? 'text-slate-200' : 'text-slate-700'}`}>{t?.roleAssign?.assignCredentials || 'Assign Role & Credentials'}</h2>
             <form onSubmit={handleSubmitRole} className="space-y-4" noValidate>
               <input
                 type="email"
-                placeholder="Email Address"
+                placeholder={t?.roleAssign?.email || 'Email Address'}
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 className={`w-full px-5 py-3.5 rounded-xl border outline-none focus:ring-2 focus:ring-amber-500/50 ${isDarkMode ? 'bg-white/5 border-white/10 text-white placeholder-slate-400' : 'bg-slate-50 border-slate-200 text-slate-900 placeholder-slate-500'}`}
@@ -375,7 +375,7 @@ export default function RoleAssignment() {
 
               <input
                 type="password"
-                placeholder="Create Password"
+                placeholder={t?.roleAssign?.createPassword || 'Create Password'}
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                 className={`w-full px-5 py-3.5 rounded-xl border outline-none focus:ring-2 focus:ring-amber-500/50 ${isDarkMode ? 'bg-white/5 border-white/10 text-white placeholder-slate-400' : 'bg-slate-50 border-slate-200 text-slate-900 placeholder-slate-500'}`}
@@ -383,7 +383,7 @@ export default function RoleAssignment() {
 
               <input
                 type="password"
-                placeholder="Confirm Password"
+                placeholder={t?.roleAssign?.confirmPassword || 'Confirm Password'}
                 value={formData.confirmPassword}
                 onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
                 className={`w-full px-5 py-3.5 rounded-xl border outline-none focus:ring-2 focus:ring-amber-500/50 ${isDarkMode ? 'bg-white/5 border-white/10 text-white placeholder-slate-400' : 'bg-slate-50 border-slate-200 text-slate-900 placeholder-slate-500'}`}
@@ -394,24 +394,24 @@ export default function RoleAssignment() {
                 onChange={(e) => setFormData({ ...formData, role: e.target.value })}
                 className={`w-full px-5 py-3.5 rounded-xl border outline-none focus:ring-2 focus:ring-amber-500/50 ${isDarkMode ? 'bg-white/5 border-white/10 text-white' : 'bg-slate-50 border-slate-200 text-slate-900'}`}
               >
-                <option value="USER">USER</option>
-                <option value="MEMBER_USER">MEMBER_USER</option>
-                <option value="ADMIN">ADMIN</option>
-                <option value="TEACHER">TEACHER</option>
-                <option value="STUDENT">STUDENT</option>
-                <option value="CHOIR_LEADER">CHOIR_LEADER</option>
-                <option value="EDUCATION_LEADER">EDUCATION_LEADER</option>
-                <option value="FINANCE_LEADER">FINANCE_LEADER</option>
-                <option value="PR_LEADER">PR_LEADER</option>
-                <option value="SECRETARIAT_LEADER">SECRETARIAT_LEADER</option>
+                <option value="USER" className="bg-white text-slate-900 dark:bg-[#0b1b3d] dark:text-white">{t?.roleAssign?.roles?.USER || 'USER'}</option>
+                <option value="MEMBER_USER" className="bg-white text-slate-900 dark:bg-[#0b1b3d] dark:text-white">{t?.roleAssign?.roles?.MEMBER_USER || 'MEMBER_USER'}</option>
+                <option value="ADMIN" className="bg-white text-slate-900 dark:bg-[#0b1b3d] dark:text-white">{t?.roleAssign?.roles?.ADMIN || 'ADMIN'}</option>
+                <option value="TEACHER" className="bg-white text-slate-900 dark:bg-[#0b1b3d] dark:text-white">{t?.roleAssign?.roles?.TEACHER || 'TEACHER'}</option>
+                <option value="STUDENT" className="bg-white text-slate-900 dark:bg-[#0b1b3d] dark:text-white">{t?.roleAssign?.roles?.STUDENT || 'STUDENT'}</option>
+                <option value="CHOIR_LEADER" className="bg-white text-slate-900 dark:bg-[#0b1b3d] dark:text-white">{t?.roleAssign?.roles?.CHOIR_LEADER || 'CHOIR_LEADER'}</option>
+                <option value="EDUCATION_LEADER" className="bg-white text-slate-900 dark:bg-[#0b1b3d] dark:text-white">{t?.roleAssign?.roles?.EDUCATION_LEADER || 'EDUCATION_LEADER'}</option>
+                <option value="FINANCE_LEADER" className="bg-white text-slate-900 dark:bg-[#0b1b3d] dark:text-white">{t?.roleAssign?.roles?.FINANCE_LEADER || 'FINANCE_LEADER'}</option>
+                <option value="PR_LEADER" className="bg-white text-slate-900 dark:bg-[#0b1b3d] dark:text-white">{t?.roleAssign?.roles?.PR_LEADER || 'PR_LEADER'}</option>
+                <option value="SECRETARIAT_LEADER" className="bg-white text-slate-900 dark:bg-[#0b1b3d] dark:text-white">{t?.roleAssign?.roles?.SECRETARIAT_LEADER || 'SECRETARIAT_LEADER'}</option>
               </select>
 
               <button
                 type="submit"
                 disabled={submitting || !selectedMember}
-                className="w-full bg-amber-500 text-slate-900 font-bold px-6 py-3.5 rounded-xl shadow-lg shadow-amber-500/20 hover:bg-amber-400 transition-colors disabled:opacity-50"
+                className="w-full bg-amber-500 text-slate-900 font-bold px-6 py-3.5 rounded-xl shadow-lg shadow-amber-500/20 hover:bg-amber-400 transition-colors disabled:opacity-50 cursor-pointer"
               >
-                {submitting ? 'Assigning Role...' : 'Assign Role'}
+                {submitting ? (t?.roleAssign?.assigning || 'Assigning Role...') : (t?.roleAssign?.assign || 'Assign Role')}
               </button>
             </form>
           </div>
@@ -421,37 +421,37 @@ export default function RoleAssignment() {
       {/* Members Directory Table */}
       <div className={`rounded-3xl shadow-xl overflow-hidden border ${isDarkMode ? 'bg-[#0b1b3d] border-white/10' : 'bg-white border-slate-200'}`}>
         <div className={`p-6 border-b flex flex-col md:flex-row gap-4 justify-between items-center ${isDarkMode ? 'border-white/10' : 'border-slate-200'}`}>
-          <h2 className="text-xl font-bold">Members Directory</h2>
+          <h2 className="text-xl font-bold">{t?.roleAssign?.directory || 'Members Directory'}</h2>
           <div className="flex items-center gap-4 w-full md:w-auto">
             <input
               type="text"
-              placeholder="Search by name, christian name, phone..."
+              placeholder={t?.roleAssign?.searchPlaceholder || 'Search by name, christian name, phone...'}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className={`w-full md:w-80 px-4 py-2 rounded-xl border outline-none focus:ring-2 focus:ring-amber-500/50 ${isDarkMode ? 'bg-white/5 border-white/10 text-white placeholder-slate-400' : 'bg-slate-50 border-slate-200 text-slate-900 placeholder-slate-500'}`}
             />
-            <span className={`text-sm px-4 py-2 rounded-full whitespace-nowrap ${isDarkMode ? 'bg-white/5 text-slate-400' : 'bg-slate-100 text-slate-600'}`}>
-              {filteredMembers.length} of {members.length}
+            <span className={`text-sm px-4 py-2 rounded-full whitespace-nowrap font-medium ${isDarkMode ? 'bg-white/5 text-slate-300' : 'bg-slate-100 text-slate-700'}`}>
+              {filteredMembers.length} {t?.roleAssign?.of || 'of'} {members.length}
             </span>
           </div>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-left">
-            <thead className={`border-b ${isDarkMode ? 'border-white/10 bg-white/5 text-slate-300' : 'border-slate-200 bg-slate-50 text-slate-700'}`}>
+            <thead className={`border-b ${isDarkMode ? 'border-white/10 bg-white/5 text-slate-200' : 'border-slate-200 bg-slate-50 text-slate-700'}`}>
               <tr>
-                <th className="p-4 font-medium">Full Name</th>
-                <th className="p-4 font-medium">Christian Name</th>
-                <th className="p-4 font-medium">Age</th>
-                <th className="p-4 font-medium">Sex</th>
-                <th className="p-4 font-medium">Status</th>
-                <th className="p-4 font-medium">Phone Number</th>
-                <th className="p-4 font-medium text-center">Actions</th>
+                <th className="p-4 font-semibold">{t?.roleAssign?.fullname || 'Full Name'}</th>
+                <th className="p-4 font-semibold">{t?.roleAssign?.chrstianName || 'Christian Name'}</th>
+                <th className="p-4 font-semibold">{t?.roleAssign?.age || 'Age'}</th>
+                <th className="p-4 font-semibold">{t?.roleAssign?.sex || 'Sex'}</th>
+                <th className="p-4 font-semibold">{t?.roleAssign?.status || 'Status'}</th>
+                <th className="p-4 font-semibold">{t?.roleAssign?.phone || 'Phone Number'}</th>
+                <th className="p-4 font-semibold text-center">{t?.roleAssign?.actions || 'Actions'}</th>
               </tr>
             </thead>
             <tbody>
               {filteredMembers.length === 0 ? (
                 <tr>
-                  <td colSpan="7" className="text-center p-8 text-slate-400">No members found</td>
+                  <td colSpan="7" className={`text-center p-8 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>No members found</td>
                 </tr>
               ) : (
                 filteredMembers.map((item) => {
@@ -469,37 +469,37 @@ export default function RoleAssignment() {
                         : (isDarkMode ? 'border-white/5 hover:bg-white/5' : 'border-slate-100 hover:bg-slate-50')
                         }`}
                     >
-                      <td className="p-4 font-medium">{item.fullname || item.fullName || item.name || '-'}</td>
-                      <td className="p-4 text-slate-400">{item.christianName || item.christian_name || '-'}</td>
-                      <td className="p-4 font-mono text-sm text-slate-400">{ageValue}</td>
-                      <td className="p-4 text-sm text-slate-400 capitalize">{genderValue}</td>
+                      <td className={`p-4 font-semibold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>{item.fullname || item.fullName || item.name || '-'}</td>
+                      <td className={`p-4 ${isDarkMode ? 'text-slate-200' : 'text-slate-600'}`}>{item.christianName || item.christian_name || '-'}</td>
+                      <td className={`p-4 font-mono text-sm ${isDarkMode ? 'text-slate-200' : 'text-slate-600'}`}>{ageValue}</td>
+                      <td className={`p-4 text-sm capitalize ${isDarkMode ? 'text-slate-200' : 'text-slate-600'}`}>{genderValue}</td>
                       <td className="p-4">
                         <span className={`px-2.5 py-1 text-xs rounded-full font-bold ${
                           currentStatus === 'ACTIVE' 
-                            ? 'bg-green-500/20 text-green-500' 
+                            ? 'bg-green-500/20 text-green-400' 
                             : currentStatus === 'STUDENT' 
-                            ? 'bg-blue-500/20 text-blue-500' 
-                            : 'bg-slate-500/20 text-slate-500'
+                            ? 'bg-blue-500/20 text-blue-400' 
+                            : 'bg-slate-500/20 text-slate-400'
                         }`}>
                           {currentStatus || '-'}
                         </span>
                       </td>
-                      <td className="p-4 font-mono text-sm text-slate-400">
+                      <td className={`p-4 font-mono text-sm ${isDarkMode ? 'text-slate-200' : 'text-slate-600'}`}>
                         {item.phoneNo || item.phone || item.phone_number || '-'}
                       </td>
                       <td className="p-4">
                         <div className="flex gap-2 justify-center items-center">
                           <button
                             onClick={() => handleSelectMember(item)}
-                            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${isCurrent ? 'bg-amber-500 text-slate-900' : (isDarkMode ? 'bg-white/10 text-white hover:bg-white/20' : 'bg-slate-200 text-slate-800 hover:bg-slate-300')}`}
+                            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors cursor-pointer ${isCurrent ? 'bg-amber-500 text-slate-900' : (isDarkMode ? 'bg-white/10 text-white hover:bg-white/20' : 'bg-slate-200 text-slate-800 hover:bg-slate-300')}`}
                           >
-                            {isCurrent ? 'Selected' : 'Select'}
+                            {isCurrent ? (t?.roleAssign?.selected || 'Selected') : (t?.roleAssign?.select || 'Select')}
                           </button>
                           <button
                             onClick={() => openEditModal(item)}
-                            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${isDarkMode ? 'bg-white/10 text-white hover:bg-white/20' : 'bg-slate-200 text-slate-800 hover:bg-slate-300'}`}
+                            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors cursor-pointer ${isDarkMode ? 'bg-white/10 text-white hover:bg-white/20' : 'bg-slate-200 text-slate-800 hover:bg-slate-300'}`}
                           >
-                            Edit
+                            {t?.roleAssign?.edit || 'Edit'}
                           </button>
 
                           <select
@@ -507,11 +507,11 @@ export default function RoleAssignment() {
                             onChange={(e) => handleStatusToggle(item, e.target.value)}
                             className={`px-2 py-1.5 rounded-lg text-xs font-bold outline-none cursor-pointer ${isDarkMode ? 'bg-white/10 text-white border-none' : 'bg-slate-200 text-slate-800 border-none'}`}
                           >
-                            <option value="" disabled>Status</option>
-                            <option value="ACTIVE">ACTIVE</option>
-                            <option value="STUDENT">STUDENT</option>
-                            <option value="TEACHER">TEACHER</option>
-                            <option value="INACTIVE">INACTIVE</option>
+                            <option value="" disabled className="bg-white text-slate-900 dark:bg-[#0b1b3d] dark:text-white">Status</option>
+                            <option value="ACTIVE" className="bg-white text-slate-900 dark:bg-[#0b1b3d] dark:text-white">ACTIVE</option>
+                            <option value="STUDENT" className="bg-white text-slate-900 dark:bg-[#0b1b3d] dark:text-white">STUDENT</option>
+                            <option value="TEACHER" className="bg-white text-slate-900 dark:bg-[#0b1b3d] dark:text-white">TEACHER</option>
+                            <option value="INACTIVE" className="bg-white text-slate-900 dark:bg-[#0b1b3d] dark:text-white">INACTIVE</option>
                           </select>
 
                           <button

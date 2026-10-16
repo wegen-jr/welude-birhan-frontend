@@ -5,8 +5,10 @@ import {
   ShieldCheck
 } from "lucide-react";
 import TeacherManagement from "../../components/SundaySchool/TeacherManagement";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function TeacherManagementPage() {
+  const { t } = useLanguage();
   const context = useOutletContext();
   const isDarkMode = context?.isDarkMode ?? true;
 
@@ -42,10 +44,10 @@ export default function TeacherManagementPage() {
             )}
           </div>
           <h1 className="text-2xl sm:text-3xl font-serif font-bold tracking-tight">
-            Teacher Management
+            {t.teacherManagement?.title || "Teacher Management"}
           </h1>
           <p className="text-xs sm:text-sm text-slate-400 mt-1 max-w-2xl">
-            Register and coordinate Sunday School instructors, assign teachers to classroom sections, and maintain academic staff records.
+            {t.teacherManagement?.subtitle || "Register and coordinate Sunday School instructors, assign teachers to classroom sections, and maintain academic staff records."}
           </p>
         </div>
 
@@ -58,7 +60,7 @@ export default function TeacherManagementPage() {
           }`}
         >
           <School className="w-4 h-4 text-amber-500" />
-          <span>Education Hub</span>
+          <span>{t.adminSide?.educationHub || "Education Hub"}</span>
           <ArrowRight className="w-3.5 h-3.5" />
         </Link>
       </div>

@@ -6,13 +6,8 @@ export default function DashboardRedirector() {
   const role = user?.role || '';
 
   if (role === 'ADMIN') return <Navigate to="/dashboard/admin" replace />;
-  if (role === 'TEACHER') return <Navigate to="/dashboard/teacher" replace />;
-  if (role === 'STUDENT') return <Navigate to="/dashboard/student" replace />;
-  if (role === 'CHOIR_LEADER') return <Navigate to="/dashboard/choir" replace />;
   if (role === 'EDUCATION_LEADER') return <Navigate to="/dashboard/education" replace />;
-  if (role === 'FINANCE_LEADER') return <Navigate to="/dashboard/finance" replace />;
-  if (role === 'PR_LEADER') return <Navigate to="/dashboard/pr" replace />;
-  if (role === 'SECRETARIAT_LEADER') return <Navigate to="/dashboard/secretariat" replace />;
+  if (role) return <Navigate to="/dashboard/settings" replace />;
   
   return <Navigate to="/unauthorized" replace />;
 }

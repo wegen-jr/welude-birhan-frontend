@@ -4,8 +4,10 @@ import { Mail, Lock, Check, X, Eye, EyeOff, Shield } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { useNavigate, useOutletContext } from "react-router-dom";
 import {  ArrowBigLeft } from 'lucide-react';
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function EmailPasswordChanger({ currentEmail }) {
+    const { t } = useLanguage();
     const Navigate = useNavigate();
     const { isDarkMode } = useOutletContext();
   
@@ -225,7 +227,7 @@ export default function EmailPasswordChanger({ currentEmail }) {
             <div>
               <h3 className={`font-medium mb-1 flex items-center gap-2 ${isDarkMode ? "text-slate-300" : "text-slate-700"}`}>
                 <Mail size={18} />
-                Email Address
+                {t.setting?.email || 'Email Address'}
               </h3>
               <p className={isDarkMode ? "text-slate-400" : "text-slate-500"}>{currentEmail || 'Not set'}</p>
             </div>
@@ -234,14 +236,14 @@ export default function EmailPasswordChanger({ currentEmail }) {
               className={`px-4 py-2 rounded-lg transition-colors flex items-center gap-2 ${isDarkMode ? "bg-amber-500 text-slate-950 hover:bg-amber-400" : "bg-amber-500 text-white hover:bg-amber-600"}`}
             >
               <Mail size={18} />
-              Change Email
+              {t.setting?.changeEmail || 'Change Email'}
             </button>
           </div>
         ) : (
           <form onSubmit={handleEmailSubmit} className="space-y-4">
             <h3 className={`font-medium flex items-center gap-2 ${isDarkMode ? "text-slate-300" : "text-slate-700"}`}>
               <Mail size={20} />
-              Change Email Address
+              {t.setting?.changeEmail || 'Change Email Address'}
             </h3>
             
             <div>
@@ -323,7 +325,7 @@ export default function EmailPasswordChanger({ currentEmail }) {
                            hover:bg-red-700 transition-colors flex items-center gap-2"
               >
                 <X size={18} />
-                Cancel
+                {t.setting?.cancel || 'Cancel'}
               </button>
             </div>
           </form>
@@ -337,7 +339,7 @@ export default function EmailPasswordChanger({ currentEmail }) {
             <div>
               <h3 className={`font-medium mb-1 flex items-center gap-2 ${isDarkMode ? "text-slate-300" : "text-slate-700"}`}>
                 <Lock size={18} />
-                Password
+                {t.setting?.changePassword || 'Password'}
               </h3>
               <p className={isDarkMode ? "text-slate-400" : "text-slate-500"}>••••••••</p>
             </div>
@@ -346,14 +348,14 @@ export default function EmailPasswordChanger({ currentEmail }) {
               className={`px-4 py-2 rounded-lg transition-colors flex items-center gap-2 ${isDarkMode ? "bg-amber-500 text-slate-950 hover:bg-amber-400" : "bg-amber-500 text-white hover:bg-amber-600"}`}
             >
               <Lock size={18} />
-              Change Password
+              {t.setting?.changePassword || 'Change Password'}
             </button>
           </div>
         ) : (
           <form onSubmit={handlePasswordSubmit} className="space-y-4">
             <h3 className={`font-medium flex items-center gap-2 ${isDarkMode ? "text-slate-300" : "text-slate-700"}`}>
               <Shield size={20} />
-              Change Password
+              {t.setting?.changePassword || 'Change Password'}
             </h3>
             
             <div>
@@ -482,7 +484,7 @@ export default function EmailPasswordChanger({ currentEmail }) {
                            hover:bg-red-700 transition-colors flex items-center gap-2"
               >
                 <X size={18} />
-                Cancel
+                {t.setting?.cancel || 'Cancel'}
               </button>
             </div>
           </form>

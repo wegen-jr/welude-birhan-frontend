@@ -14,8 +14,10 @@ import ClassOverview from "../../components/SundaySchool/ClassOverview";
 import { sundaySchoolService } from "../../services/sundaySchoolService";
 import { teacherService } from "../../services/teacherService";
 import { courseService } from "../../services/courseService";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export function EducationHub() {
+  const { t } = useLanguage();
   const context = useOutletContext();
   const isDarkMode = context?.isDarkMode ?? true;
 
@@ -107,10 +109,10 @@ export function EducationHub() {
             )}
           </div>
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold tracking-tight text-slate-900 dark:text-slate-100">
-            Education Hub Overview
+            {t.educationHub?.title || "Education Hub Overview"}
           </h1>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-2 max-w-2xl leading-relaxed">
-            Centralized academic command center: monitor active classes, assign certified faculty instructors, track real-time student rosters, and oversee curriculum standards.
+            {t.educationHub?.subtitle || "Centralized academic command center: monitor active classes, assign certified faculty instructors, track real-time student rosters, and oversee curriculum standards."}
           </p>
         </div>
 
@@ -136,7 +138,7 @@ export function EducationHub() {
               className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-all shadow-md active:scale-[0.99]"
             >
               <Users className="w-4 h-4" />
-              <span>Teacher Management</span>
+              <span>{t.educationHub?.manageFaculty || "Teacher Management"}</span>
             </Link>
           )}
 
@@ -149,7 +151,7 @@ export function EducationHub() {
             }`}
           >
             <Layers className="w-4 h-4 text-amber-500" />
-            <span>Courses</span>
+            <span>{t.educationHub?.courseCatalog || "Courses"}</span>
           </Link>
 
           <Link
@@ -161,7 +163,7 @@ export function EducationHub() {
             }`}
           >
             <GraduationCap className="w-4 h-4 text-amber-500" />
-            <span>Enroll Student</span>
+            <span>{t.educationHub?.enrollStudents || "Enroll Student"}</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
@@ -177,7 +179,7 @@ export function EducationHub() {
         }`}>
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-              Active Classes
+              {t.educationHub?.totalClasses || "Active Classes"}
             </span>
             <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center">
               <School className="w-5 h-5" />
@@ -199,7 +201,7 @@ export function EducationHub() {
         }`}>
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-              Enrolled Students
+              {t.educationHub?.enrolledStudents || "Enrolled Students"}
             </span>
             <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 flex items-center justify-center">
               <Users className="w-5 h-5" />
@@ -221,7 +223,7 @@ export function EducationHub() {
         }`}>
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-              Faculty Teachers
+              {t.educationHub?.facultyTeachers || "Faculty Teachers"}
             </span>
             <div className="w-10 h-10 rounded-xl bg-sky-500/10 text-sky-500 dark:text-sky-400 flex items-center justify-center">
               <GraduationCap className="w-5 h-5" />
@@ -243,7 +245,7 @@ export function EducationHub() {
         }`}>
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-              Curriculum Courses
+              {t.educationHub?.activeCourses || "Curriculum Courses"}
             </span>
             <div className="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-500 dark:text-purple-400 flex items-center justify-center">
               <BookOpen className="w-5 h-5" />

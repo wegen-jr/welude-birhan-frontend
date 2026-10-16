@@ -4,8 +4,10 @@ import { BookOpen, ArrowRight } from "lucide-react";
 import StudentIdGeneration from "../../components/SundaySchool/StudentIdGeneration";
 import ClassEnrollment from "../../components/SundaySchool/ClassEnrollment";
 import EnrolledStudentTable from "../../components/SundaySchool/EnrolledStudentTable";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function StudentEnrollment() {
+  const { t } = useLanguage();
   const context = useOutletContext();
   const isDarkMode = context?.isDarkMode ?? true;
 
@@ -33,10 +35,10 @@ export default function StudentEnrollment() {
             <span>Administration</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-serif font-bold tracking-tight">
-            Student Enrollment
+            {t.studentEnrollment?.title || "Student Enrollment"}
           </h1>
           <p className="text-xs sm:text-sm text-slate-400 mt-1 max-w-2xl">
-            Register church members into the Sunday School program: generate official student IDs, assign students to grade levels & sections, and monitor enrolled rosters.
+            {t.studentEnrollment?.subtitle || "Register church members into the Sunday School program: generate official student IDs, assign students to grade levels & sections, and monitor enrolled rosters."}
           </p>
         </div>
 
@@ -49,7 +51,7 @@ export default function StudentEnrollment() {
           }`}
         >
           <BookOpen className="w-4 h-4" />
-          <span>View Education Hub Overview</span>
+          <span>{t.adminSide?.educationHub || "Education Hub"}</span>
           <ArrowRight className="w-3.5 h-3.5" />
         </Link>
       </div>

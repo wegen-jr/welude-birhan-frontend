@@ -20,8 +20,10 @@ import { generateAllCoursesReportCsv, triggerCsvDownload } from "../../utils/csv
 import CourseRegistrationForm from "../../components/Course/CourseRegistrationForm";
 import CourseDataTable from "../../components/Course/CourseDataTable";
 import EditCourseModal from "../../components/Course/EditCourseModal";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function CourseManagementPage() {
+  const { t } = useLanguage();
   const context = useOutletContext();
   const isDarkMode = context?.isDarkMode ?? true;
 
@@ -145,10 +147,10 @@ export default function CourseManagementPage() {
             )}
           </div>
           <h1 className="text-2xl sm:text-3xl font-serif font-bold tracking-tight">
-            Course Management
+            {t.courseManagement?.title || "Course Management"}
           </h1>
           <p className="text-xs sm:text-sm text-slate-400 mt-1 max-w-2xl">
-            Design and oversee the Sunday School curriculum catalog: register subjects, allocate credit hours, and maintain academic offerings.
+            {t.courseManagement?.subtitle || "Design and oversee the Sunday School curriculum catalog: register subjects, allocate credit hours, and maintain academic offerings."}
           </p>
         </div>
 
@@ -216,7 +218,7 @@ export default function CourseManagementPage() {
             }`}
           >
             <School className="w-4 h-4 text-amber-500" />
-            <span>Education Hub</span>
+            <span>{t.adminSide?.educationHub || "Education Hub"}</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
@@ -229,7 +231,7 @@ export default function CourseManagementPage() {
         }`}>
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-              Active Courses
+              {t.educationHub?.activeCourses || "Active Courses"}
             </span>
             <div className="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center">
               <BookOpen className="w-4 h-4" />

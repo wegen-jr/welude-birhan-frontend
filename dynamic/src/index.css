@@ -9,7 +9,34 @@ select option {
 
 .dark select option,
 select.text-white option {
-  background-color: #081226;
+  background-color: #0b1b3d;
   color: #f8fafc;
+}
+
+/* Phone input styling for dark mode */
+.dark .react-tel-input .form-control {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  color: #f8fafc !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.dark .react-tel-input .selected-flag {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.dark .react-tel-input .country-list {
+  background-color: #0b1b3d !important;
+  color: #f8fafc !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.dark .react-tel-input .country-list .country:hover,
+.dark .react-tel-input .country-list .country.highlight {
+  background-color: rgba(245, 158, 11, 0.2) !important;
+  color: #ffffff !important;
+}
+
+.dark .react-tel-input .country-list .dial-code {
+  color: #94a3b8 !important;
 }
 

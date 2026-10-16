@@ -4,8 +4,10 @@ import { toast } from 'react-toastify';
 import profile from "../../assets/account.png";
 import camera from "../../assets/camera.svg";
 import { useNavigate, useOutletContext } from "react-router-dom";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function Settings() {
+  const { t } = useLanguage();
   const [profileImage, setProfileImage] = useState(null);
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -187,14 +189,14 @@ export default function Settings() {
           <button onClick={goBack} className="hover:cursor-pointer">
             <ArrowBigLeft className={`w-6 h-6 ${isDarkMode ? "text-slate-300 hover:text-white" : "text-slate-500 hover:text-slate-900"}`} />
           </button>
-          <h2 className={`text-2xl font-bold font-serif ${isDarkMode ? "text-white" : "text-slate-900"}`}>Profile Settings</h2>
+          <h2 className={`text-2xl font-bold font-serif ${isDarkMode ? "text-white" : "text-slate-900"}`}>{t.setting?.profileSettings || 'Profile Settings'}</h2>
           <button
             onClick={handleSave}
             disabled={loading}
             className={`px-4 py-2 rounded-lg transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed ${isDarkMode ? "bg-amber-500 text-slate-950 hover:bg-amber-400" : "bg-amber-500 text-white hover:bg-amber-600"}`}
           >
             <Save size={18} />
-            {loading ? 'Saving...' : 'Save Changes'}
+            {loading ? 'Saving...' : (t.setting?.saveChanges || 'Save Changes')}
           </button>
         </div>
 
@@ -257,7 +259,7 @@ export default function Settings() {
         <div className="mt-6 space-y-4">
           <div>
             <label className={`block text-sm font-medium mb-1 ${isDarkMode ? "text-slate-300" : "text-slate-700"}`}>
-              Full Name
+              {t.setting?.name || 'Full Name'}
             </label>
             <input
               type="text"
@@ -271,7 +273,7 @@ export default function Settings() {
 
           <div>
             <label className={`block text-sm font-medium mb-1 ${isDarkMode ? "text-slate-300" : "text-slate-700"}`}>
-              Email Address
+              {t.setting?.email || 'Email Address'}
             </label>
             <input
               type="email"
@@ -285,7 +287,7 @@ export default function Settings() {
 
           <div>
             <label className={`block text-sm font-medium mb-1 ${isDarkMode ? "text-slate-300" : "text-slate-700"}`}>
-              Phone Number
+              {t.setting?.phone || 'Phone Number'}
             </label>
             <input
               type="tel"
@@ -299,7 +301,7 @@ export default function Settings() {
 
           <div>
             <label className={`block text-sm font-medium mb-1 ${isDarkMode ? "text-slate-300" : "text-slate-700"}`}>
-              Bio
+              {t.setting?.bio || 'Biography'}
             </label>
             <textarea
               name="bio"
@@ -319,7 +321,7 @@ export default function Settings() {
             disabled={loading}
             className={`px-6 py-2 rounded-lg transition-colors w-full disabled:opacity-50 disabled:cursor-not-allowed ${isDarkMode ? "bg-amber-500 text-slate-950 hover:bg-amber-400" : "bg-amber-500 text-white hover:bg-amber-600"}`}
           >
-            {loading ? 'Saving...' : 'Save Changes'}
+            {loading ? 'Saving...' : (t.setting?.saveChanges || 'Save Changes')}
           </button>
         </div>
       </div>
