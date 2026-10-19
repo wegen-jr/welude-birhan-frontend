@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { UserPlus, Users, Activity } from 'lucide-react';
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useLanguage } from "@/Contexts/LanguageContext";
 import { useOutletContext } from "react-router-dom";
 import { memberService } from "../../services/memberService";
 import {

@@ -86,10 +86,9 @@ export default function CMSlayout() {
         className={`
           fixed inset-0 z-50 md:hidden
           transition-opacity duration-300
-          ${
-            isSidebarOpen
-              ? "visible opacity-100"
-              : "invisible opacity-0"
+          ${isSidebarOpen
+            ? "visible opacity-100"
+            : "invisible opacity-0"
           }
         `}
       >
@@ -110,10 +109,9 @@ export default function CMSlayout() {
             ${sidebarClasses}
             transform
             transition-transform duration-300 ease-out
-            ${
-              isSidebarOpen
-                ? "translate-x-0"
-                : "-translate-x-full"
+            ${isSidebarOpen
+              ? "translate-x-0"
+              : "-translate-x-full"
             }
           `}
         >

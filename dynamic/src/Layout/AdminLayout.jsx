@@ -1,25 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Outlet } from "react-router-dom";
-import SideBar from "../Components/admin/SideBar";
+import SideBar from "../Components/admin/AdminSidebar";
 
 export default function AdminLayout() {
   const [isDarkMode, setIsDarkMode] = useState(() => {
-    try {
-      const saved = localStorage.getItem('welude_theme');
-      return saved !== null ? saved === 'dark' : true;
-    } catch {
-      return true;
-    }
+    const saved = localStorage.getItem('welude_theme');
+    return saved !== null ? saved === 'dark' : true;
   });
 
   const toggleTheme = () => {
     setIsDarkMode((prev) => {
       const next = !prev;
-      try {
-        localStorage.setItem('welude_theme', next ? 'dark' : 'light');
-      } catch {
-        // ignore
-      }
+      localStorage.setItem('welude_theme', next ? 'dark' : 'light');
       return next;
     });
   };
@@ -40,9 +32,10 @@ export default function AdminLayout() {
       <aside className={`w-72 border-r overflow-y-auto hidden md:block transition-colors duration-300 ${sidebarClasses}`}>
         <SideBar isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
       </aside>
-      <div className='flex-1 overflow-y-auto relative'> 
+      <div className='flex-1 overflow-y-auto relative'>
         <Outlet context={{ isDarkMode, toggleTheme }} />
       </div>
     </div>
   );
 }
+

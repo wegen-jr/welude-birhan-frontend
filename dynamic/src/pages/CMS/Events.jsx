@@ -27,7 +27,7 @@ export default function Events() {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
-  
+
   const filteredEvents = events.filter((event) => {
     const searchTerm = search.toLowerCase();
 
@@ -67,28 +67,28 @@ export default function Events() {
   };
 
 
-const handleSubmit = async (data) => {
-  try {
-    if (selectedEvent) {
-      await updateEvent(selectedEvent.id, data);
+  const handleSubmit = async (data) => {
+    try {
+      if (selectedEvent) {
+        await updateEvent(selectedEvent.id, data);
 
-      toast.success("Event updated successfully.");
-    } else {
-      await createEvent(data);
+        toast.success("Event updated successfully.");
+      } else {
+        await createEvent(data);
 
-      toast.success("Event created successfully.");
+        toast.success("Event created successfully.");
+      }
+
+      setShowForm(false);
+      setSelectedEvent(null);
+    } catch (err) {
+      console.error(err);
+
+      toast.error(
+        err?.message || "Something went wrong."
+      );
     }
-
-    setShowForm(false);
-    setSelectedEvent(null);
-  } catch (err) {
-    console.error(err);
-
-    toast.error(
-      err?.message || "Something went wrong."
-    );
-  }
-};
+  };
 
 
   const upcomingCount = events.filter(

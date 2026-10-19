@@ -69,31 +69,31 @@ export default function Gallery() {
     }
   };
 
-const handleSubmit = async (data) => {
-  try {
-    if (selectedItem) {
-      await updateGalleryItem(
-        selectedItem.id,
-        data
+  const handleSubmit = async (data) => {
+    try {
+      if (selectedItem) {
+        await updateGalleryItem(
+          selectedItem.id,
+          data
+        );
+
+        toast.success("Gallery image updated successfully.");
+      } else {
+        await createGalleryItem(data);
+
+        toast.success("Gallery image created successfully.");
+      }
+
+      setShowForm(false);
+      setSelectedItem(null);
+    } catch (err) {
+      console.error(err);
+
+      toast.error(
+        err?.message || "Something went wrong."
       );
-
-      toast.success("Gallery image updated successfully.");
-    } else {
-      await createGalleryItem(data);
-
-      toast.success("Gallery image created successfully.");
     }
-
-    setShowForm(false);
-    setSelectedItem(null);
-  } catch (err) {
-    console.error(err);
-
-    toast.error(
-      err?.message || "Something went wrong."
-    );
-  }
-};
+  };
 
   const categoriesCount = new Set(
     gallery

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
-import Navbar from '../Components/layout/Navbar';
-import Footer from '../Components/layout/Footer';
-import {isAdmin} from '../Utils/Authorization';
+import Navbar from '../Components/public/Navbar';
+import Footer from '../Components/public/Footer';
+import { isAdmin } from '../Utils/Authorization';
 import { ArrowLeft, LayoutDashboard } from 'lucide-react';
 export default function HomeLayout() {
   const navigate = useNavigate();
@@ -18,12 +18,12 @@ export default function HomeLayout() {
   }
   const returnTo = location.state?.from;
   const showAdminButton = isAdmin(user) && Boolean(returnTo);
-  console.log("showAdminButton",showAdminButton)
+  console.log("showAdminButton", showAdminButton)
   return (
     <div className="min-h-screen flex flex-col bg-[#081226] text-slate-100 selection:bg-amber-500 selection:text-slate-950">
       <header className="sticky top-0 z-50">
         <Navbar />
-       {showAdminButton && (
+        {showAdminButton && (
           <div className="fixed top-24 right-6 z-[9999]">
             <button
               onClick={() => navigate(returnTo)}
@@ -59,7 +59,7 @@ export default function HomeLayout() {
           </div>
         )}
       </header>
-      
+
       <main className="flex-1 pt-20">
         <Outlet />
       </main>

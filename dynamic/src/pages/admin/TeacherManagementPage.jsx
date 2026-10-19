@@ -1,11 +1,11 @@
 import { useOutletContext, Link } from "react-router-dom";
-import { 
+import {
   ArrowRight,
   School,
   ShieldCheck
 } from "lucide-react";
-import TeacherManagement from "../../components/SundaySchool/TeacherManagement";
-import { useLanguage } from "@/contexts/LanguageContext";
+import TeacherManagement from "../../Components/SundaySchool/TeacherManagement";
+import { useLanguage } from "@/Contexts/LanguageContext";
 
 export default function TeacherManagementPage() {
   const { t } = useLanguage();
@@ -23,9 +23,8 @@ export default function TeacherManagementPage() {
   const isAuthorized = ["ADMIN", "EDUCATION_LEADER"].includes(userRole);
 
   return (
-    <div className={`p-6 sm:p-8 space-y-8 min-h-full transition-colors duration-300 ${
-      isDarkMode ? "text-slate-100" : "text-slate-800"
-    }`}>
+    <div className={`p-6 sm:p-8 space-y-8 min-h-full transition-colors duration-300 ${isDarkMode ? "text-slate-100" : "text-slate-800"
+      }`}>
       {/* Top Header & Breadcrumbs */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-inherit">
         <div>
@@ -53,11 +52,10 @@ export default function TeacherManagementPage() {
 
         <Link
           to="/dashboard/education"
-          className={`self-start sm:self-auto inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold border transition-all ${
-            isDarkMode 
-              ? "bg-white/5 border-white/10 hover:bg-white/10 text-slate-200" 
-              : "bg-slate-100 border-slate-200 hover:bg-slate-200 text-slate-800"
-          }`}
+          className={`self-start sm:self-auto inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold border transition-all ${isDarkMode
+            ? "bg-white/5 border-white/10 hover:bg-white/10 text-slate-200"
+            : "bg-slate-100 border-slate-200 hover:bg-slate-200 text-slate-800"
+            }`}
         >
           <School className="w-4 h-4 text-amber-500" />
           <span>{t.adminSide?.educationHub || "Education Hub"}</span>

@@ -3,18 +3,18 @@ import { ToastContainer, toast } from 'react-toastify';
 import { useOutletContext } from 'react-router-dom';
 import PhoneInputModule from 'react-phone-input-2';
 import { isValidPhoneNumber } from 'libphonenumber-js';
-import { 
-  X, 
-  User, 
-  Phone, 
-  Edit3, 
-  HeartHandshake, 
-  Shield, 
+import {
+  X,
+  User,
+  Phone,
+  Edit3,
+  HeartHandshake,
+  Shield,
   Loader2,
   Trash2,
   AlertTriangle
 } from 'lucide-react';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { useLanguage } from '@/Contexts/LanguageContext';
 import { useMembers } from '../../hooks/useMembers';
 import { useRoleAssign } from '../../hooks/useRoleAssign';
 import { memberService } from '../../services/memberService';
@@ -400,7 +400,7 @@ export default function RoleAssignment() {
                 <option value="TEACHER" className="bg-white text-slate-900 dark:bg-[#0b1b3d] dark:text-white">{t?.roleAssign?.roles?.TEACHER || 'TEACHER'}</option>
                 <option value="STUDENT" className="bg-white text-slate-900 dark:bg-[#0b1b3d] dark:text-white">{t?.roleAssign?.roles?.STUDENT || 'STUDENT'}</option>
                 <option value="CHOIR_LEADER" className="bg-white text-slate-900 dark:bg-[#0b1b3d] dark:text-white">{t?.roleAssign?.roles?.CHOIR_LEADER || 'CHOIR_LEADER'}</option>
-                <option value="EDUCATION_LEADER" className="bg-white text-slate-900 dark:bg-[#0b1b3d] dark:text-white">{t?.roleAssign?.roles?.EDUCATION_LEADER || 'EDUCATION_LEADER'}</option>
+                <option value="EducationHub" className="bg-white text-slate-900 dark:bg-[#0b1b3d] dark:text-white">{t?.roleAssign?.roles?.EDUCATION_LEADER || 'EducationHub'}</option>
                 <option value="FINANCE_LEADER" className="bg-white text-slate-900 dark:bg-[#0b1b3d] dark:text-white">{t?.roleAssign?.roles?.FINANCE_LEADER || 'FINANCE_LEADER'}</option>
                 <option value="PR_LEADER" className="bg-white text-slate-900 dark:bg-[#0b1b3d] dark:text-white">{t?.roleAssign?.roles?.PR_LEADER || 'PR_LEADER'}</option>
                 <option value="SECRETARIAT_LEADER" className="bg-white text-slate-900 dark:bg-[#0b1b3d] dark:text-white">{t?.roleAssign?.roles?.SECRETARIAT_LEADER || 'SECRETARIAT_LEADER'}</option>
@@ -474,13 +474,12 @@ export default function RoleAssignment() {
                       <td className={`p-4 font-mono text-sm ${isDarkMode ? 'text-slate-200' : 'text-slate-600'}`}>{ageValue}</td>
                       <td className={`p-4 text-sm capitalize ${isDarkMode ? 'text-slate-200' : 'text-slate-600'}`}>{genderValue}</td>
                       <td className="p-4">
-                        <span className={`px-2.5 py-1 text-xs rounded-full font-bold ${
-                          currentStatus === 'ACTIVE' 
-                            ? 'bg-green-500/20 text-green-400' 
-                            : currentStatus === 'STUDENT' 
-                            ? 'bg-blue-500/20 text-blue-400' 
+                        <span className={`px-2.5 py-1 text-xs rounded-full font-bold ${currentStatus === 'ACTIVE'
+                          ? 'bg-green-500/20 text-green-400'
+                          : currentStatus === 'STUDENT'
+                            ? 'bg-blue-500/20 text-blue-400'
                             : 'bg-slate-500/20 text-slate-400'
-                        }`}>
+                          }`}>
                           {currentStatus || '-'}
                         </span>
                       </td>
@@ -535,14 +534,12 @@ export default function RoleAssignment() {
       {/* Comprehensive Edit Member Details Modal (All 12 Registration Fields) */}
       {isEditModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-sm animate-fadeIn">
-          <div className={`w-full max-w-3xl max-h-[92vh] flex flex-col rounded-3xl shadow-2xl overflow-hidden border transition-all ${
-            isDarkMode ? 'bg-[#0b1b3d] border-white/10 text-slate-100' : 'bg-white border-slate-200 text-slate-800'
-          }`}>
-            
-            {/* Modal Header */}
-            <div className={`p-6 pb-4 border-b flex items-center justify-between shrink-0 ${
-              isDarkMode ? 'border-white/10 bg-white/[0.02]' : 'border-slate-200 bg-slate-50'
+          <div className={`w-full max-w-3xl max-h-[92vh] flex flex-col rounded-3xl shadow-2xl overflow-hidden border transition-all ${isDarkMode ? 'bg-[#0b1b3d] border-white/10 text-slate-100' : 'bg-white border-slate-200 text-slate-800'
             }`}>
+
+            {/* Modal Header */}
+            <div className={`p-6 pb-4 border-b flex items-center justify-between shrink-0 ${isDarkMode ? 'border-white/10 bg-white/[0.02]' : 'border-slate-200 bg-slate-50'
+              }`}>
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center">
                   <Edit3 className="w-5 h-5" />
@@ -558,9 +555,8 @@ export default function RoleAssignment() {
               <button
                 type="button"
                 onClick={() => setIsEditModalOpen(false)}
-                className={`p-2 rounded-xl transition-colors ${
-                  isDarkMode ? 'text-slate-400 hover:text-white hover:bg-white/10' : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100'
-                }`}
+                className={`p-2 rounded-xl transition-colors ${isDarkMode ? 'text-slate-400 hover:text-white hover:bg-white/10' : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100'
+                  }`}
                 title="Close Modal"
               >
                 <X className="w-5 h-5" />
@@ -569,16 +565,15 @@ export default function RoleAssignment() {
 
             {/* Scrollable Form Body */}
             <form onSubmit={handleEditSubmit} className="flex-1 overflow-y-auto p-6 sm:p-8 space-y-6">
-              
+
               {/* Section 1: Personal Identification */}
-              <div className={`p-5 rounded-2xl border ${
-                isDarkMode ? 'bg-white/[0.02] border-white/10' : 'bg-slate-50/70 border-slate-200'
-              }`}>
+              <div className={`p-5 rounded-2xl border ${isDarkMode ? 'bg-white/[0.02] border-white/10' : 'bg-slate-50/70 border-slate-200'
+                }`}>
                 <div className="flex items-center gap-2 mb-4 text-xs font-bold uppercase tracking-wider text-amber-500">
                   <User className="w-4 h-4" />
                   <span>1. Personal Identification</span>
                 </div>
-                
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {/* Full Name */}
                   <div>
@@ -591,11 +586,10 @@ export default function RoleAssignment() {
                       placeholder="e.g. Nahom Ketema"
                       value={editFormData.fullname}
                       onChange={(e) => setEditFormData({ ...editFormData, fullname: e.target.value })}
-                      className={`w-full px-4 py-2.5 rounded-xl border text-sm outline-none focus:ring-2 focus:ring-amber-500/50 ${
-                        isDarkMode 
-                          ? 'bg-white/5 border-white/10 text-white placeholder-slate-500' 
-                          : 'bg-white border-slate-300 text-slate-900 placeholder-slate-400'
-                      }`}
+                      className={`w-full px-4 py-2.5 rounded-xl border text-sm outline-none focus:ring-2 focus:ring-amber-500/50 ${isDarkMode
+                        ? 'bg-white/5 border-white/10 text-white placeholder-slate-500'
+                        : 'bg-white border-slate-300 text-slate-900 placeholder-slate-400'
+                        }`}
                     />
                   </div>
 
@@ -609,11 +603,10 @@ export default function RoleAssignment() {
                       placeholder="e.g. Haile Mariam"
                       value={editFormData.christianName}
                       onChange={(e) => setEditFormData({ ...editFormData, christianName: e.target.value })}
-                      className={`w-full px-4 py-2.5 rounded-xl border text-sm outline-none focus:ring-2 focus:ring-amber-500/50 ${
-                        isDarkMode 
-                          ? 'bg-white/5 border-white/10 text-white placeholder-slate-500' 
-                          : 'bg-white border-slate-300 text-slate-900 placeholder-slate-400'
-                      }`}
+                      className={`w-full px-4 py-2.5 rounded-xl border text-sm outline-none focus:ring-2 focus:ring-amber-500/50 ${isDarkMode
+                        ? 'bg-white/5 border-white/10 text-white placeholder-slate-500'
+                        : 'bg-white border-slate-300 text-slate-900 placeholder-slate-400'
+                        }`}
                     />
                   </div>
 
@@ -630,11 +623,10 @@ export default function RoleAssignment() {
                       placeholder="e.g. 24"
                       value={editFormData.Age}
                       onChange={(e) => setEditFormData({ ...editFormData, Age: e.target.value })}
-                      className={`w-full px-4 py-2.5 rounded-xl border text-sm outline-none focus:ring-2 focus:ring-amber-500/50 ${
-                        isDarkMode 
-                          ? 'bg-white/5 border-white/10 text-white placeholder-slate-500' 
-                          : 'bg-white border-slate-300 text-slate-900 placeholder-slate-400'
-                      }`}
+                      className={`w-full px-4 py-2.5 rounded-xl border text-sm outline-none focus:ring-2 focus:ring-amber-500/50 ${isDarkMode
+                        ? 'bg-white/5 border-white/10 text-white placeholder-slate-500'
+                        : 'bg-white border-slate-300 text-slate-900 placeholder-slate-400'
+                        }`}
                     />
                   </div>
 
@@ -646,11 +638,10 @@ export default function RoleAssignment() {
                     <select
                       value={editFormData.gender}
                       onChange={(e) => setEditFormData({ ...editFormData, gender: e.target.value })}
-                      className={`w-full px-4 py-2.5 rounded-xl border text-sm outline-none focus:ring-2 focus:ring-amber-500/50 ${
-                        isDarkMode 
-                          ? 'bg-white/5 border-white/10 text-white' 
-                          : 'bg-white border-slate-300 text-slate-900'
-                      }`}
+                      className={`w-full px-4 py-2.5 rounded-xl border text-sm outline-none focus:ring-2 focus:ring-amber-500/50 ${isDarkMode
+                        ? 'bg-white/5 border-white/10 text-white'
+                        : 'bg-white border-slate-300 text-slate-900'
+                        }`}
                     >
                       <option value="MALE" className="bg-slate-900 text-white">Male (ወንድ)</option>
                       <option value="FEMALE" className="bg-slate-900 text-white">Female (ሴት)</option>
@@ -660,9 +651,8 @@ export default function RoleAssignment() {
               </div>
 
               {/* Section 2: Contact & Church Service */}
-              <div className={`p-5 rounded-2xl border ${
-                isDarkMode ? 'bg-white/[0.02] border-white/10' : 'bg-slate-50/70 border-slate-200'
-              }`}>
+              <div className={`p-5 rounded-2xl border ${isDarkMode ? 'bg-white/[0.02] border-white/10' : 'bg-slate-50/70 border-slate-200'
+                }`}>
                 <div className="flex items-center gap-2 mb-4 text-xs font-bold uppercase tracking-wider text-amber-500">
                   <Phone className="w-4 h-4" />
                   <span>2. Contact & Church Status</span>
@@ -680,11 +670,10 @@ export default function RoleAssignment() {
                       placeholder="0911223344 or +251..."
                       value={editFormData.phoneNo}
                       onChange={(e) => setEditFormData({ ...editFormData, phoneNo: e.target.value })}
-                      className={`w-full px-4 py-2.5 rounded-xl border text-sm outline-none focus:ring-2 focus:ring-amber-500/50 font-mono ${
-                        isDarkMode 
-                          ? 'bg-white/5 border-white/10 text-white placeholder-slate-500' 
-                          : 'bg-white border-slate-300 text-slate-900 placeholder-slate-400'
-                      }`}
+                      className={`w-full px-4 py-2.5 rounded-xl border text-sm outline-none focus:ring-2 focus:ring-amber-500/50 font-mono ${isDarkMode
+                        ? 'bg-white/5 border-white/10 text-white placeholder-slate-500'
+                        : 'bg-white border-slate-300 text-slate-900 placeholder-slate-400'
+                        }`}
                     />
                   </div>
 
@@ -699,11 +688,10 @@ export default function RoleAssignment() {
                       placeholder="e.g. 12"
                       value={editFormData.durationMonth}
                       onChange={(e) => setEditFormData({ ...editFormData, durationMonth: e.target.value })}
-                      className={`w-full px-4 py-2.5 rounded-xl border text-sm outline-none focus:ring-2 focus:ring-amber-500/50 ${
-                        isDarkMode 
-                          ? 'bg-white/5 border-white/10 text-white placeholder-slate-500' 
-                          : 'bg-white border-slate-300 text-slate-900 placeholder-slate-400'
-                      }`}
+                      className={`w-full px-4 py-2.5 rounded-xl border text-sm outline-none focus:ring-2 focus:ring-amber-500/50 ${isDarkMode
+                        ? 'bg-white/5 border-white/10 text-white placeholder-slate-500'
+                        : 'bg-white border-slate-300 text-slate-900 placeholder-slate-400'
+                        }`}
                     />
                   </div>
 
@@ -715,11 +703,10 @@ export default function RoleAssignment() {
                     <select
                       value={editFormData.currentStatus}
                       onChange={(e) => setEditFormData({ ...editFormData, currentStatus: e.target.value })}
-                      className={`w-full px-4 py-2.5 rounded-xl border text-sm outline-none focus:ring-2 focus:ring-amber-500/50 ${
-                        isDarkMode 
-                          ? 'bg-white/5 border-white/10 text-white' 
-                          : 'bg-white border-slate-300 text-slate-900'
-                      }`}
+                      className={`w-full px-4 py-2.5 rounded-xl border text-sm outline-none focus:ring-2 focus:ring-amber-500/50 ${isDarkMode
+                        ? 'bg-white/5 border-white/10 text-white'
+                        : 'bg-white border-slate-300 text-slate-900'
+                        }`}
                     >
                       <option value="ACTIVE" className="bg-slate-900 text-white">ACTIVE</option>
                       <option value="STUDENT" className="bg-slate-900 text-white">STUDENT</option>
@@ -738,9 +725,8 @@ export default function RoleAssignment() {
               </div>
 
               {/* Section 3: Spiritual Guidance (Abba Neseha) */}
-              <div className={`p-5 rounded-2xl border ${
-                isDarkMode ? 'bg-white/[0.02] border-white/10' : 'bg-slate-50/70 border-slate-200'
-              }`}>
+              <div className={`p-5 rounded-2xl border ${isDarkMode ? 'bg-white/[0.02] border-white/10' : 'bg-slate-50/70 border-slate-200'
+                }`}>
                 <div className="flex items-center gap-2 mb-4 text-xs font-bold uppercase tracking-wider text-amber-500">
                   <Shield className="w-4 h-4" />
                   <span>3. Spiritual Guidance (የንስሐ አባት)</span>
@@ -757,11 +743,10 @@ export default function RoleAssignment() {
                       placeholder="e.g. Gibre Kidan"
                       value={editFormData.repentanceName}
                       onChange={(e) => setEditFormData({ ...editFormData, repentanceName: e.target.value })}
-                      className={`w-full px-4 py-2.5 rounded-xl border text-sm outline-none focus:ring-2 focus:ring-amber-500/50 ${
-                        isDarkMode 
-                          ? 'bg-white/5 border-white/10 text-white placeholder-slate-500' 
-                          : 'bg-white border-slate-300 text-slate-900 placeholder-slate-400'
-                      }`}
+                      className={`w-full px-4 py-2.5 rounded-xl border text-sm outline-none focus:ring-2 focus:ring-amber-500/50 ${isDarkMode
+                        ? 'bg-white/5 border-white/10 text-white placeholder-slate-500'
+                        : 'bg-white border-slate-300 text-slate-900 placeholder-slate-400'
+                        }`}
                     />
                   </div>
 
@@ -775,20 +760,18 @@ export default function RoleAssignment() {
                       placeholder="e.g. +251911223344"
                       value={editFormData.repentancePhone}
                       onChange={(e) => setEditFormData({ ...editFormData, repentancePhone: e.target.value })}
-                      className={`w-full px-4 py-2.5 rounded-xl border text-sm outline-none focus:ring-2 focus:ring-amber-500/50 font-mono ${
-                        isDarkMode 
-                          ? 'bg-white/5 border-white/10 text-white placeholder-slate-500' 
-                          : 'bg-white border-slate-300 text-slate-900 placeholder-slate-400'
-                      }`}
+                      className={`w-full px-4 py-2.5 rounded-xl border text-sm outline-none focus:ring-2 focus:ring-amber-500/50 font-mono ${isDarkMode
+                        ? 'bg-white/5 border-white/10 text-white placeholder-slate-500'
+                        : 'bg-white border-slate-300 text-slate-900 placeholder-slate-400'
+                        }`}
                     />
                   </div>
                 </div>
               </div>
 
               {/* Section 4: Family & Emergency Contact */}
-              <div className={`p-5 rounded-2xl border ${
-                isDarkMode ? 'bg-white/[0.02] border-white/10' : 'bg-slate-50/70 border-slate-200'
-              }`}>
+              <div className={`p-5 rounded-2xl border ${isDarkMode ? 'bg-white/[0.02] border-white/10' : 'bg-slate-50/70 border-slate-200'
+                }`}>
                 <div className="flex items-center gap-2 mb-4 text-xs font-bold uppercase tracking-wider text-amber-500">
                   <HeartHandshake className="w-4 h-4" />
                   <span>4. Family & Emergency Contact</span>
@@ -805,11 +788,10 @@ export default function RoleAssignment() {
                       placeholder="e.g. Abebe Ketema"
                       value={editFormData.familyFullname}
                       onChange={(e) => setEditFormData({ ...editFormData, familyFullname: e.target.value })}
-                      className={`w-full px-4 py-2.5 rounded-xl border text-sm outline-none focus:ring-2 focus:ring-amber-500/50 ${
-                        isDarkMode 
-                          ? 'bg-white/5 border-white/10 text-white placeholder-slate-500' 
-                          : 'bg-white border-slate-300 text-slate-900 placeholder-slate-400'
-                      }`}
+                      className={`w-full px-4 py-2.5 rounded-xl border text-sm outline-none focus:ring-2 focus:ring-amber-500/50 ${isDarkMode
+                        ? 'bg-white/5 border-white/10 text-white placeholder-slate-500'
+                        : 'bg-white border-slate-300 text-slate-900 placeholder-slate-400'
+                        }`}
                     />
                   </div>
 
@@ -823,11 +805,10 @@ export default function RoleAssignment() {
                       placeholder="e.g. 0912556677"
                       value={editFormData.familyPhone}
                       onChange={(e) => setEditFormData({ ...editFormData, familyPhone: e.target.value })}
-                      className={`w-full px-4 py-2.5 rounded-xl border text-sm outline-none focus:ring-2 focus:ring-amber-500/50 font-mono ${
-                        isDarkMode 
-                          ? 'bg-white/5 border-white/10 text-white placeholder-slate-500' 
-                          : 'bg-white border-slate-300 text-slate-900 placeholder-slate-400'
-                      }`}
+                      className={`w-full px-4 py-2.5 rounded-xl border text-sm outline-none focus:ring-2 focus:ring-amber-500/50 font-mono ${isDarkMode
+                        ? 'bg-white/5 border-white/10 text-white placeholder-slate-500'
+                        : 'bg-white border-slate-300 text-slate-900 placeholder-slate-400'
+                        }`}
                     />
                   </div>
 
@@ -841,11 +822,10 @@ export default function RoleAssignment() {
                       placeholder="e.g. Dire Dawa, Kebele 02"
                       value={editFormData.familyAddress}
                       onChange={(e) => setEditFormData({ ...editFormData, familyAddress: e.target.value })}
-                      className={`w-full px-4 py-2.5 rounded-xl border text-sm outline-none focus:ring-2 focus:ring-amber-500/50 ${
-                        isDarkMode 
-                          ? 'bg-white/5 border-white/10 text-white placeholder-slate-500' 
-                          : 'bg-white border-slate-300 text-slate-900 placeholder-slate-400'
-                      }`}
+                      className={`w-full px-4 py-2.5 rounded-xl border text-sm outline-none focus:ring-2 focus:ring-amber-500/50 ${isDarkMode
+                        ? 'bg-white/5 border-white/10 text-white placeholder-slate-500'
+                        : 'bg-white border-slate-300 text-slate-900 placeholder-slate-400'
+                        }`}
                     />
                   </div>
                 </div>
@@ -856,11 +836,10 @@ export default function RoleAssignment() {
                 <button
                   type="button"
                   onClick={() => setIsEditModalOpen(false)}
-                  className={`px-6 py-2.5 rounded-xl font-bold text-sm transition-colors ${
-                    isDarkMode 
-                      ? 'bg-white/5 text-slate-300 hover:bg-white/10' 
-                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                  }`}
+                  className={`px-6 py-2.5 rounded-xl font-bold text-sm transition-colors ${isDarkMode
+                    ? 'bg-white/5 text-slate-300 hover:bg-white/10'
+                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                    }`}
                 >
                   Cancel
                 </button>
@@ -887,9 +866,8 @@ export default function RoleAssignment() {
       {/* Delete Confirmation Modal */}
       {deleteTarget && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
-          <div className={`w-full max-w-md p-6 rounded-3xl shadow-2xl border transition-all ${
-            isDarkMode ? 'bg-[#0b1b3d] border-white/10 text-slate-100' : 'bg-white border-slate-200 text-slate-800'
-          }`}>
+          <div className={`w-full max-w-md p-6 rounded-3xl shadow-2xl border transition-all ${isDarkMode ? 'bg-[#0b1b3d] border-white/10 text-slate-100' : 'bg-white border-slate-200 text-slate-800'
+            }`}>
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-xl bg-red-500/10 text-red-500 flex items-center justify-center shrink-0">
                 <AlertTriangle className="w-5 h-5" />
@@ -909,9 +887,8 @@ export default function RoleAssignment() {
                 type="button"
                 onClick={() => setDeleteTarget(null)}
                 disabled={isDeleting}
-                className={`px-4 py-2 rounded-xl text-xs font-bold transition-colors ${
-                  isDarkMode ? 'bg-white/10 text-slate-300 hover:bg-white/20' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'
-                }`}
+                className={`px-4 py-2 rounded-xl text-xs font-bold transition-colors ${isDarkMode ? 'bg-white/10 text-slate-300 hover:bg-white/20' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'
+                  }`}
               >
                 Cancel
               </button>

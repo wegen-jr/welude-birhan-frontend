@@ -6,7 +6,7 @@ import {
   Church,
 } from "lucide-react";
 import { useLanguage } from "../../Contexts/LanguageContext";
-import  useEvents  from "../../hooks/public/useEvents";
+import useEvents from "../../hooks/public/useEvents";
 import EventCard from "../../Components/public/events/EventCard";
 
 export default function PublicEvents() {

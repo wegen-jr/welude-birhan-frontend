@@ -1,13 +1,13 @@
 import { useState, useEffect, useCallback } from "react";
 import { useOutletContext, Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { 
-  BookOpen, 
-  BookPlus, 
-  Layers, 
-  Clock, 
-  ShieldCheck, 
-  ChevronUp, 
+import {
+  BookOpen,
+  BookPlus,
+  Layers,
+  Clock,
+  ShieldCheck,
+  ChevronUp,
   ArrowRight,
   School,
   FileDown,
@@ -17,10 +17,10 @@ import { courseService } from "../../services/courseService";
 import { teacherService } from "../../services/teacherService";
 import { sundaySchoolService } from "../../services/sundaySchoolService";
 import { generateAllCoursesReportCsv, triggerCsvDownload } from "../../utils/csvExport";
-import CourseRegistrationForm from "../../components/Course/CourseRegistrationForm";
-import CourseDataTable from "../../components/Course/CourseDataTable";
-import EditCourseModal from "../../components/Course/EditCourseModal";
-import { useLanguage } from "@/contexts/LanguageContext";
+import CourseRegistrationForm from "../../Components/Course/CourseRegistrationForm";
+import CourseDataTable from "../../Components/Course/CourseDataTable";
+import EditCourseModal from "../../Components/Course/EditCourseModal";
+import { useLanguage } from "@/Contexts/LanguageContext";
 
 export default function CourseManagementPage() {
   const { t } = useLanguage();
@@ -126,9 +126,8 @@ export default function CourseManagementPage() {
   const avgCredits = totalCourses > 0 ? (totalCredits / totalCourses).toFixed(1) : 0;
 
   return (
-    <div className={`p-6 sm:p-8 space-y-8 min-h-full transition-colors duration-300 ${
-      isDarkMode ? "text-slate-100" : "text-slate-800"
-    }`}>
+    <div className={`p-6 sm:p-8 space-y-8 min-h-full transition-colors duration-300 ${isDarkMode ? "text-slate-100" : "text-slate-800"
+      }`}>
       {/* Top Header & Breadcrumbs */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-inherit">
         <div>
@@ -161,11 +160,10 @@ export default function CourseManagementPage() {
             type="button"
             onClick={handleGenerateAllCsv}
             disabled={generatingCsv || loading}
-            className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold border transition-all shadow-sm active:scale-[0.99] cursor-pointer disabled:opacity-50 ${
-              isDarkMode 
-                ? "bg-white/5 border-white/10 hover:bg-white/10 text-amber-400" 
-                : "bg-white border-slate-200 hover:bg-slate-50 text-amber-700 shadow-sm"
-            }`}
+            className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold border transition-all shadow-sm active:scale-[0.99] cursor-pointer disabled:opacity-50 ${isDarkMode
+              ? "bg-white/5 border-white/10 hover:bg-white/10 text-amber-400"
+              : "bg-white border-slate-200 hover:bg-slate-50 text-amber-700 shadow-sm"
+              }`}
             title="Generate and download complete curriculum catalog and student enrollment CSV slip report"
           >
             {generatingCsv ? (
@@ -177,9 +175,8 @@ export default function CourseManagementPage() {
               <>
                 <FileDown className="w-4 h-4 text-amber-500" />
                 <span>Generate CSV Report</span>
-                <span className={`text-[10px] font-normal px-1.5 py-0.2 rounded border ${
-                  isDarkMode ? "bg-amber-500/10 border-amber-500/20 text-amber-400" : "bg-amber-50 border-amber-200 text-amber-800"
-                }`}>
+                <span className={`text-[10px] font-normal px-1.5 py-0.2 rounded border ${isDarkMode ? "bg-amber-500/10 border-amber-500/20 text-amber-400" : "bg-amber-50 border-amber-200 text-amber-800"
+                  }`}>
                   Slip
                 </span>
               </>
@@ -189,11 +186,10 @@ export default function CourseManagementPage() {
           {isAuthorized && (
             <button
               onClick={() => setShowForm((prev) => !prev)}
-              className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all shadow-md active:scale-[0.99] ${
-                showForm 
-                  ? (isDarkMode ? "bg-white/10 text-slate-200 hover:bg-white/15" : "bg-slate-200 text-slate-800 hover:bg-slate-300")
-                  : "bg-amber-500 hover:bg-amber-400 text-slate-950"
-              }`}
+              className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all shadow-md active:scale-[0.99] ${showForm
+                ? (isDarkMode ? "bg-white/10 text-slate-200 hover:bg-white/15" : "bg-slate-200 text-slate-800 hover:bg-slate-300")
+                : "bg-amber-500 hover:bg-amber-400 text-slate-950"
+                }`}
             >
               {showForm ? (
                 <>
@@ -211,11 +207,10 @@ export default function CourseManagementPage() {
 
           <Link
             to="/dashboard/education"
-            className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold border transition-all ${
-              isDarkMode 
-                ? "bg-white/5 border-white/10 hover:bg-white/10 text-slate-200" 
-                : "bg-slate-100 border-slate-200 hover:bg-slate-200 text-slate-800"
-            }`}
+            className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold border transition-all ${isDarkMode
+              ? "bg-white/5 border-white/10 hover:bg-white/10 text-slate-200"
+              : "bg-slate-100 border-slate-200 hover:bg-slate-200 text-slate-800"
+              }`}
           >
             <School className="w-4 h-4 text-amber-500" />
             <span>{t.adminSide?.educationHub || "Education Hub"}</span>
@@ -226,9 +221,8 @@ export default function CourseManagementPage() {
 
       {/* Summary Metrics */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className={`p-5 rounded-2xl border transition-all ${
-          isDarkMode ? "bg-[#0b1b3d]/60 border-white/10" : "bg-white border-slate-200"
-        }`}>
+        <div className={`p-5 rounded-2xl border transition-all ${isDarkMode ? "bg-[#0b1b3d]/60 border-white/10" : "bg-white border-slate-200"
+          }`}>
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
               {t.educationHub?.activeCourses || "Active Courses"}
@@ -245,9 +239,8 @@ export default function CourseManagementPage() {
           </div>
         </div>
 
-        <div className={`p-5 rounded-2xl border transition-all ${
-          isDarkMode ? "bg-[#0b1b3d]/60 border-white/10" : "bg-white border-slate-200"
-        }`}>
+        <div className={`p-5 rounded-2xl border transition-all ${isDarkMode ? "bg-[#0b1b3d]/60 border-white/10" : "bg-white border-slate-200"
+          }`}>
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
               Total Credit Hours
@@ -264,9 +257,8 @@ export default function CourseManagementPage() {
           </div>
         </div>
 
-        <div className={`p-5 rounded-2xl border transition-all ${
-          isDarkMode ? "bg-[#0b1b3d]/60 border-white/10" : "bg-white border-slate-200"
-        }`}>
+        <div className={`p-5 rounded-2xl border transition-all ${isDarkMode ? "bg-[#0b1b3d]/60 border-white/10" : "bg-white border-slate-200"
+          }`}>
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
               Average Credits / Course

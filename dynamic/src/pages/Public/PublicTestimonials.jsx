@@ -1,5 +1,5 @@
 import React from "react";
-import {GraduationCap,Quote,} from "lucide-react";
+import { GraduationCap, Quote, } from "lucide-react";
 import { useLanguage } from "../../Contexts/LanguageContext";
 import useTestimonials from "../../hooks/public/useTestimonials";
 import TestimonialCard from "../../Components/public/testimonials/TestimonialCard";

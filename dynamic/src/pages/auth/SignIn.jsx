@@ -3,7 +3,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "../../Contexts/LanguageContext";
 import AuthCard from "../../Components/auth/AuthCard";
-import { useAuth } from "../../hooks/useAuth";
+import useAuth from "../../hooks/useAuth";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");

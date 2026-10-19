@@ -6,9 +6,9 @@ import "react-toastify/dist/ReactToastify.css";
 
 // Auth & Common
 import SignIn from './pages/auth/SignIn';
-import ProtectedRoute from "./Components/ProtectedRoute";
-import RoleGuard from "./Components/RoleGuard";
-import DashboardRedirector from "./Components/DashboardRedirector";
+import ProtectedRoute from "./Components/common/ProtectedRoute";
+import RoleGuard from "./Components/common/RoleGuard";
+import DashboardRedirector from "./Components/common/DashboardRedirector";
 
 // Layouts
 import AdminLayout from "./Layout/AdminLayout";
@@ -24,7 +24,7 @@ import Settings from "./Components/admin/Settings";
 import EmailPasswordChanger from "./Components/admin/EmailPasswordChanger";
 
 // Public Pages (from latest update)
-import Home from './pages/Public/HomeSections/Home';
+// import Home from './pages/Public/HomeSections/Home';
 import About from './pages/Public/About';
 import Contact from './pages/Public/Contact';
 import PublicGallery from './pages/Public/PublicGallery';
@@ -52,12 +52,12 @@ function App() {
       <Routes>
         {/* Public Routes */}
         <Route element={<HomeLayout />} >
-          <Route path='/' element={<Home />} />
-          <Route path="/about" element={<About />} /> 
+          {/* <Route path='/' element={<Home />} /> */}
+          <Route path="/about" element={<About />} />
           <Route path="/gallery" element={<PublicGallery />} />
           <Route path="/events" element={<PublicEvents />} />
           <Route path="/testimonials" element={<PublicTestimonials />} />
-          <Route path="/contact" element={<Contact/>} />
+          <Route path="/contact" element={<Contact />} />
         </Route>
 
         <Route path="/signin" element={<SignIn />} />
@@ -99,9 +99,9 @@ function App() {
           <Route element={<RoleGuard allowedRoles={["MEMBER_USER", "ADMIN"]} />}>
             <Route path="/mediaDashboard" element={<CMSlayout />}>
               <Route index element={<CMSDashboard />} />
-              <Route path='gallery' element={<Gallery/>} />
-              <Route path='events' element={<Events/>}/>
-              <Route path='testimonials' element={<Testimonials/>}/>
+              <Route path='gallery' element={<Gallery />} />
+              <Route path='events' element={<Events />} />
+              <Route path='testimonials' element={<Testimonials />} />
             </Route>
           </Route>
 

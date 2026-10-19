@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useOutletContext, Link } from "react-router-dom";
 import { BookOpen, ArrowRight } from "lucide-react";
-import StudentIdGeneration from "../../components/SundaySchool/StudentIdGeneration";
-import ClassEnrollment from "../../components/SundaySchool/ClassEnrollment";
-import EnrolledStudentTable from "../../components/SundaySchool/EnrolledStudentTable";
-import { useLanguage } from "@/contexts/LanguageContext";
+import StudentIdGeneration from "../../Components/SundaySchool/StudentIdGeneration";
+import ClassEnrollment from "../../Components/SundaySchool/ClassEnrollment";
+import EnrolledStudentTable from "../../Components/SundaySchool/EnrolledStudentTable";
+import { useLanguage } from "@/Contexts/LanguageContext";
 
 export default function StudentEnrollment() {
   const { t } = useLanguage();
@@ -23,9 +23,8 @@ export default function StudentEnrollment() {
   };
 
   return (
-    <div className={`p-6 sm:p-8 space-y-8 min-h-full transition-colors duration-300 ${
-      isDarkMode ? "text-slate-100" : "text-slate-800"
-    }`}>
+    <div className={`p-6 sm:p-8 space-y-8 min-h-full transition-colors duration-300 ${isDarkMode ? "text-slate-100" : "text-slate-800"
+      }`}>
       {/* Top Header & Breadcrumbs */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-inherit">
         <div>
@@ -44,11 +43,10 @@ export default function StudentEnrollment() {
 
         <Link
           to="/dashboard/education"
-          className={`self-start sm:self-auto inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold border transition-all ${
-            isDarkMode 
-              ? "bg-white/5 border-white/10 hover:bg-white/10 text-amber-400" 
-              : "bg-slate-100 border-slate-200 hover:bg-slate-200 text-amber-600"
-          }`}
+          className={`self-start sm:self-auto inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold border transition-all ${isDarkMode
+            ? "bg-white/5 border-white/10 hover:bg-white/10 text-amber-400"
+            : "bg-slate-100 border-slate-200 hover:bg-slate-200 text-amber-600"
+            }`}
         >
           <BookOpen className="w-4 h-4" />
           <span>{t.adminSide?.educationHub || "Education Hub"}</span>
@@ -59,24 +57,24 @@ export default function StudentEnrollment() {
       {/* Two-Column Enrollment Workflow Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
         {/* Step 1: Generate Student ID Form */}
-        <StudentIdGeneration 
-          onStudentGenerated={handleStudentGenerated} 
-          isDarkMode={isDarkMode} 
+        <StudentIdGeneration
+          onStudentGenerated={handleStudentGenerated}
+          isDarkMode={isDarkMode}
         />
 
         {/* Step 2 & Enrollment: Class Setup & Student Enrollment */}
-        <ClassEnrollment 
-          studentData={generatedStudent} 
-          onEnrollmentSuccess={handleEnrollmentSuccess} 
-          isDarkMode={isDarkMode} 
+        <ClassEnrollment
+          studentData={generatedStudent}
+          onEnrollmentSuccess={handleEnrollmentSuccess}
+          isDarkMode={isDarkMode}
         />
       </div>
 
       {/* Immediately Below: Enrolled Student Table */}
       <div>
-        <EnrolledStudentTable 
-          newlyEnrolledStudent={newlyEnrolledStudent} 
-          isDarkMode={isDarkMode} 
+        <EnrolledStudentTable
+          newlyEnrolledStudent={newlyEnrolledStudent}
+          isDarkMode={isDarkMode}
         />
       </div>
     </div>

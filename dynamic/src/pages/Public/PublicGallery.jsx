@@ -1,7 +1,7 @@
 import React from "react";
 import { Images } from "lucide-react";
 import { useLanguage } from "../../Contexts/LanguageContext";
-import  useGallery  from "../../hooks/public/useGallery";
+import useGallery from "../../hooks/public/useGallery";
 import GalleryCard from "../../Components/public/gallery/GalleryCard";
 
 export default function PublicGallery() {

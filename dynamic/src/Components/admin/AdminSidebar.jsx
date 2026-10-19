@@ -1,6 +1,6 @@
 import Logo from "../../assets/logo.png";
 import { UserPlus, HomeIcon, BadgeCheck, Settings, Globe, Moon, Sun, LogOut, Activity, BookOpen, Users, Music, Book, DollarSign, FileText, GraduationCap, Layers } from 'lucide-react';
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useLanguage } from "@/Contexts/LanguageContext";
 import { useNavigate, useLocation } from "react-router-dom";
 
 export default function SideBar({ isDarkMode, toggleTheme }) {

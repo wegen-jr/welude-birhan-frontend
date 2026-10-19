@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useLanguage } from "@/Contexts/LanguageContext";
 import { toast } from "react-toastify";
 import PhoneInputModule from "react-phone-input-2";
 import { isValidPhoneNumber } from "libphonenumber-js";
@@ -35,7 +35,7 @@ export default function Registration() {
   const [isPhoneValid, setIsPhoneValid] = useState(true);
   const [isRepentancePhoneValid, setIsRepentancePhoneValid] = useState(true);
   const [isFamilyPhoneValid, setIsFamilyPhoneValid] = useState(true);
-  
+
   // Loading state
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -53,7 +53,7 @@ export default function Registration() {
       [name]: value,
     });
   };
- 
+
   // Phone input handlers
   const handlePhoneChange = (phoneNumber) => {
     // Store with + prefix for consistency
@@ -162,7 +162,7 @@ export default function Registration() {
       toast.error("Repentance phone is required");
       return false;
     }
-    const repentanceFull = formData.repentancePhone.startsWith('+') ? 
+    const repentanceFull = formData.repentancePhone.startsWith('+') ?
       formData.repentancePhone : `+${formData.repentancePhone}`;
     if (!isValidPhoneNumber(repentanceFull)) {
       toast.error("Please enter a valid repentance phone number");
@@ -180,7 +180,7 @@ export default function Registration() {
       toast.error("Family phone is required");
       return false;
     }
-    const familyFull = formData.familyPhone.startsWith('+') ? 
+    const familyFull = formData.familyPhone.startsWith('+') ?
       formData.familyPhone : `+${formData.familyPhone}`;
     if (!isValidPhoneNumber(familyFull)) {
       toast.error("Please enter a valid family phone number");
@@ -247,7 +247,7 @@ export default function Registration() {
 
       console.log("Sending data:", submitData); // Debug log
 
-      
+
 
       const data = await apiClient('/member/creat_member', {
         method: 'POST',
@@ -255,7 +255,7 @@ export default function Registration() {
       });
 
       toast.success(data.message || "Member created successfully");
-      
+
       // Reset form on success
       setFormData({
         fullname: "",
@@ -271,7 +271,7 @@ export default function Registration() {
         familyAddress: "",
         currentStatus: "",
       });
-      
+
       // Reset validation states
       setIsPhoneValid(true);
       setIsRepentancePhoneValid(true);
@@ -350,9 +350,8 @@ export default function Registration() {
               value={formData.phoneNo.replace('+', '')}
               onChange={handlePhoneChange}
               isValid={isPhoneValid}
-              inputClass={`!w-full !px-5 !py-3.5 !rounded-xl !transition-all focus:!outline-none focus:!ring-2 focus:!ring-amber-500/50 focus:!border-amber-500 ${isDarkMode ? '!bg-white/5 !text-white' : '!bg-slate-50 !text-slate-900'} ${
-                touchedFields.phoneNo && !isPhoneValid ? '!border-red-500' : (isDarkMode ? '!border-white/10' : '!border-slate-200')
-              }`}
+              inputClass={`!w-full !px-5 !py-3.5 !rounded-xl !transition-all focus:!outline-none focus:!ring-2 focus:!ring-amber-500/50 focus:!border-amber-500 ${isDarkMode ? '!bg-white/5 !text-white' : '!bg-slate-50 !text-slate-900'} ${touchedFields.phoneNo && !isPhoneValid ? '!border-red-500' : (isDarkMode ? '!border-white/10' : '!border-slate-200')
+                }`}
               containerClass="w-full"
               buttonClass={`!rounded-l-xl ${isDarkMode ? '!bg-white/5 !border-white/10' : '!bg-slate-100 !border-slate-200'}`}
               dropdownClass={isDarkMode ? '!bg-[#0b1b3d] !text-white !border-white/10' : '!bg-white !text-slate-900 !border-slate-200'}
@@ -391,9 +390,8 @@ export default function Registration() {
               onChange={handleRepentancePhoneChange}
               isValid={isRepentancePhoneValid}
               placeholder={t.registration.repentancePhone}
-              inputClass={`!w-full !px-5 !py-3.5 !rounded-xl !transition-all focus:!outline-none focus:!ring-2 focus:!ring-amber-500/50 focus:!border-amber-500 ${isDarkMode ? '!bg-white/5 !text-white' : '!bg-slate-50 !text-slate-900'} ${
-                touchedFields.repentancePhone && !isRepentancePhoneValid ? '!border-red-500' : (isDarkMode ? '!border-white/10' : '!border-slate-200')
-              }`}
+              inputClass={`!w-full !px-5 !py-3.5 !rounded-xl !transition-all focus:!outline-none focus:!ring-2 focus:!ring-amber-500/50 focus:!border-amber-500 ${isDarkMode ? '!bg-white/5 !text-white' : '!bg-slate-50 !text-slate-900'} ${touchedFields.repentancePhone && !isRepentancePhoneValid ? '!border-red-500' : (isDarkMode ? '!border-white/10' : '!border-slate-200')
+                }`}
               containerClass="w-full"
               buttonClass={`!rounded-l-xl ${isDarkMode ? '!bg-white/5 !border-white/10' : '!bg-slate-100 !border-slate-200'}`}
               dropdownClass={isDarkMode ? '!bg-[#0b1b3d] !text-white !border-white/10' : '!bg-white !text-slate-900 !border-slate-200'}
@@ -421,9 +419,8 @@ export default function Registration() {
               onChange={handleFamilyPhoneChange}
               isValid={isFamilyPhoneValid}
               placeholder={t.registration.familyPhone}
-              inputClass={`!w-full !px-5 !py-3.5 !rounded-xl !transition-all focus:!outline-none focus:!ring-2 focus:!ring-amber-500/50 focus:!border-amber-500 ${isDarkMode ? '!bg-white/5 !text-white' : '!bg-slate-50 !text-slate-900'} ${
-                touchedFields.familyPhone && !isFamilyPhoneValid ? '!border-red-500' : (isDarkMode ? '!border-white/10' : '!border-slate-200')
-              }`}
+              inputClass={`!w-full !px-5 !py-3.5 !rounded-xl !transition-all focus:!outline-none focus:!ring-2 focus:!ring-amber-500/50 focus:!border-amber-500 ${isDarkMode ? '!bg-white/5 !text-white' : '!bg-slate-50 !text-slate-900'} ${touchedFields.familyPhone && !isFamilyPhoneValid ? '!border-red-500' : (isDarkMode ? '!border-white/10' : '!border-slate-200')
+                }`}
               containerClass="w-full"
               buttonClass={`!rounded-l-xl ${isDarkMode ? '!bg-white/5 !border-white/10' : '!bg-slate-100 !border-slate-200'}`}
               dropdownClass={isDarkMode ? '!bg-[#0b1b3d] !text-white !border-white/10' : '!bg-white !text-slate-900 !border-slate-200'}
@@ -450,11 +447,11 @@ export default function Registration() {
             required
           >
             <option value="" disabled className="bg-white text-slate-900 dark:bg-[#0b1b3d] dark:text-white">
-             {t.registration.statusDefault}
+              {t.registration.statusDefault}
             </option>
             {status.map((item) => (
               <option key={item} value={item} className="bg-white text-slate-900 dark:bg-[#0b1b3d] dark:text-white">
-                 {statusLabels[item] || item}
+                {statusLabels[item] || item}
               </option>
             ))}
           </select>

@@ -1,20 +1,20 @@
 import { useState, useEffect, useCallback } from "react";
 import { useOutletContext, Link } from "react-router-dom";
-import { 
-  BookOpen, 
-  GraduationCap, 
-  Users, 
+import {
+  BookOpen,
+  GraduationCap,
+  Users,
   ArrowRight,
   School,
   ShieldCheck,
   Layers,
   RefreshCw
 } from "lucide-react";
-import ClassOverview from "../../components/SundaySchool/ClassOverview";
+import ClassOverview from "../../Components/SundaySchool/ClassOverview";
 import { sundaySchoolService } from "../../services/sundaySchoolService";
 import { teacherService } from "../../services/teacherService";
 import { courseService } from "../../services/courseService";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useLanguage } from "@/Contexts/LanguageContext";
 
 export function EducationHub() {
   const { t } = useLanguage();
@@ -88,9 +88,8 @@ export function EducationHub() {
   };
 
   return (
-    <div className={`p-6 sm:p-8 lg:p-10 space-y-10 sm:space-y-12 min-h-full transition-colors duration-300 ${
-      isDarkMode ? "text-slate-100" : "text-slate-900"
-    }`}>
+    <div className={`p-6 sm:p-8 lg:p-10 space-y-10 sm:space-y-12 min-h-full transition-colors duration-300 ${isDarkMode ? "text-slate-100" : "text-slate-900"
+      }`}>
       {/* Top Header & Breadcrumbs */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 pb-8 border-b border-slate-200 dark:border-white/10">
         <div>
@@ -122,11 +121,10 @@ export function EducationHub() {
             type="button"
             onClick={handleGlobalRefresh}
             disabled={stats.loading}
-            className={`inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
-              isDarkMode 
-                ? "bg-white/5 border-white/10 hover:bg-white/10 text-slate-200" 
-                : "bg-white border-slate-200 hover:bg-slate-50 text-slate-700 shadow-sm"
-            }`}
+            className={`inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${isDarkMode
+              ? "bg-white/5 border-white/10 hover:bg-white/10 text-slate-200"
+              : "bg-white border-slate-200 hover:bg-slate-50 text-slate-700 shadow-sm"
+              }`}
           >
             <RefreshCw className={`w-3.5 h-3.5 ${stats.loading ? "animate-spin text-amber-500" : ""}`} />
             <span>Sync Live Data</span>
@@ -144,11 +142,10 @@ export function EducationHub() {
 
           <Link
             to="/dashboard/courses"
-            className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold border transition-all ${
-              isDarkMode 
-                ? "bg-white/5 border-white/10 hover:bg-white/10 text-slate-200" 
-                : "bg-white border-slate-200 hover:bg-slate-50 text-slate-700 shadow-sm"
-            }`}
+            className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold border transition-all ${isDarkMode
+              ? "bg-white/5 border-white/10 hover:bg-white/10 text-slate-200"
+              : "bg-white border-slate-200 hover:bg-slate-50 text-slate-700 shadow-sm"
+              }`}
           >
             <Layers className="w-4 h-4 text-amber-500" />
             <span>{t.educationHub?.courseCatalog || "Courses"}</span>
@@ -156,11 +153,10 @@ export function EducationHub() {
 
           <Link
             to="/dashboard/student-enrollment"
-            className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold border transition-all ${
-              isDarkMode 
-                ? "bg-white/5 border-white/10 hover:bg-white/10 text-slate-200" 
-                : "bg-white border-slate-200 hover:bg-slate-50 text-slate-700 shadow-sm"
-            }`}
+            className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold border transition-all ${isDarkMode
+              ? "bg-white/5 border-white/10 hover:bg-white/10 text-slate-200"
+              : "bg-white border-slate-200 hover:bg-slate-50 text-slate-700 shadow-sm"
+              }`}
           >
             <GraduationCap className="w-4 h-4 text-amber-500" />
             <span>{t.educationHub?.enrollStudents || "Enroll Student"}</span>
@@ -172,11 +168,10 @@ export function EducationHub() {
       {/* Top Metric Cards (4 Real Live API Metrics with De-compacted Breathing Room) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Total Active Classes */}
-        <div className={`p-6 sm:p-7 rounded-2xl border transition-all duration-200 hover:shadow-lg ${
-          isDarkMode 
-            ? "bg-[#0b1b3d]/60 border-white/10" 
-            : "bg-white border-slate-200 shadow-sm"
-        }`}>
+        <div className={`p-6 sm:p-7 rounded-2xl border transition-all duration-200 hover:shadow-lg ${isDarkMode
+          ? "bg-[#0b1b3d]/60 border-white/10"
+          : "bg-white border-slate-200 shadow-sm"
+          }`}>
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
               {t.educationHub?.totalClasses || "Active Classes"}
@@ -194,11 +189,10 @@ export function EducationHub() {
         </div>
 
         {/* Total Enrolled Students */}
-        <div className={`p-6 sm:p-7 rounded-2xl border transition-all duration-200 hover:shadow-lg ${
-          isDarkMode 
-            ? "bg-[#0b1b3d]/60 border-white/10" 
-            : "bg-white border-slate-200 shadow-sm"
-        }`}>
+        <div className={`p-6 sm:p-7 rounded-2xl border transition-all duration-200 hover:shadow-lg ${isDarkMode
+          ? "bg-[#0b1b3d]/60 border-white/10"
+          : "bg-white border-slate-200 shadow-sm"
+          }`}>
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
               {t.educationHub?.enrolledStudents || "Enrolled Students"}
@@ -216,11 +210,10 @@ export function EducationHub() {
         </div>
 
         {/* Total Registered Teachers */}
-        <div className={`p-6 sm:p-7 rounded-2xl border transition-all duration-200 hover:shadow-lg ${
-          isDarkMode 
-            ? "bg-[#0b1b3d]/60 border-white/10" 
-            : "bg-white border-slate-200 shadow-sm"
-        }`}>
+        <div className={`p-6 sm:p-7 rounded-2xl border transition-all duration-200 hover:shadow-lg ${isDarkMode
+          ? "bg-[#0b1b3d]/60 border-white/10"
+          : "bg-white border-slate-200 shadow-sm"
+          }`}>
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
               {t.educationHub?.facultyTeachers || "Faculty Teachers"}
@@ -238,11 +231,10 @@ export function EducationHub() {
         </div>
 
         {/* Total Courses in Catalog */}
-        <div className={`p-6 sm:p-7 rounded-2xl border transition-all duration-200 hover:shadow-lg ${
-          isDarkMode 
-            ? "bg-[#0b1b3d]/60 border-white/10" 
-            : "bg-white border-slate-200 shadow-sm"
-        }`}>
+        <div className={`p-6 sm:p-7 rounded-2xl border transition-all duration-200 hover:shadow-lg ${isDarkMode
+          ? "bg-[#0b1b3d]/60 border-white/10"
+          : "bg-white border-slate-200 shadow-sm"
+          }`}>
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
               {t.educationHub?.activeCourses || "Curriculum Courses"}

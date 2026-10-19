@@ -62,7 +62,7 @@ export default function Testimonials() {
 
       toast.error(
         error.message ||
-          t.cmsTestimonials.toast.error
+        t.cmsTestimonials.toast.error
       );
     }
   };
@@ -85,7 +85,7 @@ export default function Testimonials() {
 
       toast.error(
         error.message ||
-          t.cmsTestimonials.toast.error
+        t.cmsTestimonials.toast.error
       );
     }
   };
@@ -96,10 +96,9 @@ export default function Testimonials() {
         min-h-screen
         px-6 md:px-10 lg:px-12
         py-8
-        ${
-          isDarkMode
-            ? "bg-[#081226] text-slate-100"
-            : "bg-[#faf9f6] text-[#1d2940]"
+        ${isDarkMode
+          ? "bg-[#081226] text-slate-100"
+          : "bg-[#faf9f6] text-[#1d2940]"
         }
       `}
     >
@@ -118,10 +117,9 @@ export default function Testimonials() {
                 text-[11px]
                 uppercase
                 tracking-[0.2em]
-                ${
-                  isDarkMode
-                    ? "text-slate-500"
-                    : "text-slate-400"
+                ${isDarkMode
+                  ? "text-slate-500"
+                  : "text-slate-400"
                 }
               `}
             >
@@ -133,10 +131,9 @@ export default function Testimonials() {
             className={`
               text-2xl md:text-3xl
               font-semibold
-              ${
-                isDarkMode
-                  ? "text-white"
-                  : "text-[#1d2940]"
+              ${isDarkMode
+                ? "text-white"
+                : "text-[#1d2940]"
               }
             `}
           >
@@ -147,10 +144,9 @@ export default function Testimonials() {
             className={`
               mt-2
               text-sm
-              ${
-                isDarkMode
-                  ? "text-slate-400"
-                  : "text-slate-500"
+              ${isDarkMode
+                ? "text-slate-400"
+                : "text-slate-500"
               }
             `}
           >
@@ -188,10 +184,9 @@ export default function Testimonials() {
             border
             px-4 py-3
             text-sm
-            ${
-              isDarkMode
-                ? "border-red-400/20 bg-red-400/5 text-red-300"
-                : "border-red-200 bg-red-50 text-red-600"
+            ${isDarkMode
+              ? "border-red-400/20 bg-red-400/5 text-red-300"
+              : "border-red-200 bg-red-50 text-red-600"
             }
           `}
         >
@@ -207,10 +202,9 @@ export default function Testimonials() {
             rounded-xl
             border
             p-6
-            ${
-              isDarkMode
-                ? "bg-[#0b1b3d] border-white/10"
-                : "bg-white border-slate-200"
+            ${isDarkMode
+              ? "bg-[#0b1b3d] border-white/10"
+              : "bg-white border-slate-200"
             }
           `}
         >
