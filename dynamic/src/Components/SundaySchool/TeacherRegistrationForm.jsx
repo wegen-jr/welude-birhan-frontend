@@ -1,21 +1,23 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
-import { 
-  UserPlus, 
-  Mail, 
-  Phone, 
-  User, 
-  Building2, 
-  Loader2, 
-  CheckCircle2, 
-  AlertCircle, 
-  BookOpen, 
-  ShieldAlert, 
+import {
+  UserPlus,
+  Mail,
+  Phone,
+  User,
+  Building2,
+  Loader2,
+  CheckCircle2,
+  AlertCircle,
+  BookOpen,
+  ShieldAlert,
+  ShieldCheck,
+  Lock,
   X,
   RefreshCw
 } from "lucide-react";
-import { teacherService } from "../../services/teacherService";
-import { sundaySchoolService } from "../../services/sundaySchoolService";
+import { teacherService } from "../../services/educationhub/teacherService";
+import { sundaySchoolService } from "../../services/educationhub/sundaySchoolService";
 
 const COMMON_DEPARTMENTS = [
   "Spiritual Education",
@@ -28,16 +30,25 @@ const COMMON_DEPARTMENTS = [
   "General Education",
 ];
 
-export default function TeacherRegistrationForm({ 
-  onTeacherCreated, 
-  isDarkMode = true, 
+const TEACHER_ROLES = [
+  { value: "Teacher", label: "Teacher (Faculty Instructor)" },
+  { value: "EducationHub", label: "EducationHub (Department Leader)" },
+  { value: "ADMIN", label: "System Administrator" },
+  { value: "MEMBER_USER", label: "Member User" },
+];
+
+export default function TeacherRegistrationForm({
+  onTeacherCreated,
+  isDarkMode = true,
   isAuthorized = true,
-  onClose = null 
+  onClose = null
 }) {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
+    password: "",
+    role: "Teacher",
     department: "Spiritual Education",
     customDepartment: "",
     initialClassId: "",
@@ -97,12 +108,22 @@ export default function TeacherRegistrationForm({
       return "Please enter a valid phone number (at least 9 digits).";
     }
 
-    const dept = formData.department === "OTHER" 
-      ? formData.customDepartment.trim() 
+    const dept = formData.department === "OTHER"
+      ? formData.customDepartment.trim()
       : formData.department.trim();
     if (!dept) {
       return "Please specify the teacher's department.";
     }
+
+    if (!formData.password || formData.password.trim().length < 6) {
+      return "Account password is required (minimum 6 characters).";
+    }
+
+    const validRoles = ["Teacher", "TEACHER", "EducationHub", "ADMIN", "MEMBER_USER"];
+    if (!formData.role || formData.role === "USER" || !validRoles.includes(formData.role)) {
+      return "Please select a valid instructor role (Teacher).";
+    }
+
     return null;
   };
 
@@ -127,19 +148,28 @@ export default function TeacherRegistrationForm({
     setIsSubmitting(true);
 
     try {
-      const selectedDept = formData.department === "OTHER" 
-        ? formData.customDepartment.trim() 
+      const selectedDept = formData.department === "OTHER"
+        ? formData.customDepartment.trim()
         : formData.department;
 
       // Find initial class object if selected
-      const selectedClass = formData.initialClassId 
+      const selectedClass = formData.initialClassId
         ? availableClasses.find((c) => String(c.id) === String(formData.initialClassId))
         : null;
+
+      // Strictly adheres to CreateTeacherDto schema:
+      // { phone, email, password, role, department, name }
+      // Ensure role strictly adheres to the instructor role defined by backend ("Teacher"), never "USER"
+      const instructorRole = (!formData.role || formData.role.toUpperCase() === "USER")
+        ? "Teacher"
+        : formData.role;
 
       const payload = {
         name: formData.name.trim(),
         email: formData.email.trim().toLowerCase(),
         phone: formData.phone.trim(),
+        password: formData.password.trim(),
+        role: instructorRole,
         department: selectedDept,
         initialClass: selectedClass,
       };
@@ -154,6 +184,8 @@ export default function TeacherRegistrationForm({
         name: "",
         email: "",
         phone: "",
+        password: "",
+        role: "Teacher",
         department: "Spiritual Education",
         customDepartment: "",
         initialClassId: "",
@@ -178,9 +210,8 @@ export default function TeacherRegistrationForm({
 
   if (!isAuthorized) {
     return (
-      <div className={`p-6 rounded-2xl border ${
-        isDarkMode ? "bg-rose-500/10 border-rose-500/20 text-rose-300" : "bg-rose-50 border-rose-200 text-rose-700"
-      }`}>
+      <div className={`p-6 rounded-2xl border ${isDarkMode ? "bg-rose-500/10 border-rose-500/20 text-rose-300" : "bg-rose-50 border-rose-200 text-rose-700"
+        }`}>
         <div className="flex items-center gap-3">
           <ShieldAlert className="w-5 h-5 text-rose-500 shrink-0" />
           <div>
@@ -195,11 +226,10 @@ export default function TeacherRegistrationForm({
   }
 
   return (
-    <div className={`rounded-2xl border p-6 transition-all shadow-sm relative ${
-      isDarkMode 
-        ? "bg-[#0b1b3d]/60 border-white/10 text-slate-100" 
+    <div className={`rounded-2xl border p-6 transition-all shadow-sm relative ${isDarkMode
+        ? "bg-[#0b1b3d]/60 border-white/10 text-slate-100"
         : "bg-white border-slate-200 text-slate-800"
-    }`}>
+      }`}>
       {/* Header */}
       <div className="flex items-start justify-between pb-4 mb-5 border-b border-inherit">
         <div className="flex items-center gap-3">
@@ -217,11 +247,10 @@ export default function TeacherRegistrationForm({
         {onClose && (
           <button
             onClick={onClose}
-            className={`p-1.5 rounded-lg border transition-colors ${
-              isDarkMode 
-                ? "border-white/10 text-slate-400 hover:text-slate-200 hover:bg-white/5" 
+            className={`p-1.5 rounded-lg border transition-colors ${isDarkMode
+                ? "border-white/10 text-slate-400 hover:text-slate-200 hover:bg-white/5"
                 : "border-slate-200 text-slate-500 hover:text-slate-800 hover:bg-slate-100"
-            }`}
+              }`}
             title="Close form"
           >
             <X className="w-4 h-4" />
@@ -231,9 +260,8 @@ export default function TeacherRegistrationForm({
 
       {/* Success Feedback Card */}
       {lastCreatedTeacher && (
-        <div className={`mb-6 p-4 rounded-xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 ${
-          isDarkMode ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-300" : "bg-emerald-50 border-emerald-200 text-emerald-800"
-        }`}>
+        <div className={`mb-6 p-4 rounded-xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 ${isDarkMode ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-300" : "bg-emerald-50 border-emerald-200 text-emerald-800"
+          }`}>
           <div className="flex items-center gap-3">
             <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
             <div>
@@ -254,9 +282,8 @@ export default function TeacherRegistrationForm({
 
       {/* Error Banner */}
       {errorBanner && (
-        <div className={`mb-6 p-4 rounded-xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 ${
-          isDarkMode ? "bg-rose-500/10 border-rose-500/30 text-rose-300" : "bg-rose-50 border-rose-200 text-rose-700"
-        }`}>
+        <div className={`mb-6 p-4 rounded-xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 ${isDarkMode ? "bg-rose-500/10 border-rose-500/30 text-rose-300" : "bg-rose-50 border-rose-200 text-rose-700"
+          }`}>
           <div className="flex items-start gap-3">
             <AlertCircle className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
             <div className="text-xs">
@@ -294,11 +321,10 @@ export default function TeacherRegistrationForm({
                 placeholder="e.g. Teacher Dawit / መምህር ተስፋዬ"
                 required
                 disabled={isSubmitting}
-                className={`w-full pl-9 pr-3 py-2.5 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition font-medium ${
-                  isDarkMode 
-                    ? "bg-[#081226] border-white/10 text-slate-100 placeholder-slate-500" 
+                className={`w-full pl-9 pr-3 py-2.5 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition font-medium ${isDarkMode
+                    ? "bg-[#081226] border-white/10 text-slate-100 placeholder-slate-500"
                     : "bg-white border-slate-300 text-slate-900 placeholder-slate-400"
-                }`}
+                  }`}
               />
             </div>
           </div>
@@ -317,11 +343,10 @@ export default function TeacherRegistrationForm({
                 placeholder="e.g. 0911223344 or +251911223344"
                 required
                 disabled={isSubmitting}
-                className={`w-full pl-9 pr-3 py-2.5 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition font-medium ${
-                  isDarkMode 
-                    ? "bg-[#081226] border-white/10 text-slate-100 placeholder-slate-500" 
+                className={`w-full pl-9 pr-3 py-2.5 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition font-medium ${isDarkMode
+                    ? "bg-[#081226] border-white/10 text-slate-100 placeholder-slate-500"
                     : "bg-white border-slate-300 text-slate-900 placeholder-slate-400"
-                }`}
+                  }`}
               />
             </div>
           </div>
@@ -343,11 +368,10 @@ export default function TeacherRegistrationForm({
                 placeholder="e.g. teacher.smith@weludebirhan.org"
                 required
                 disabled={isSubmitting}
-                className={`w-full pl-9 pr-3 py-2.5 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition font-medium ${
-                  isDarkMode 
-                    ? "bg-[#081226] border-white/10 text-slate-100 placeholder-slate-500" 
+                className={`w-full pl-9 pr-3 py-2.5 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition font-medium ${isDarkMode
+                    ? "bg-[#081226] border-white/10 text-slate-100 placeholder-slate-500"
                     : "bg-white border-slate-300 text-slate-900 placeholder-slate-400"
-                }`}
+                  }`}
               />
             </div>
           </div>
@@ -363,11 +387,10 @@ export default function TeacherRegistrationForm({
                 value={formData.department}
                 onChange={handleChange}
                 disabled={isSubmitting}
-                className={`w-full pl-9 pr-3 py-2.5 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition font-medium ${
-                  isDarkMode 
-                    ? "bg-[#081226] border-white/10 text-slate-100" 
+                className={`w-full pl-9 pr-3 py-2.5 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition font-medium ${isDarkMode
+                    ? "bg-[#081226] border-white/10 text-slate-100"
                     : "bg-white border-slate-300 text-slate-900"
-                }`}
+                  }`}
               >
                 {COMMON_DEPARTMENTS.map((dept) => (
                   <option key={dept} value={dept}>
@@ -375,6 +398,57 @@ export default function TeacherRegistrationForm({
                   </option>
                 ))}
                 <option value="OTHER">Other (Custom Department)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {/* Account Password & Role (2 columns) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-1.5">
+              Account Password (Min 6 chars) <span className="text-amber-500">*</span>
+            </label>
+            <div className="relative">
+              <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="e.g. securePassword123"
+                required
+                minLength={6}
+                disabled={isSubmitting}
+                className={`w-full pl-9 pr-3 py-2.5 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition font-medium ${isDarkMode
+                    ? "bg-[#081226] border-white/10 text-slate-100 placeholder-slate-500"
+                    : "bg-white border-slate-300 text-slate-900 placeholder-slate-400"
+                  }`}
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-1.5">
+              Access Role <span className="text-amber-500">*</span>
+            </label>
+            <div className="relative">
+              <ShieldCheck className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+              <select
+                name="role"
+                value={formData.role}
+                onChange={handleChange}
+                disabled={isSubmitting}
+                className={`w-full pl-9 pr-3 py-2.5 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition font-medium ${isDarkMode
+                    ? "bg-[#081226] border-white/10 text-slate-100"
+                    : "bg-white border-slate-300 text-slate-900"
+                  }`}
+              >
+                {TEACHER_ROLES.map((r) => (
+                  <option key={r.value} value={r.value}>
+                    {r.label}
+                  </option>
+                ))}
               </select>
             </div>
           </div>
@@ -394,11 +468,10 @@ export default function TeacherRegistrationForm({
               placeholder="e.g. Traditional Hymnography (Deggwa)"
               required
               disabled={isSubmitting}
-              className={`w-full px-3 py-2.5 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition font-medium ${
-                isDarkMode 
-                  ? "bg-[#081226] border-white/10 text-slate-100 placeholder-slate-500" 
+              className={`w-full px-3 py-2.5 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition font-medium ${isDarkMode
+                  ? "bg-[#081226] border-white/10 text-slate-100 placeholder-slate-500"
                   : "bg-white border-slate-300 text-slate-900 placeholder-slate-400"
-              }`}
+                }`}
             />
           </div>
         )}
@@ -417,11 +490,10 @@ export default function TeacherRegistrationForm({
             value={formData.initialClassId}
             onChange={handleChange}
             disabled={isSubmitting || loadingClasses}
-            className={`w-full px-3 py-2.5 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition font-medium ${
-              isDarkMode 
-                ? "bg-[#081226] border-white/10 text-slate-100" 
+            className={`w-full px-3 py-2.5 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition font-medium ${isDarkMode
+                ? "bg-[#081226] border-white/10 text-slate-100"
                 : "bg-white border-slate-300 text-slate-900"
-            }`}
+              }`}
           >
             <option value="">-- No Initial Class Assignment (Assign Later) --</option>
             {availableClasses.map((cls) => (

@@ -13,10 +13,10 @@ import {
   FileDown,
   Loader2
 } from "lucide-react";
-import { courseService } from "../../services/courseService";
-import { teacherService } from "../../services/teacherService";
-import { sundaySchoolService } from "../../services/sundaySchoolService";
-import { generateAllCoursesReportCsv, triggerCsvDownload } from "../../utils/csvExport";
+import { courseService } from "../../services/educationhub/courseService";
+import { teacherService } from "../../services/educationhub/teacherService";
+import { sundaySchoolService } from "../../services/educationhub/sundaySchoolService";
+import { generateAllCoursesCatalogPdf } from "../../utils/pdfExport";
 import CourseRegistrationForm from "../../Components/Course/CourseRegistrationForm";
 import CourseDataTable from "../../Components/Course/CourseDataTable";
 import EditCourseModal from "../../Components/Course/EditCourseModal";
@@ -31,7 +31,7 @@ export default function CourseManagementPage() {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingCourse, setEditingCourse] = useState(null);
-  const [generatingCsv, setGeneratingCsv] = useState(false);
+  const [generatingPdf, setGeneratingPdf] = useState(false);
 
   const user = (() => {
     try {
@@ -43,12 +43,12 @@ export default function CourseManagementPage() {
   const userRole = user?.role || "";
   const isAuthorized = ["ADMIN", "EDUCATION_LEADER"].includes(userRole);
 
-  const handleGenerateAllCsv = async () => {
+  const handleGenerateAllPdf = async () => {
     if (courses.length === 0) {
       toast.info("No courses available to generate report.");
       return;
     }
-    setGeneratingCsv(true);
+    setGeneratingPdf(true);
     try {
       const [classAssignments, teachers, enrollments] = await Promise.all([
         courseService.getClassCourseAssignments().catch(() => []),
@@ -56,20 +56,18 @@ export default function CourseManagementPage() {
         sundaySchoolService.getEnrollments({ limit: "500" }).catch(() => []),
       ]);
 
-      const csv = generateAllCoursesReportCsv(courses, {
+      const filename = generateAllCoursesCatalogPdf(courses, {
         classAssignments: Array.isArray(classAssignments) ? classAssignments : [],
         teachers: Array.isArray(teachers) ? teachers : [],
         enrollments: Array.isArray(enrollments) ? enrollments : [],
       });
 
-      const dateStr = new Date().toISOString().slice(0, 10);
-      triggerCsvDownload(csv, `course_catalog_report_${dateStr}.csv`);
-      toast.success("Curriculum catalog CSV report generated and downloaded!");
+      toast.success(`Curriculum catalog PDF slip generated and downloaded!`);
     } catch (err) {
-      console.error("Failed to generate CSV report:", err);
-      toast.error(err.message || "Failed to generate CSV report.");
+      console.error("Failed to generate PDF slip report:", err);
+      toast.error(err.message || "Failed to generate PDF slip report.");
     } finally {
-      setGeneratingCsv(false);
+      setGeneratingPdf(false);
     }
   };
 
@@ -155,29 +153,29 @@ export default function CourseManagementPage() {
 
         {/* Action Controls */}
         <div className="flex flex-wrap items-center gap-3">
-          {/* Generate CSV Report (Slip Generation) Button */}
+          {/* Generate PDF Slip Button */}
           <button
             type="button"
-            onClick={handleGenerateAllCsv}
-            disabled={generatingCsv || loading}
+            onClick={handleGenerateAllPdf}
+            disabled={generatingPdf || loading}
             className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold border transition-all shadow-sm active:scale-[0.99] cursor-pointer disabled:opacity-50 ${isDarkMode
               ? "bg-white/5 border-white/10 hover:bg-white/10 text-amber-400"
               : "bg-white border-slate-200 hover:bg-slate-50 text-amber-700 shadow-sm"
               }`}
-            title="Generate and download complete curriculum catalog and student enrollment CSV slip report"
+            title="Generate and download complete curriculum catalog and student enrollment PDF slip"
           >
-            {generatingCsv ? (
+            {generatingPdf ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin text-amber-500" />
-                <span>Generating Report...</span>
+                <span>Generating PDF Slip...</span>
               </>
             ) : (
               <>
                 <FileDown className="w-4 h-4 text-amber-500" />
-                <span>Generate CSV Report</span>
+                <span>Generate PDF Slip</span>
                 <span className={`text-[10px] font-normal px-1.5 py-0.2 rounded border ${isDarkMode ? "bg-amber-500/10 border-amber-500/20 text-amber-400" : "bg-amber-50 border-amber-200 text-amber-800"
                   }`}>
-                  Slip
+                  PDF
                 </span>
               </>
             )}

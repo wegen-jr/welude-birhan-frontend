@@ -1,23 +1,23 @@
 import { useState, useMemo } from "react";
 import { toast } from "react-toastify";
-import { 
-  Search, 
-  Filter, 
-  RefreshCw, 
-  Users, 
-  Mail, 
-  Phone, 
-  School, 
-  Trash2, 
-  Edit3, 
-  Plus, 
-  Copy, 
-  Check, 
-  AlertTriangle, 
-  GraduationCap, 
+import {
+  Search,
+  Filter,
+  RefreshCw,
+  Users,
+  Mail,
+  Phone,
+  School,
+  Trash2,
+  Edit3,
+  Plus,
+  Copy,
+  Check,
+  AlertTriangle,
+  GraduationCap,
   Building2
 } from "lucide-react";
-import { teacherService } from "../../services/teacherService";
+import { teacherService } from "../../services/educationhub/teacherService";
 import TeacherStudentsModal from "./TeacherStudentsModal";
 
 export default function TeacherDirectoryTable({
@@ -65,7 +65,7 @@ export default function TeacherDirectoryTable({
 
       // 3. Assignment Filter
       const assignedCount = Array.isArray(t.assignedClasses) ? t.assignedClasses.length : 0;
-      const matchesAssignment = 
+      const matchesAssignment =
         assignmentFilter === "ALL" ||
         (assignmentFilter === "ASSIGNED" && assignedCount > 0) ||
         (assignmentFilter === "UNASSIGNED" && assignedCount === 0);
@@ -109,22 +109,20 @@ export default function TeacherDirectoryTable({
   };
 
   return (
-    <div className={`rounded-2xl border transition-all shadow-sm overflow-hidden ${
-      isDarkMode 
-        ? "bg-[#0b1b3d]/60 border-white/10 text-slate-100" 
+    <div className={`rounded-2xl border transition-all shadow-sm overflow-hidden ${isDarkMode
+        ? "bg-[#0b1b3d]/60 border-white/10 text-slate-100"
         : "bg-white border-slate-200 text-slate-800"
-    }`}>
+      }`}>
       {/* Top Header & Search/Filter Bar */}
       <div className="p-5 border-b border-inherit space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2">
               <h3 className="text-lg font-serif font-bold tracking-tight">Teacher Directory</h3>
-              <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full border ${
-                isDarkMode 
-                  ? "bg-amber-500/10 border-amber-500/20 text-amber-400" 
+              <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full border ${isDarkMode
+                  ? "bg-amber-500/10 border-amber-500/20 text-amber-400"
                   : "bg-amber-50 border-amber-200 text-amber-700"
-              }`}>
+                }`}>
                 {teachers.length} Total
               </span>
             </div>
@@ -136,11 +134,10 @@ export default function TeacherDirectoryTable({
           <button
             onClick={onRefresh}
             disabled={loading}
-            className={`self-start sm:self-auto inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold border transition ${
-              isDarkMode 
-                ? "bg-white/5 border-white/10 hover:bg-white/10 text-slate-300" 
+            className={`self-start sm:self-auto inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold border transition ${isDarkMode
+                ? "bg-white/5 border-white/10 hover:bg-white/10 text-slate-300"
                 : "bg-slate-50 border-slate-200 hover:bg-slate-100 text-slate-700"
-            }`}
+              }`}
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin text-amber-500" : ""}`} />
             <span>Refresh</span>
@@ -157,11 +154,10 @@ export default function TeacherDirectoryTable({
               placeholder="Search by name, email, phone, ID..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className={`w-full pl-9 pr-3 py-2 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition ${
-                isDarkMode 
-                  ? "bg-[#081226] border-white/10 text-slate-100 placeholder-slate-500" 
+              className={`w-full pl-9 pr-3 py-2 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition ${isDarkMode
+                  ? "bg-[#081226] border-white/10 text-slate-100 placeholder-slate-500"
                   : "bg-slate-50 border-slate-200 text-slate-800 placeholder-slate-400"
-              }`}
+                }`}
             />
           </div>
 
@@ -171,11 +167,10 @@ export default function TeacherDirectoryTable({
             <select
               value={selectedDept}
               onChange={(e) => setSelectedDept(e.target.value)}
-              className={`w-full pl-9 pr-3 py-2 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition ${
-                isDarkMode 
-                  ? "bg-[#081226] border-white/10 text-slate-100" 
+              className={`w-full pl-9 pr-3 py-2 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition ${isDarkMode
+                  ? "bg-[#081226] border-white/10 text-slate-100"
                   : "bg-slate-50 border-slate-200 text-slate-800"
-              }`}
+                }`}
             >
               <option value="ALL">All Departments</option>
               {departments.map((d) => (
@@ -192,11 +187,10 @@ export default function TeacherDirectoryTable({
             <select
               value={assignmentFilter}
               onChange={(e) => setAssignmentFilter(e.target.value)}
-              className={`w-full pl-9 pr-3 py-2 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition ${
-                isDarkMode 
-                  ? "bg-[#081226] border-white/10 text-slate-100" 
+              className={`w-full pl-9 pr-3 py-2 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition ${isDarkMode
+                  ? "bg-[#081226] border-white/10 text-slate-100"
                   : "bg-slate-50 border-slate-200 text-slate-800"
-              }`}
+                }`}
             >
               <option value="ALL">All Statuses</option>
               <option value="ASSIGNED">Assigned to Class</option>
@@ -210,11 +204,10 @@ export default function TeacherDirectoryTable({
       <div className="overflow-x-auto">
         <table className="w-full text-left text-xs border-collapse">
           <thead>
-            <tr className={`border-b transition-colors uppercase tracking-wider text-[11px] font-semibold ${
-              isDarkMode 
-                ? "bg-white/[0.02] border-white/10 text-slate-400" 
+            <tr className={`border-b transition-colors uppercase tracking-wider text-[11px] font-semibold ${isDarkMode
+                ? "bg-white/[0.02] border-white/10 text-slate-400"
                 : "bg-slate-100/80 border-slate-200 text-slate-600"
-            }`}>
+              }`}>
               <th className="py-4 px-6 font-semibold">Teacher</th>
               <th className="py-4 px-6 font-semibold">Contact Info</th>
               <th className="py-4 px-6 font-semibold">Department</th>
@@ -240,8 +233,8 @@ export default function TeacherDirectoryTable({
                     <Users className="w-8 h-8 text-slate-400" />
                     <span className="text-sm font-semibold text-slate-900 dark:text-slate-100">No teachers found</span>
                     <span className="text-xs text-slate-500 dark:text-slate-400">
-                      {teachers.length === 0 
-                        ? "Register your first Sunday School teacher using the form above." 
+                      {teachers.length === 0
+                        ? "Register your first Sunday School teacher using the form above."
                         : "Try adjusting your search query or filter settings."}
                     </span>
                     {(searchQuery || selectedDept !== "ALL" || assignmentFilter !== "ALL") && (
@@ -263,14 +256,13 @@ export default function TeacherDirectoryTable({
               filteredTeachers.map((teacher) => {
                 const assignedList = Array.isArray(teacher.assignedClasses) ? teacher.assignedClasses : [];
                 return (
-                  <tr 
+                  <tr
                     key={teacher.id}
                     onClick={() => setViewingTeacherStudents(teacher)}
-                    className={`transition-colors group cursor-pointer ${
-                      isDarkMode 
-                        ? "hover:bg-white/[0.04]" 
+                    className={`transition-colors group cursor-pointer ${isDarkMode
+                        ? "hover:bg-white/[0.04]"
                         : "hover:bg-amber-50/50"
-                    }`}
+                      }`}
                     title={`Click to view students assigned to ${teacher.name}`}
                   >
                     {/* Teacher Column (Avatar, Name, ID) */}
@@ -339,11 +331,10 @@ export default function TeacherDirectoryTable({
 
                     {/* Department Badge */}
                     <td className="py-4 px-6">
-                      <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-medium border ${
-                        isDarkMode 
-                          ? "bg-amber-500/10 border-amber-500/20 text-amber-400" 
+                      <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-medium border ${isDarkMode
+                          ? "bg-amber-500/10 border-amber-500/20 text-amber-400"
                           : "bg-amber-50 border-amber-200 text-amber-700"
-                      }`}>
+                        }`}>
                         <Building2 className="w-3 h-3" />
                         <span>{teacher.department || "General"}</span>
                       </span>
@@ -353,11 +344,10 @@ export default function TeacherDirectoryTable({
                     <td className="py-4 px-6">
                       {assignedList.length === 0 ? (
                         <div className="flex items-center gap-2">
-                          <span className={`text-[11px] px-2.5 py-0.5 rounded-full border ${
-                            isDarkMode 
-                              ? "bg-slate-500/10 border-slate-500/20 text-slate-400" 
+                          <span className={`text-[11px] px-2.5 py-0.5 rounded-full border ${isDarkMode
+                              ? "bg-slate-500/10 border-slate-500/20 text-slate-400"
                               : "bg-slate-100 border-slate-200 text-slate-600"
-                          }`}>
+                            }`}>
                             Unassigned
                           </span>
 
@@ -379,11 +369,10 @@ export default function TeacherDirectoryTable({
                           {assignedList.map((c) => (
                             <span
                               key={c.id || c.classId || Math.random()}
-                              className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-medium border ${
-                                isDarkMode 
-                                  ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400" 
+                              className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-medium border ${isDarkMode
+                                  ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400"
                                   : "bg-emerald-50 border-emerald-200 text-emerald-700"
-                              }`}
+                                }`}
                             >
                               <GraduationCap className="w-3 h-3" />
                               <span>{c.gradeLevel} - Sec {c.section}</span>
@@ -417,11 +406,10 @@ export default function TeacherDirectoryTable({
                             e.stopPropagation();
                             setViewingTeacherStudents(teacher);
                           }}
-                          className={`p-2 rounded-xl border transition cursor-pointer ${
-                            isDarkMode 
-                              ? "border-white/10 text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/10 hover:border-emerald-500/20" 
+                          className={`p-2 rounded-xl border transition cursor-pointer ${isDarkMode
+                              ? "border-white/10 text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/10 hover:border-emerald-500/20"
                               : "border-slate-200 text-slate-600 hover:text-emerald-600 hover:bg-emerald-50"
-                          }`}
+                            }`}
                           title="View Enrolled Students (Class Roster)"
                         >
                           <Users className="w-3.5 h-3.5" />
@@ -435,11 +423,10 @@ export default function TeacherDirectoryTable({
                                 e.stopPropagation();
                                 onAssignClass && onAssignClass(teacher);
                               }}
-                              className={`p-2 rounded-xl border transition cursor-pointer ${
-                                isDarkMode 
-                                  ? "border-white/10 text-slate-400 hover:text-amber-400 hover:bg-amber-500/10 hover:border-amber-500/20" 
+                              className={`p-2 rounded-xl border transition cursor-pointer ${isDarkMode
+                                  ? "border-white/10 text-slate-400 hover:text-amber-400 hover:bg-amber-500/10 hover:border-amber-500/20"
                                   : "border-slate-200 text-slate-600 hover:text-amber-600 hover:bg-amber-50"
-                              }`}
+                                }`}
                               title="Assign to Sunday School Class"
                             >
                               <School className="w-3.5 h-3.5" />
@@ -451,11 +438,10 @@ export default function TeacherDirectoryTable({
                                 e.stopPropagation();
                                 onEditTeacher && onEditTeacher(teacher);
                               }}
-                              className={`p-2 rounded-xl border transition cursor-pointer ${
-                                isDarkMode 
-                                  ? "border-white/10 text-slate-400 hover:text-sky-400 hover:bg-sky-500/10 hover:border-sky-500/20" 
+                              className={`p-2 rounded-xl border transition cursor-pointer ${isDarkMode
+                                  ? "border-white/10 text-slate-400 hover:text-sky-400 hover:bg-sky-500/10 hover:border-sky-500/20"
                                   : "border-slate-200 text-slate-600 hover:text-sky-600 hover:bg-sky-50"
-                              }`}
+                                }`}
                               title="Edit Teacher Profile"
                             >
                               <Edit3 className="w-3.5 h-3.5" />
@@ -467,11 +453,10 @@ export default function TeacherDirectoryTable({
                                 e.stopPropagation();
                                 setDeleteCandidate(teacher);
                               }}
-                              className={`p-2 rounded-xl border transition cursor-pointer ${
-                                isDarkMode 
-                                  ? "border-white/10 text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 hover:border-rose-500/20" 
+                              className={`p-2 rounded-xl border transition cursor-pointer ${isDarkMode
+                                  ? "border-white/10 text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 hover:border-rose-500/20"
                                   : "border-slate-200 text-slate-600 hover:text-rose-600 hover:bg-rose-50"
-                              }`}
+                                }`}
                               title="Delete Teacher"
                             >
                               <Trash2 className="w-3.5 h-3.5" />
@@ -491,9 +476,8 @@ export default function TeacherDirectoryTable({
       </div>
 
       {/* Directory Footer / Counter Summary */}
-      <div className={`p-4 border-t border-inherit flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-2 ${
-        isDarkMode ? "bg-white/[0.01]" : "bg-slate-50"
-      }`}>
+      <div className={`p-4 border-t border-inherit flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-2 ${isDarkMode ? "bg-white/[0.01]" : "bg-slate-50"
+        }`}>
         <div>
           Showing <span className="font-semibold text-slate-200">{filteredTeachers.length}</span> of{" "}
           <span className="font-semibold text-slate-200">{teachers.length}</span> registered instructors
@@ -513,11 +497,10 @@ export default function TeacherDirectoryTable({
       {/* Delete Confirmation Modal */}
       {deleteCandidate && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
-          <div className={`w-full max-w-md rounded-2xl border p-6 shadow-2xl transition-all ${
-            isDarkMode 
-              ? "bg-[#0b1b3d] border-white/10 text-slate-100" 
+          <div className={`w-full max-w-md rounded-2xl border p-6 shadow-2xl transition-all ${isDarkMode
+              ? "bg-[#0b1b3d] border-white/10 text-slate-100"
               : "bg-white border-slate-200 text-slate-800"
-          }`}>
+            }`}>
             <div className="flex items-center gap-3 text-rose-500 mb-4">
               <div className="w-10 h-10 rounded-xl bg-rose-500/10 flex items-center justify-center">
                 <AlertTriangle className="w-5 h-5" />
@@ -537,11 +520,10 @@ export default function TeacherDirectoryTable({
                 type="button"
                 onClick={() => setDeleteCandidate(null)}
                 disabled={isDeleting}
-                className={`px-4 py-2 rounded-xl text-xs font-semibold border transition ${
-                  isDarkMode 
-                    ? "bg-white/5 border-white/10 hover:bg-white/10 text-slate-300" 
+                className={`px-4 py-2 rounded-xl text-xs font-semibold border transition ${isDarkMode
+                    ? "bg-white/5 border-white/10 hover:bg-white/10 text-slate-300"
                     : "bg-slate-100 border-slate-200 hover:bg-slate-200 text-slate-700"
-                }`}
+                  }`}
               >
                 Cancel
               </button>

@@ -1,13 +1,13 @@
 import { useState, useEffect, useCallback } from "react";
 import { toast } from "react-toastify";
-import { 
-  Users, 
-  UserPlus, 
-  ShieldCheck, 
-  ShieldAlert, 
+import {
+  Users,
+  UserPlus,
+  ShieldCheck,
+  ShieldAlert,
   ChevronUp
 } from "lucide-react";
-import { teacherService } from "../../services/teacherService";
+import { teacherService } from "../../services/educationhub/teacherService";
 import TeacherRegistrationForm from "./TeacherRegistrationForm";
 import TeacherDirectoryTable from "./TeacherDirectoryTable";
 import AssignClassModal from "./AssignClassModal";
@@ -28,8 +28,8 @@ export default function TeacherManagement({ isDarkMode = true, initialShowForm =
       return {};
     }
   })();
-  const userRole = user?.role || "";
-  const isAuthorized = ["ADMIN", "EDUCATION_LEADER"].includes(userRole);
+  const userRole = (user?.role || "").toUpperCase();
+  const isAuthorized = ["ADMIN", "EDUCATION_LEADER", "EDUCATIONHUB"].includes(userRole);
 
   const fetchTeachers = useCallback(async () => {
     setLoading(true);
@@ -45,28 +45,12 @@ export default function TeacherManagement({ isDarkMode = true, initialShowForm =
   }, []);
 
   useEffect(() => {
-    let isMounted = true;
-    async function init() {
-      setLoading(true);
-      try {
-        const data = await teacherService.getTeachers();
-        if (isMounted) setTeachers(data || []);
-      } catch (err) {
-        console.error("Failed to fetch teachers:", err);
-        toast.error(err.message || "Failed to load teachers directory.");
-      } finally {
-        if (isMounted) setLoading(false);
-      }
-    }
-    init();
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+    fetchTeachers();
+  }, [fetchTeachers]);
 
   // Handle teacher newly created
   const handleTeacherCreated = (newTeacher) => {
-    setTeachers((prev) => [newTeacher, ...prev]);
+    fetchTeachers();
   };
 
   // Handle teacher deleted
@@ -74,11 +58,9 @@ export default function TeacherManagement({ isDarkMode = true, initialShowForm =
     setTeachers((prev) => prev.filter((t) => Number(t.id) !== Number(deletedId)));
   };
 
-  // Handle teacher updated
-  const handleTeacherUpdated = (updatedTeacher) => {
-    setTeachers((prev) =>
-      prev.map((t) => (Number(t.id) === Number(updatedTeacher.id) ? updatedTeacher : t))
-    );
+  // Handle teacher updated (or new class assigned)
+  const handleTeacherUpdated = () => {
+    fetchTeachers();
   };
 
   // Quick stats
@@ -92,9 +74,8 @@ export default function TeacherManagement({ isDarkMode = true, initialShowForm =
   return (
     <div className="space-y-6">
       {/* Top Banner / Section Header */}
-      <div className={`p-6 sm:p-7 rounded-2xl border transition-all ${
-        isDarkMode ? "bg-[#0b1b3d]/60 border-white/10" : "bg-white border-slate-200 shadow-sm"
-      }`}>
+      <div className={`p-6 sm:p-7 rounded-2xl border transition-all ${isDarkMode ? "bg-[#0b1b3d]/60 border-white/10" : "bg-white border-slate-200 shadow-sm"
+        }`}>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3.5">
             <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center font-bold shrink-0">
@@ -106,16 +87,14 @@ export default function TeacherManagement({ isDarkMode = true, initialShowForm =
                   Teacher Management
                 </h2>
                 {isAuthorized ? (
-                  <span className={`inline-flex items-center gap-1 text-[10px] font-semibold px-2.5 py-0.5 rounded-full border ${
-                    isDarkMode ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400" : "bg-emerald-50 border-emerald-200 text-emerald-700"
-                  }`}>
+                  <span className={`inline-flex items-center gap-1 text-[10px] font-semibold px-2.5 py-0.5 rounded-full border ${isDarkMode ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400" : "bg-emerald-50 border-emerald-200 text-emerald-700"
+                    }`}>
                     <ShieldCheck className="w-3 h-3" />
                     <span>Authorized (Leader/Admin)</span>
                   </span>
                 ) : (
-                  <span className={`inline-flex items-center gap-1 text-[10px] font-semibold px-2.5 py-0.5 rounded-full border ${
-                    isDarkMode ? "bg-slate-500/10 border-slate-500/20 text-slate-400" : "bg-slate-100 border-slate-200 text-slate-600"
-                  }`}>
+                  <span className={`inline-flex items-center gap-1 text-[10px] font-semibold px-2.5 py-0.5 rounded-full border ${isDarkMode ? "bg-slate-500/10 border-slate-500/20 text-slate-400" : "bg-slate-100 border-slate-200 text-slate-600"
+                    }`}>
                     <ShieldAlert className="w-3 h-3" />
                     <span>Read-Only</span>
                   </span>
@@ -130,11 +109,10 @@ export default function TeacherManagement({ isDarkMode = true, initialShowForm =
           {isAuthorized && (
             <button
               onClick={() => setShowForm((prev) => !prev)}
-              className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all shadow-md active:scale-[0.99] cursor-pointer ${
-                showForm 
+              className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all shadow-md active:scale-[0.99] cursor-pointer ${showForm
                   ? (isDarkMode ? "bg-white/10 text-slate-200 hover:bg-white/15" : "bg-slate-100 border border-slate-300 text-slate-800 hover:bg-slate-200")
                   : "bg-amber-500 hover:bg-amber-400 text-slate-950"
-              }`}
+                }`}
             >
               {showForm ? (
                 <>
@@ -153,9 +131,8 @@ export default function TeacherManagement({ isDarkMode = true, initialShowForm =
 
         {/* Metric Cards Row */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6 pt-5 border-t border-inherit">
-          <div className={`p-4 sm:p-5 rounded-xl border ${
-            isDarkMode ? "bg-white/[0.02] border-white/5" : "bg-slate-50 border-slate-100"
-          }`}>
+          <div className={`p-4 sm:p-5 rounded-xl border ${isDarkMode ? "bg-white/[0.02] border-white/5" : "bg-slate-50 border-slate-100"
+            }`}>
             <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 block">
               Total Instructors
             </span>
@@ -164,9 +141,8 @@ export default function TeacherManagement({ isDarkMode = true, initialShowForm =
             </span>
           </div>
 
-          <div className={`p-4 sm:p-5 rounded-xl border ${
-            isDarkMode ? "bg-white/[0.02] border-white/5" : "bg-slate-50 border-slate-100"
-          }`}>
+          <div className={`p-4 sm:p-5 rounded-xl border ${isDarkMode ? "bg-white/[0.02] border-white/5" : "bg-slate-50 border-slate-100"
+            }`}>
             <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 block">
               Class Assigned
             </span>
@@ -175,9 +151,8 @@ export default function TeacherManagement({ isDarkMode = true, initialShowForm =
             </span>
           </div>
 
-          <div className={`p-4 sm:p-5 rounded-xl border ${
-            isDarkMode ? "bg-white/[0.02] border-white/5" : "bg-slate-50 border-slate-100"
-          }`}>
+          <div className={`p-4 sm:p-5 rounded-xl border ${isDarkMode ? "bg-white/[0.02] border-white/5" : "bg-slate-50 border-slate-100"
+            }`}>
             <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 block">
               Unassigned
             </span>
@@ -186,9 +161,8 @@ export default function TeacherManagement({ isDarkMode = true, initialShowForm =
             </span>
           </div>
 
-          <div className={`p-4 sm:p-5 rounded-xl border ${
-            isDarkMode ? "bg-white/[0.02] border-white/5" : "bg-slate-50 border-slate-100"
-          }`}>
+          <div className={`p-4 sm:p-5 rounded-xl border ${isDarkMode ? "bg-white/[0.02] border-white/5" : "bg-slate-50 border-slate-100"
+            }`}>
             <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 block">
               Departments
             </span>

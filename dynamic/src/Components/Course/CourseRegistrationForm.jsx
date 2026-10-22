@@ -1,18 +1,18 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { 
-  BookPlus, 
-  BookOpen, 
-  Clock, 
-  Loader2, 
-  CheckCircle2, 
-  AlertCircle, 
-  ShieldAlert, 
-  RefreshCw, 
+import {
+  BookPlus,
+  BookOpen,
+  Clock,
+  Loader2,
+  CheckCircle2,
+  AlertCircle,
+  ShieldAlert,
+  RefreshCw,
   X,
   Sparkles
 } from "lucide-react";
-import { courseService } from "../../services/courseService";
+import { courseService } from "../../services/educationhub/courseService";
 
 const SUGGESTED_COURSES = [
   "Orthodox Dogma & Canon",
@@ -117,9 +117,8 @@ export default function CourseRegistrationForm({
 
   if (!isAuthorized) {
     return (
-      <div className={`p-6 rounded-2xl border ${
-        isDarkMode ? "bg-rose-500/10 border-rose-500/20 text-rose-300" : "bg-rose-50 border-rose-200 text-rose-700"
-      }`}>
+      <div className={`p-6 rounded-2xl border ${isDarkMode ? "bg-rose-500/10 border-rose-500/20 text-rose-300" : "bg-rose-50 border-rose-200 text-rose-700"
+        }`}>
         <div className="flex items-center gap-3">
           <ShieldAlert className="w-5 h-5 text-rose-500 shrink-0" />
           <div>
@@ -134,11 +133,10 @@ export default function CourseRegistrationForm({
   }
 
   return (
-    <div className={`rounded-2xl border p-6 transition-all shadow-sm relative ${
-      isDarkMode 
-        ? "bg-[#0b1b3d]/60 border-white/10 text-slate-100" 
+    <div className={`rounded-2xl border p-6 transition-all shadow-sm relative ${isDarkMode
+        ? "bg-[#0b1b3d]/60 border-white/10 text-slate-100"
         : "bg-white border-slate-200 text-slate-800"
-    }`}>
+      }`}>
       {/* Header */}
       <div className="flex items-start justify-between pb-4 mb-5 border-b border-inherit">
         <div className="flex items-center gap-3">
@@ -156,11 +154,10 @@ export default function CourseRegistrationForm({
         {onClose && (
           <button
             onClick={onClose}
-            className={`p-1.5 rounded-lg border transition-colors ${
-              isDarkMode 
-                ? "border-white/10 text-slate-400 hover:text-slate-200 hover:bg-white/5" 
+            className={`p-1.5 rounded-lg border transition-colors ${isDarkMode
+                ? "border-white/10 text-slate-400 hover:text-slate-200 hover:bg-white/5"
                 : "border-slate-200 text-slate-500 hover:text-slate-800 hover:bg-slate-100"
-            }`}
+              }`}
             title="Close form"
           >
             <X className="w-4 h-4" />
@@ -170,9 +167,8 @@ export default function CourseRegistrationForm({
 
       {/* Success Banner */}
       {lastCreatedCourse && (
-        <div className={`mb-6 p-4 rounded-xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 ${
-          isDarkMode ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-300" : "bg-emerald-50 border-emerald-200 text-emerald-800"
-        }`}>
+        <div className={`mb-6 p-4 rounded-xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 ${isDarkMode ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-300" : "bg-emerald-50 border-emerald-200 text-emerald-800"
+          }`}>
           <div className="flex items-center gap-3">
             <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
             <div>
@@ -193,9 +189,8 @@ export default function CourseRegistrationForm({
 
       {/* Error Banner with Retry */}
       {errorBanner && (
-        <div className={`mb-6 p-4 rounded-xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 ${
-          isDarkMode ? "bg-rose-500/10 border-rose-500/30 text-rose-300" : "bg-rose-50 border-rose-200 text-rose-700"
-        }`}>
+        <div className={`mb-6 p-4 rounded-xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 ${isDarkMode ? "bg-rose-500/10 border-rose-500/30 text-rose-300" : "bg-rose-50 border-rose-200 text-rose-700"
+          }`}>
           <div className="flex items-start gap-3">
             <AlertCircle className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
             <div className="text-xs">
@@ -227,13 +222,12 @@ export default function CourseRegistrationForm({
               key={title}
               type="button"
               onClick={() => handleSelectSuggested(title)}
-              className={`text-[11px] px-2.5 py-1 rounded-lg border transition ${
-                formData.courseName === title
+              className={`text-[11px] px-2.5 py-1 rounded-lg border transition ${formData.courseName === title
                   ? "bg-amber-500 text-slate-950 border-amber-500 font-bold"
-                  : (isDarkMode 
-                      ? "bg-white/5 border-white/10 text-slate-300 hover:bg-white/10" 
-                      : "bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100")
-              }`}
+                  : (isDarkMode
+                    ? "bg-white/5 border-white/10 text-slate-300 hover:bg-white/10"
+                    : "bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100")
+                }`}
             >
               {title}
             </button>
@@ -259,11 +253,10 @@ export default function CourseRegistrationForm({
                 placeholder="e.g. Orthodox Dogma & Canon I"
                 required
                 disabled={isSubmitting}
-                className={`w-full pl-9 pr-3 py-2.5 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition font-medium ${
-                  isDarkMode 
-                    ? "bg-[#081226] border-white/10 text-slate-100 placeholder-slate-500" 
+                className={`w-full pl-9 pr-3 py-2.5 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition font-medium ${isDarkMode
+                    ? "bg-[#081226] border-white/10 text-slate-100 placeholder-slate-500"
                     : "bg-white border-slate-300 text-slate-900 placeholder-slate-400"
-                }`}
+                  }`}
               />
             </div>
           </div>
@@ -284,11 +277,10 @@ export default function CourseRegistrationForm({
                 max={12}
                 required
                 disabled={isSubmitting}
-                className={`w-full pl-9 pr-3 py-2.5 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition font-medium ${
-                  isDarkMode 
-                    ? "bg-[#081226] border-white/10 text-slate-100 placeholder-slate-500" 
+                className={`w-full pl-9 pr-3 py-2.5 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition font-medium ${isDarkMode
+                    ? "bg-[#081226] border-white/10 text-slate-100 placeholder-slate-500"
                     : "bg-white border-slate-300 text-slate-900 placeholder-slate-400"
-                }`}
+                  }`}
               />
             </div>
           </div>

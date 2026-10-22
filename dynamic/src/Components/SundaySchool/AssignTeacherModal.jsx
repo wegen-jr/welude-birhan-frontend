@@ -1,18 +1,18 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { 
-  School, 
-  X, 
-  Check, 
-  AlertCircle, 
-  Loader2, 
-  GraduationCap, 
-  Search, 
+import {
+  School,
+  X,
+  Check,
+  AlertCircle,
+  Loader2,
+  GraduationCap,
+  Search,
   ExternalLink
 } from "lucide-react";
-import { teacherService } from "../../services/teacherService";
-import { courseService } from "../../services/courseService";
+import { teacherService } from "../../services/educationhub/teacherService";
+import { courseService } from "../../services/educationhub/courseService";
 
 /**
  * AssignTeacherModal Component
@@ -170,10 +170,10 @@ export default function AssignTeacherModal({
       // Strictly follows Swagger CreateAssignTeacherForClassDto:
       // { teacherId, teacherName, courseId, courseName, gradeLevel }
       const payload = {
-        teacherId: Number(teacherObj.id),
+        teacherId: parseInt(teacherObj.id, 10),
         teacherName: String(teacherObj.name).trim(),
-        courseId: Number(courseObj.id),
-        courseName: String(courseObj.courseName).trim(),
+        courseId: parseInt(courseObj.id, 10),
+        courseName: String(courseObj.courseName || courseObj.name || "").trim(),
         gradeLevel: String(selectedClass.gradeLevel).trim(),
         section: selectedClass.section || "A",
         classId: selectedClass.id,
@@ -204,7 +204,7 @@ export default function AssignTeacherModal({
   if (!isOpen || !selectedClass) return null;
 
   return (
-    <div 
+    <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-sm animate-fadeIn"
       onClick={(e) => {
         if (e.target === e.currentTarget && !submitting) {
@@ -212,12 +212,11 @@ export default function AssignTeacherModal({
         }
       }}
     >
-      <div 
-        className={`w-full max-w-xl rounded-2xl border p-6 sm:p-7 shadow-2xl transition-all relative ${
-          isDarkMode 
-            ? "bg-[#0b1b3d] border-white/10 text-slate-100" 
+      <div
+        className={`w-full max-w-xl rounded-2xl border p-6 sm:p-7 shadow-2xl transition-all relative ${isDarkMode
+            ? "bg-[#0b1b3d] border-white/10 text-slate-100"
             : "bg-white border-slate-200 text-slate-900"
-        }`}
+          }`}
       >
         {/* Modal Header */}
         <div className="flex items-start justify-between pb-5 border-b border-inherit">
@@ -242,21 +241,19 @@ export default function AssignTeacherModal({
             type="button"
             onClick={() => !submitting && onClose()}
             disabled={submitting}
-            className={`p-2 rounded-xl border transition-colors cursor-pointer ${
-              isDarkMode 
-                ? "border-white/10 text-slate-400 hover:text-slate-200 hover:bg-white/5" 
+            className={`p-2 rounded-xl border transition-colors cursor-pointer ${isDarkMode
+                ? "border-white/10 text-slate-400 hover:text-slate-200 hover:bg-white/5"
                 : "border-slate-200 text-slate-500 hover:text-slate-900 hover:bg-slate-100"
-            }`}
+              }`}
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Selected Class Target Context Banner */}
-        <div 
-          className={`mt-5 p-3.5 rounded-xl border flex items-center justify-between text-xs ${
-            isDarkMode ? "bg-white/5 border-white/5" : "bg-slate-50 border-slate-200"
-          }`}
+        <div
+          className={`mt-5 p-3.5 rounded-xl border flex items-center justify-between text-xs ${isDarkMode ? "bg-white/5 border-white/5" : "bg-slate-50 border-slate-200"
+            }`}
         >
           <div className="flex items-center gap-2.5">
             <School className="w-4 h-4 text-amber-500 shrink-0" />
@@ -271,12 +268,11 @@ export default function AssignTeacherModal({
 
         {/* Error Notification Alert */}
         {error && (
-          <div 
-            className={`mt-4 p-3.5 rounded-xl border flex items-start gap-2.5 text-xs ${
-              isDarkMode 
-                ? "bg-rose-500/10 border-rose-500/30 text-rose-300" 
+          <div
+            className={`mt-4 p-3.5 rounded-xl border flex items-start gap-2.5 text-xs ${isDarkMode
+                ? "bg-rose-500/10 border-rose-500/30 text-rose-300"
                 : "bg-rose-50 border-rose-200 text-rose-700"
-            }`}
+              }`}
           >
             <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-rose-500" />
             <span className="font-medium leading-relaxed">{error}</span>
@@ -303,10 +299,9 @@ export default function AssignTeacherModal({
               </div>
 
               {teachers.length === 0 ? (
-                <div 
-                  className={`p-4 rounded-xl border text-xs text-center space-y-2 ${
-                    isDarkMode ? "bg-[#081226] border-white/10" : "bg-slate-50 border-slate-200"
-                  }`}
+                <div
+                  className={`p-4 rounded-xl border text-xs text-center space-y-2 ${isDarkMode ? "bg-[#081226] border-white/10" : "bg-slate-50 border-slate-200"
+                    }`}
                 >
                   <p className="text-slate-600 dark:text-slate-400">
                     No registered teachers found in the directory.
@@ -330,11 +325,10 @@ export default function AssignTeacherModal({
                         placeholder="Search instructors by name or department..."
                         value={teacherSearch}
                         onChange={(e) => setTeacherSearch(e.target.value)}
-                        className={`w-full pl-8 pr-3 py-1.5 rounded-xl text-xs border focus:outline-none focus:ring-1 focus:ring-amber-500 transition ${
-                          isDarkMode 
-                            ? "bg-[#081226] border-white/10 text-slate-100 placeholder:text-slate-500" 
+                        className={`w-full pl-8 pr-3 py-1.5 rounded-xl text-xs border focus:outline-none focus:ring-1 focus:ring-amber-500 transition ${isDarkMode
+                            ? "bg-[#081226] border-white/10 text-slate-100 placeholder:text-slate-500"
                             : "bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400"
-                        }`}
+                          }`}
                       />
                     </div>
                   )}
@@ -347,11 +341,10 @@ export default function AssignTeacherModal({
                     }}
                     required
                     disabled={submitting}
-                    className={`w-full px-3.5 py-2.5 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition cursor-pointer font-medium ${
-                      isDarkMode 
-                        ? "bg-[#081226] border-white/10 text-slate-100" 
+                    className={`w-full px-3.5 py-2.5 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition cursor-pointer font-medium ${isDarkMode
+                        ? "bg-[#081226] border-white/10 text-slate-100"
                         : "bg-white border-slate-300 text-slate-900"
-                    }`}
+                      }`}
                   >
                     <option value="">-- Choose an Instructor from Faculty --</option>
                     {filteredTeachers.map((t) => {
@@ -359,8 +352,8 @@ export default function AssignTeacherModal({
                         (id) => String(id) === String(t.id)
                       );
                       return (
-                        <option 
-                          key={t.id} 
+                        <option
+                          key={t.id}
                           value={t.id}
                         >
                           {t.name} — {t.department || "General Spiritual Education"}
@@ -385,10 +378,9 @@ export default function AssignTeacherModal({
               </div>
 
               {availableCourses.length === 0 ? (
-                <div 
-                  className={`p-4 rounded-xl border text-xs text-center space-y-2 ${
-                    isDarkMode ? "bg-[#081226] border-white/10" : "bg-slate-50 border-slate-200"
-                  }`}
+                <div
+                  className={`p-4 rounded-xl border text-xs text-center space-y-2 ${isDarkMode ? "bg-[#081226] border-white/10" : "bg-slate-50 border-slate-200"
+                    }`}
                 >
                   <p className="text-slate-600 dark:text-slate-400">
                     No curriculum courses available to assign.
@@ -411,11 +403,10 @@ export default function AssignTeacherModal({
                     }}
                     required
                     disabled={submitting}
-                    className={`w-full px-3.5 py-2.5 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition cursor-pointer font-medium ${
-                      isDarkMode 
-                        ? "bg-[#081226] border-white/10 text-slate-100" 
+                    className={`w-full px-3.5 py-2.5 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition cursor-pointer font-medium ${isDarkMode
+                        ? "bg-[#081226] border-white/10 text-slate-100"
                         : "bg-white border-slate-300 text-slate-900"
-                    }`}
+                      }`}
                   >
                     <option value="">-- Choose Subject to Teach --</option>
                     {availableCourses.map((c) => (
@@ -437,11 +428,10 @@ export default function AssignTeacherModal({
                 type="button"
                 onClick={onClose}
                 disabled={submitting}
-                className={`px-4 py-2.5 rounded-xl text-xs font-semibold border transition cursor-pointer ${
-                  isDarkMode 
-                    ? "bg-white/5 border-white/10 hover:bg-white/10 text-slate-300" 
+                className={`px-4 py-2.5 rounded-xl text-xs font-semibold border transition cursor-pointer ${isDarkMode
+                    ? "bg-white/5 border-white/10 hover:bg-white/10 text-slate-300"
                     : "bg-slate-100 border-slate-200 hover:bg-slate-200 text-slate-700"
-                }`}
+                  }`}
               >
                 Cancel
               </button>
@@ -449,10 +439,10 @@ export default function AssignTeacherModal({
               <button
                 type="submit"
                 disabled={
-                  submitting || 
-                  !selectedTeacherId || 
-                  !selectedCourseId || 
-                  teachers.length === 0 || 
+                  submitting ||
+                  !selectedTeacherId ||
+                  !selectedCourseId ||
+                  teachers.length === 0 ||
                   availableCourses.length === 0
                 }
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer active:scale-[0.99]"

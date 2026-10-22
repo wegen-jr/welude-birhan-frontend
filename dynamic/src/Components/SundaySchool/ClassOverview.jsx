@@ -1,22 +1,22 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { 
-  GraduationCap, 
-  Layers, 
-  AlertCircle, 
-  UserPlus, 
-  Plus, 
-  RefreshCw, 
-  X, 
-  Loader2, 
-  Eye, 
+import {
+  GraduationCap,
+  Layers,
+  AlertCircle,
+  UserPlus,
+  Plus,
+  RefreshCw,
+  X,
+  Loader2,
+  Eye,
   ArrowRight,
   School,
   Check
 } from "lucide-react";
-import { sundaySchoolService } from "../../services/sundaySchoolService";
-import { teacherService } from "../../services/teacherService";
+import { sundaySchoolService } from "../../services/educationhub/sundaySchoolService";
+import { teacherService } from "../../services/educationhub/teacherService";
 import SelectedClassDetails from "./SelectedClassDetails";
 
 /**
@@ -28,10 +28,10 @@ import SelectedClassDetails from "./SelectedClassDetails";
  * - Dynamically reveals dedicated SelectedClassDetails section only for the selected class
  * - Eliminates cluttered vertical stacking
  */
-export default function ClassOverview({ 
-  isDarkMode = true, 
-  refreshTrigger = 0, 
-  isAuthorized: propIsAuthorized 
+export default function ClassOverview({
+  isDarkMode = true,
+  refreshTrigger = 0,
+  isAuthorized: propIsAuthorized
 }) {
   // Role verification for administrative actions
   const user = (() => {
@@ -102,8 +102,8 @@ export default function ClassOverview({
         const cGrade = current?.gradeLevel || current?.grade_level;
         const cSec = current?.section;
         const match = classList.find(
-          (c) => (c.id && c.id === current.id) || 
-                 ((c.gradeLevel || c.grade_level) === cGrade && c.section === cSec)
+          (c) => (c.id && c.id === current.id) ||
+            ((c.gradeLevel || c.grade_level) === cGrade && c.section === cSec)
         );
         return match || null;
       });
@@ -183,9 +183,8 @@ export default function ClassOverview({
       <div>
         {/* Backend Connection Error Notice Banner */}
         {loadError && (
-          <div className={`mb-6 p-4 sm:p-5 rounded-2xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 ${
-            isDarkMode ? "bg-amber-500/10 border-amber-500/30 text-amber-300" : "bg-amber-50 border-amber-200 text-amber-900"
-          }`}>
+          <div className={`mb-6 p-4 sm:p-5 rounded-2xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 ${isDarkMode ? "bg-amber-500/10 border-amber-500/30 text-amber-300" : "bg-amber-50 border-amber-200 text-amber-900"
+            }`}>
             <div className="flex items-start gap-3">
               <AlertCircle className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
               <div>
@@ -218,11 +217,10 @@ export default function ClassOverview({
               <h2 className="text-lg sm:text-xl font-serif font-bold text-slate-900 dark:text-slate-100">
                 Active Classes Directory
               </h2>
-              <span className={`px-2.5 py-0.5 rounded-full text-xs font-semibold border ${
-                isDarkMode 
-                  ? "bg-amber-500/10 text-amber-400 border-amber-500/20" 
+              <span className={`px-2.5 py-0.5 rounded-full text-xs font-semibold border ${isDarkMode
+                  ? "bg-amber-500/10 text-amber-400 border-amber-500/20"
                   : "bg-amber-50 text-amber-700 border-amber-200"
-              }`}>
+                }`}>
                 {classes.length} Classes
               </span>
             </div>
@@ -247,11 +245,10 @@ export default function ClassOverview({
               type="button"
               onClick={fetchInitialData}
               disabled={loadingClasses || loadingTeachers}
-              className={`self-start sm:self-auto inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
-                isDarkMode 
-                  ? "bg-white/5 border-white/10 text-slate-300 hover:bg-white/10" 
+              className={`self-start sm:self-auto inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${isDarkMode
+                  ? "bg-white/5 border-white/10 text-slate-300 hover:bg-white/10"
                   : "bg-white border-slate-200 text-slate-700 hover:bg-slate-50 shadow-sm"
-              }`}
+                }`}
             >
               <RefreshCw className={`w-3.5 h-3.5 ${loadingClasses || loadingTeachers ? "animate-spin text-amber-500" : ""}`} />
               <span>Refresh Classes</span>
@@ -263,24 +260,22 @@ export default function ClassOverview({
         {loadingClasses && classes.length === 0 ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 animate-pulse">
             {[1, 2, 3, 4, 5].map((i) => (
-              <div 
-                key={i} 
-                className={`h-32 rounded-2xl border ${
-                  isDarkMode ? "bg-white/5 border-white/10" : "bg-slate-100 border-slate-200"
-                }`} 
+              <div
+                key={i}
+                className={`h-32 rounded-2xl border ${isDarkMode ? "bg-white/5 border-white/10" : "bg-slate-100 border-slate-200"
+                  }`}
               />
             ))}
           </div>
         ) : classes.length === 0 ? (
-          <div className={`p-8 sm:p-10 rounded-2xl border text-center ${
-            isDarkMode ? "bg-white/5 border-white/10 text-slate-400" : "bg-white border-slate-200 text-slate-600 shadow-sm"
-          }`}>
+          <div className={`p-8 sm:p-10 rounded-2xl border text-center ${isDarkMode ? "bg-white/5 border-white/10 text-slate-400" : "bg-white border-slate-200 text-slate-600 shadow-sm"
+            }`}>
             <GraduationCap className="w-10 h-10 mx-auto text-slate-400 mb-3" />
             <p className="text-base font-semibold text-slate-900 dark:text-slate-100">
               {loadError ? "Could not connect to database" : "No active classes found in the database"}
             </p>
             <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1 mb-5">
-              {loadError 
+              {loadError
                 ? "The backend database may be temporarily waking up or synchronizing. Click 'Retry Connection' below."
                 : "Create your first Sunday School class to configure grade levels, assign teachers, and enroll students."}
             </p>
@@ -309,11 +304,10 @@ export default function ClassOverview({
                   )}
                   <Link
                     to="/dashboard/student-enrollment"
-                    className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-semibold border transition-all ${
-                      isDarkMode 
-                        ? "bg-white/5 border-white/10 text-slate-200 hover:bg-white/10" 
+                    className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-semibold border transition-all ${isDarkMode
+                        ? "bg-white/5 border-white/10 text-slate-200 hover:bg-white/10"
                         : "bg-slate-100 border-slate-200 text-slate-800 hover:bg-slate-200"
-                    }`}
+                      }`}
                   >
                     <UserPlus className="w-4 h-4 text-amber-500" />
                     <span>Go to Student Enrollment</span>
@@ -347,11 +341,11 @@ export default function ClassOverview({
                 if (baMatch) return true;
 
                 // Local assignments match
-                return t.assignedClasses?.some((ac) => 
+                return t.assignedClasses?.some((ac) =>
                   (ac.id && targetId && String(ac.id) === targetId) ||
                   (ac.classId && targetId && String(ac.classId) === targetId) ||
                   (ac.gradeLevel && String(ac.gradeLevel).toLowerCase() === targetGrade &&
-                   (!ac.section || !targetSection || String(ac.section).toLowerCase() === targetSection))
+                    (!ac.section || !targetSection || String(ac.section).toLowerCase() === targetSection))
                 );
               }).length;
 
@@ -359,42 +353,38 @@ export default function ClassOverview({
                 <div
                   key={cls.id || `${cls.gradeLevel}-${cls.section}`}
                   onClick={() => handleToggleDetail(cls)}
-                  className={`group relative text-left p-4 rounded-2xl border transition-all duration-200 flex flex-col justify-between cursor-pointer ${
-                    isSelected
-                      ? (isDarkMode 
-                          ? "bg-amber-500/10 border-amber-500 shadow-lg shadow-amber-500/10 ring-2 ring-amber-500/40" 
-                          : "bg-amber-50/90 border-amber-500 shadow-md ring-2 ring-amber-500/30")
-                      : (isDarkMode 
-                          ? "bg-[#0b1b3d]/60 border-white/10 hover:border-amber-500/40 hover:bg-white/5" 
-                          : "bg-white border-slate-200 hover:border-amber-300 hover:bg-slate-50 shadow-sm")
-                  }`}
+                  className={`group relative text-left p-4 rounded-2xl border transition-all duration-200 flex flex-col justify-between cursor-pointer ${isSelected
+                      ? (isDarkMode
+                        ? "bg-amber-500/10 border-amber-500 shadow-lg shadow-amber-500/10 ring-2 ring-amber-500/40"
+                        : "bg-amber-50/90 border-amber-500 shadow-md ring-2 ring-amber-500/30")
+                      : (isDarkMode
+                        ? "bg-[#0b1b3d]/60 border-white/10 hover:border-amber-500/40 hover:bg-white/5"
+                        : "bg-white border-slate-200 hover:border-amber-300 hover:bg-slate-50 shadow-sm")
+                    }`}
                 >
                   <div>
                     {/* Top Header: Grade Icon & Section Pill */}
                     <div className="flex items-start justify-between gap-2 mb-3">
-                      <div className={`w-8 h-8 rounded-xl flex items-center justify-center transition-colors shrink-0 ${
-                        isSelected 
-                          ? "bg-amber-500 text-slate-950 font-bold" 
+                      <div className={`w-8 h-8 rounded-xl flex items-center justify-center transition-colors shrink-0 ${isSelected
+                          ? "bg-amber-500 text-slate-950 font-bold"
                           : (isDarkMode ? "bg-white/5 text-amber-400" : "bg-slate-100 text-slate-700")
-                      }`}>
+                        }`}>
                         <GraduationCap className="w-4 h-4" />
                       </div>
 
-                      <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${
-                        isSelected
+                      <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${isSelected
                           ? "bg-amber-500 text-slate-950 border-amber-500 font-bold"
                           : (isDarkMode ? "bg-white/5 border-white/10 text-slate-400" : "bg-slate-100 border-slate-200 text-slate-600")
-                      }`}>
+                        }`}>
                         Sec {cls.section || "A"}
                       </span>
                     </div>
 
                     {/* Grade Level Title */}
-                    <h3 className={`font-bold text-sm sm:text-base tracking-tight truncate ${
-                      isSelected 
-                        ? "text-amber-500 font-extrabold" 
+                    <h3 className={`font-bold text-sm sm:text-base tracking-tight truncate ${isSelected
+                        ? "text-amber-500 font-extrabold"
                         : "text-slate-900 dark:text-slate-100 group-hover:text-amber-400 transition-colors"
-                    }`}>
+                      }`}>
                       {cls.gradeLevel}
                     </h3>
 
@@ -418,13 +408,12 @@ export default function ClassOverview({
                         e.stopPropagation();
                         handleToggleDetail(cls);
                       }}
-                      className={`w-full py-1.5 px-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
-                        isSelected
+                      className={`w-full py-1.5 px-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${isSelected
                           ? "bg-amber-500 text-slate-950 shadow-sm"
-                          : (isDarkMode 
-                              ? "bg-white/5 hover:bg-amber-500/20 text-slate-300 hover:text-amber-400 border border-white/10" 
-                              : "bg-slate-100 hover:bg-amber-50 text-slate-700 hover:text-amber-800 border border-slate-200")
-                      }`}
+                          : (isDarkMode
+                            ? "bg-white/5 hover:bg-amber-500/20 text-slate-300 hover:text-amber-400 border border-white/10"
+                            : "bg-slate-100 hover:bg-amber-50 text-slate-700 hover:text-amber-800 border border-slate-200")
+                        }`}
                     >
                       {isSelected ? (
                         <>
@@ -464,11 +453,10 @@ export default function ClassOverview({
         </div>
       ) : (
         /* Empty / Hint prompt when no class card has been clicked for detail */
-        <div className={`p-8 sm:p-10 rounded-2xl border text-center transition-all ${
-          isDarkMode 
-            ? "bg-[#0b1b3d]/30 border-white/5 text-slate-400" 
+        <div className={`p-8 sm:p-10 rounded-2xl border text-center transition-all ${isDarkMode
+            ? "bg-[#0b1b3d]/30 border-white/5 text-slate-400"
             : "bg-slate-50/70 border-slate-200 text-slate-600 shadow-sm"
-        }`}>
+          }`}>
           <div className="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center mx-auto mb-3">
             <School className="w-6 h-6" />
           </div>
@@ -486,11 +474,10 @@ export default function ClassOverview({
       {/* ------------------------------------------------------------- */}
       {isCreateClassOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
-          <div className={`w-full max-w-md rounded-2xl border p-6 shadow-2xl transition-all ${
-            isDarkMode 
-              ? "bg-[#0b1b3d] border-white/10 text-slate-100" 
+          <div className={`w-full max-w-md rounded-2xl border p-6 shadow-2xl transition-all ${isDarkMode
+              ? "bg-[#0b1b3d] border-white/10 text-slate-100"
               : "bg-white border-slate-200 text-slate-900"
-          }`}>
+            }`}>
             <div className="flex items-center justify-between pb-4 border-b border-inherit">
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center font-bold">
@@ -510,11 +497,10 @@ export default function ClassOverview({
                 type="button"
                 onClick={() => !creatingClass && setIsCreateClassOpen(false)}
                 disabled={creatingClass}
-                className={`p-1.5 rounded-lg border transition-colors cursor-pointer ${
-                  isDarkMode 
-                    ? "border-white/10 text-slate-400 hover:text-slate-200 hover:bg-white/5" 
+                className={`p-1.5 rounded-lg border transition-colors cursor-pointer ${isDarkMode
+                    ? "border-white/10 text-slate-400 hover:text-slate-200 hover:bg-white/5"
                     : "border-slate-200 text-slate-500 hover:text-slate-800 hover:bg-slate-100"
-                }`}
+                  }`}
               >
                 <X className="w-4 h-4" />
               </button>
@@ -532,11 +518,10 @@ export default function ClassOverview({
                   onChange={(e) => setNewGradeLevel(e.target.value)}
                   required
                   disabled={creatingClass}
-                  className={`w-full px-3.5 py-2.5 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition font-medium ${
-                    isDarkMode 
-                      ? "bg-[#081226] border-white/10 text-slate-100 placeholder:text-slate-500" 
+                  className={`w-full px-3.5 py-2.5 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition font-medium ${isDarkMode
+                      ? "bg-[#081226] border-white/10 text-slate-100 placeholder:text-slate-500"
                       : "bg-white border-slate-300 text-slate-900 placeholder:text-slate-400"
-                  }`}
+                    }`}
                 />
               </div>
 
@@ -551,11 +536,10 @@ export default function ClassOverview({
                   onChange={(e) => setNewSection(e.target.value)}
                   required
                   disabled={creatingClass}
-                  className={`w-full px-3.5 py-2.5 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition font-medium ${
-                    isDarkMode 
-                      ? "bg-[#081226] border-white/10 text-slate-100 placeholder:text-slate-500" 
+                  className={`w-full px-3.5 py-2.5 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition font-medium ${isDarkMode
+                      ? "bg-[#081226] border-white/10 text-slate-100 placeholder:text-slate-500"
                       : "bg-white border-slate-300 text-slate-900 placeholder:text-slate-400"
-                  }`}
+                    }`}
                 />
               </div>
 
@@ -564,11 +548,10 @@ export default function ClassOverview({
                   type="button"
                   onClick={() => setIsCreateClassOpen(false)}
                   disabled={creatingClass}
-                  className={`px-4 py-2 rounded-xl text-xs font-semibold border transition cursor-pointer ${
-                    isDarkMode 
-                      ? "bg-white/5 border-white/10 hover:bg-white/10 text-slate-300" 
+                  className={`px-4 py-2 rounded-xl text-xs font-semibold border transition cursor-pointer ${isDarkMode
+                      ? "bg-white/5 border-white/10 hover:bg-white/10 text-slate-300"
                       : "bg-slate-100 border-slate-200 hover:bg-slate-200 text-slate-700"
-                  }`}
+                    }`}
                 >
                   Cancel
                 </button>

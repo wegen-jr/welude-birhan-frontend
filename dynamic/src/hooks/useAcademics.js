@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { classService } from '../services/classService';
+import { classService } from '../services/educationhub/classService';
 import { toast } from 'react-toastify';
 
 export const useAcademics = () => {

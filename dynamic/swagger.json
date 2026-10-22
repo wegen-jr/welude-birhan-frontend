@@ -2194,41 +2194,344 @@
         ],
         "responses": {
           "200": {
-            "description": "List of enrolled students for the teachers assigned class.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "example": {
-                    "teacherId": 205,
-                    "teacherName": "John Doe",
-                    "gradeLevel": "GRADE 10",
-                    "studentsEnrolled": 2,
-                    "students": [
-                      {
-                        "id": 1,
-                        "studentId": 501,
-                        "gradeLevel": "GRADE 10",
-                        "enrollmentDate": "2023-09-01T00:00:00.000Z"
-                      },
-                      {
-                        "id": 2,
-                        "studentId": 502,
-                        "gradeLevel": "GRADE 10",
-                        "enrollmentDate": "2023-09-02T00:00:00.000Z"
-                      }
-                    ]
-                  }
-                }
-              }
-            }
+            "description": "Grouped list of students by the courses and grades the teacher is assigned to."
           },
           "404": {
             "description": "Teacher assignment not found."
           }
         },
-        "summary": "Get all enrolled students for a specific teacher based on their assigned grade level",
+        "summary": "Get all enrolled students for all classes taught by a specific teacher",
         "tags": [
           "Teacher Course Assignments"
+        ]
+      }
+    },
+    "/student-attendance": {
+      "post": {
+        "operationId": "StudentAttendanceController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateStudentAttendanceDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The attendance record has been successfully created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "id": 1,
+                    "studentId": "STD-2023-001",
+                    "fullname": "John Doe",
+                    "courceId": 101,
+                    "courceName": "Introduction to Computer Science",
+                    "gradeLevel": "Grade 10",
+                    "teacherid": 5,
+                    "date": "2026-10-15T00:00:00.000Z",
+                    "status": "Present",
+                    "createdAt": "2026-10-15T10:00:00.000Z",
+                    "updatedAt": "2026-10-15T10:00:00.000Z"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid payload."
+          },
+          "404": {
+            "description": "Student, Course, or Grade Level not found."
+          }
+        },
+        "summary": "Create a new student attendance record",
+        "tags": [
+          "Student Attendance"
+        ]
+      },
+      "get": {
+        "operationId": "StudentAttendanceController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of all attendance records."
+          }
+        },
+        "summary": "Retrieve all student attendance records",
+        "tags": [
+          "Student Attendance"
+        ]
+      }
+    },
+    "/student-attendance/{id}": {
+      "get": {
+        "operationId": "StudentAttendanceController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "The numeric ID of the attendance record",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The attendance record."
+          },
+          "404": {
+            "description": "Record not found."
+          }
+        },
+        "summary": "Retrieve a specific student attendance record by ID",
+        "tags": [
+          "Student Attendance"
+        ]
+      }
+    },
+    "/student-attendance/filter": {
+      "post": {
+        "operationId": "StudentAttendanceController_filterRecords",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterStudentAttendanceDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns a list of filtered student attendance records."
+          }
+        },
+        "summary": "Filter attendance records via request body",
+        "tags": [
+          "Student Attendance"
+        ]
+      }
+    },
+    "/student-results": {
+      "post": {
+        "description": "Registers a mark for a student in a specific course and grade level. Enforces foreign keys and prevents duplicate entries per student/course/gradeLevel.",
+        "operationId": "StudentResultController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateStudentResultDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Student result created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "id": 1,
+                    "studentId": "STU-2026-001",
+                    "courceId": 101,
+                    "gradeLevel": "Grade 10",
+                    "teacherId": 5,
+                    "date": "2026-10-18T08:30:00.000Z",
+                    "result": 88,
+                    "createdAt": "2026-10-18T08:30:00.000Z",
+                    "updatedAt": "2026-10-18T08:30:00.000Z"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed or foreign key does not exist."
+          },
+          "409": {
+            "description": "Duplicate result for the same student, course, and grade level."
+          }
+        },
+        "summary": "Create a student result",
+        "tags": [
+          "Student Results"
+        ]
+      },
+      "get": {
+        "description": "Filter results by studentId, gradeLevel, or courceId.",
+        "operationId": "StudentResultController_findAll",
+        "parameters": [
+          {
+            "name": "studentId",
+            "required": false,
+            "in": "query",
+            "description": "Filter by Student ID",
+            "schema": {
+              "example": "STU-2026-001",
+              "type": "string"
+            }
+          },
+          {
+            "name": "gradeLevel",
+            "required": false,
+            "in": "query",
+            "description": "Filter by Grade Level",
+            "schema": {
+              "example": "Grade 10",
+              "type": "string"
+            }
+          },
+          {
+            "name": "courceId",
+            "required": false,
+            "in": "query",
+            "description": "Filter by Course ID",
+            "schema": {
+              "example": 101,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of student results returned."
+          }
+        },
+        "summary": "Get all student results with optional filters",
+        "tags": [
+          "Student Results"
+        ]
+      }
+    },
+    "/student-results/student/{studentId}": {
+      "get": {
+        "operationId": "StudentResultController_findByStudent",
+        "parameters": [
+          {
+            "name": "studentId",
+            "required": true,
+            "in": "path",
+            "description": "Unique Student ID from School_Profile",
+            "schema": {
+              "example": "STU-2026-001",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Student results retrieved successfully."
+          }
+        },
+        "summary": "Get all course results for a specific student",
+        "tags": [
+          "Student Results"
+        ]
+      }
+    },
+    "/student-results/{id}": {
+      "get": {
+        "operationId": "StudentResultController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "StudentResult primary key ID",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Record found."
+          },
+          "404": {
+            "description": "StudentResult not found."
+          }
+        },
+        "summary": "Get a single student result by ID",
+        "tags": [
+          "Student Results"
+        ]
+      },
+      "patch": {
+        "operationId": "StudentResultController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "StudentResult primary key ID",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateStudentResultDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "StudentResult updated successfully."
+          },
+          "404": {
+            "description": "StudentResult not found."
+          }
+        },
+        "summary": "Update an existing student result by ID",
+        "tags": [
+          "Student Results"
+        ]
+      },
+      "delete": {
+        "operationId": "StudentResultController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "StudentResult primary key ID",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "StudentResult deleted successfully."
+          },
+          "404": {
+            "description": "StudentResult not found."
+          }
+        },
+        "summary": "Delete a student result by ID",
+        "tags": [
+          "Student Results"
         ]
       }
     }
@@ -2999,55 +3302,94 @@
       "CreateTeacherDto": {
         "type": "object",
         "properties": {
-          "name": {
+          "phone": {
             "type": "string",
-            "description": "Full name of the teacher",
-            "example": "Jane Smith"
+            "description": "The phone number used to verify membership status",
+            "example": "0911223344"
           },
           "email": {
             "type": "string",
-            "description": "Unique email address",
-            "example": "jane.smith@school.edu"
+            "description": "The secure account email address",
+            "example": "user@example.com"
           },
-          "phone": {
+          "password": {
             "type": "string",
-            "description": "Unique phone number",
-            "example": "+1234567890"
+            "description": "Account password (minimum 6 characters)",
+            "example": "securePassword123",
+            "minLength": 6
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "USER",
+              "MEMBER_USER",
+              "ADMIN",
+              "EducationHub",
+              "Teacher"
+            ],
+            "description": "The access level or role assigned to the user within the system.",
+            "example": "USER",
+            "default": "USER"
           },
           "department": {
             "type": "string",
-            "description": "Department name",
-            "example": "Science"
+            "description": "The departemant",
+            "example": "temehrt kefel"
+          },
+          "name": {
+            "type": "string",
+            "description": "add fullname"
           }
         },
         "required": [
-          "name",
+          "phone",
           "email",
-          "phone"
+          "password",
+          "role",
+          "department",
+          "name"
         ]
       },
       "UpdateTeacherDto": {
         "type": "object",
         "properties": {
-          "name": {
+          "phone": {
             "type": "string",
-            "description": "Full name of the teacher",
-            "example": "Jane Smith"
+            "description": "The phone number used to verify membership status",
+            "example": "0911223344"
           },
           "email": {
             "type": "string",
-            "description": "Unique email address",
-            "example": "jane.smith@school.edu"
+            "description": "The secure account email address",
+            "example": "user@example.com"
           },
-          "phone": {
+          "password": {
             "type": "string",
-            "description": "Unique phone number",
-            "example": "+1234567890"
+            "description": "Account password (minimum 6 characters)",
+            "example": "securePassword123",
+            "minLength": 6
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "USER",
+              "MEMBER_USER",
+              "ADMIN",
+              "EducationHub",
+              "Teacher"
+            ],
+            "description": "The access level or role assigned to the user within the system.",
+            "example": "USER",
+            "default": "USER"
           },
           "department": {
             "type": "string",
-            "description": "Department name",
-            "example": "Science"
+            "description": "The departemant",
+            "example": "temehrt kefel"
+          },
+          "name": {
+            "type": "string",
+            "description": "add fullname"
           }
         }
       },
@@ -3190,6 +3532,163 @@
           },
           "gradeLevel": {
             "type": "string"
+          }
+        }
+      },
+      "CreateStudentAttendanceDto": {
+        "type": "object",
+        "properties": {
+          "studentId": {
+            "type": "string",
+            "description": "The unique identifier of the student (UUID or string ID)",
+            "example": "STD-2023-001"
+          },
+          "fullname": {
+            "type": "string",
+            "description": "Full name of the student",
+            "example": "John Doe"
+          },
+          "courseId": {
+            "type": "number",
+            "description": "The ID of the course the attendance belongs to",
+            "example": 101
+          },
+          "courseName": {
+            "type": "string",
+            "description": "The name of the course",
+            "example": "Introduction to Computer Science"
+          },
+          "gradeLevel": {
+            "type": "string",
+            "description": "The grade level of the student",
+            "example": "Grade 10"
+          },
+          "teacherid": {
+            "type": "number",
+            "description": "The ID of the teacher recording the attendance",
+            "example": 5
+          },
+          "date": {
+            "format": "date-time",
+            "type": "string",
+            "description": "The date for which attendance is recorded",
+            "example": "2026-10-15T00:00:00.000Z"
+          },
+          "status": {
+            "type": "string",
+            "description": "The attendance status (e.g., Present, Absent, Late)",
+            "example": "Present"
+          }
+        },
+        "required": [
+          "studentId",
+          "fullname",
+          "courseId",
+          "courseName",
+          "gradeLevel",
+          "teacherid",
+          "date",
+          "status"
+        ]
+      },
+      "FilterStudentAttendanceDto": {
+        "type": "object",
+        "properties": {
+          "studentId": {
+            "type": "string",
+            "example": "STU-9876",
+            "description": "Filter by Student ID"
+          },
+          "gradeLevel": {
+            "type": "string",
+            "example": "Grade 10",
+            "description": "Filter by Grade Level"
+          },
+          "courceId": {
+            "type": "number",
+            "example": 101,
+            "description": "Filter by Course ID"
+          }
+        }
+      },
+      "CreateStudentResultDto": {
+        "type": "object",
+        "properties": {
+          "studentId": {
+            "type": "string",
+            "description": "Unique Student ID referencing School_Profile.studentId",
+            "example": "STU-2026-001"
+          },
+          "courceId": {
+            "type": "number",
+            "description": "Course ID referencing Cources.id",
+            "example": 101
+          },
+          "gradeLevel": {
+            "type": "string",
+            "description": "Grade level referencing Class.gradeLevel",
+            "example": "Grade 10"
+          },
+          "teacherId": {
+            "type": "number",
+            "description": "Teacher ID referencing Teacher.id",
+            "example": 5
+          },
+          "date": {
+            "type": "string",
+            "description": "Date the exam or assessment was recorded (defaults to now)",
+            "example": "2026-10-18T08:30:00.000Z"
+          },
+          "result": {
+            "type": "number",
+            "description": "Student score out of 100",
+            "example": 88,
+            "minimum": 0,
+            "maximum": 100
+          }
+        },
+        "required": [
+          "studentId",
+          "courceId",
+          "gradeLevel",
+          "teacherId",
+          "result"
+        ]
+      },
+      "UpdateStudentResultDto": {
+        "type": "object",
+        "properties": {
+          "studentId": {
+            "type": "string",
+            "description": "Unique Student ID referencing School_Profile.studentId",
+            "example": "STU-2026-001"
+          },
+          "courceId": {
+            "type": "number",
+            "description": "Course ID referencing Cources.id",
+            "example": 101
+          },
+          "gradeLevel": {
+            "type": "string",
+            "description": "Grade level referencing Class.gradeLevel",
+            "example": "Grade 10"
+          },
+          "teacherId": {
+            "type": "number",
+            "description": "Teacher ID referencing Teacher.id",
+            "example": 5
+          },
+          "date": {
+            "type": "string",
+            "description": "Date the exam or assessment was recorded (defaults to now)",
+            "example": "2026-10-18T08:30:00.000Z"
+          },
+          "result": {
+            "type": "number",
+            "description": "Student score out of 100",
+            "example": 88,
+            "minimum": 0,
+            "maximum": 100
           }
         }
       }

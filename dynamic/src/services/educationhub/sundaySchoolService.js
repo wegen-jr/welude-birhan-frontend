@@ -1,5 +1,5 @@
-import { apiClient } from "./api";
-import { memberService } from "./memberService";
+import { apiClient } from "../api";
+import { memberService } from "../memberService";
 
 /**
  * Normalizes phone numbers for reliable comparison across local and international formats
@@ -212,14 +212,18 @@ export const sundaySchoolService = {
    * We explicitly exclude any class ID from the request body.
    */
   enrollStudent: async (enrollmentData) => {
+    const rawStatus = String(enrollmentData.status || "ACTIVE").trim().toUpperCase();
+    const validStatuses = ["ACTIVE", "INACTIVE", "GRADUATED", "SUSPENDED"];
+    const status = validStatuses.includes(rawStatus) ? rawStatus : "ACTIVE";
+
     const payload = {
       gradeLevel: String(enrollmentData.gradeLevel).trim(),
       section: String(enrollmentData.section).trim(),
-      memberId: Number(enrollmentData.memberId),
+      memberId: parseInt(enrollmentData.memberId, 10),
       studentId: String(enrollmentData.studentId).trim(),
       fullname: String(enrollmentData.fullname).trim(),
-      year: Number(enrollmentData.year),
-      status: String(enrollmentData.status || "ACTIVE").trim(),
+      year: parseInt(enrollmentData.year, 10),
+      status,
     };
 
     console.log("[sundaySchoolService.enrollStudent] Submitting payload to POST /class-enrollment:", payload);
@@ -227,6 +231,32 @@ export const sundaySchoolService = {
     return await apiClient("/class-enrollment", {
       method: "POST",
       body: payload,
+    });
+  },
+
+  updateEnrollment: async (id, data) => {
+    const payload = {};
+    if (data.gradeLevel !== undefined) payload.gradeLevel = String(data.gradeLevel).trim();
+    if (data.section !== undefined) payload.section = String(data.section).trim();
+    if (data.memberId !== undefined) payload.memberId = parseInt(data.memberId, 10);
+    if (data.studentId !== undefined) payload.studentId = String(data.studentId).trim();
+    if (data.fullname !== undefined) payload.fullname = String(data.fullname).trim();
+    if (data.year !== undefined) payload.year = parseInt(data.year, 10);
+    if (data.status !== undefined) {
+      const rawStatus = String(data.status).trim().toUpperCase();
+      const validStatuses = ["ACTIVE", "INACTIVE", "GRADUATED", "SUSPENDED"];
+      if (validStatuses.includes(rawStatus)) payload.status = rawStatus;
+    }
+
+    return await apiClient(`/class-enrollment/${id}`, {
+      method: "PATCH",
+      body: payload,
+    });
+  },
+
+  deleteEnrollment: async (id) => {
+    return await apiClient(`/class-enrollment/${id}`, {
+      method: "DELETE",
     });
   },
 
@@ -252,6 +282,39 @@ export const sundaySchoolService = {
       return [];
     } catch (err) {
       console.warn("GET /class-enrollment error:", err);
+      return [];
+    }
+  },
+
+  // Fetch enrolled students for a specific class ID
+  getEnrollmentsByClassId: async (classId) => {
+    if (!classId) return [];
+    try {
+      const data = await apiClient(`/class-enrollment?classId=${encodeURIComponent(classId)}&limit=200`);
+      let list = [];
+      if (Array.isArray(data)) list = data;
+      else if (Array.isArray(data?.data)) list = data.data;
+      else if (Array.isArray(data?.enrollments)) list = data.enrollments;
+      if (list.length > 0) return list;
+    } catch {
+      // Fallback
+    }
+
+    try {
+      const sub = await apiClient(`/class/${encodeURIComponent(classId)}/students`);
+      if (Array.isArray(sub)) return sub;
+      if (Array.isArray(sub?.data)) return sub.data;
+      if (Array.isArray(sub?.students)) return sub.students;
+      if (Array.isArray(sub?.items)) return sub.items;
+      if (Array.isArray(sub?.results)) return sub.results;
+    } catch {
+      // Ignore
+    }
+
+    try {
+      const all = await sundaySchoolService.getEnrollments({ limit: "500" });
+      return (all || []).filter((e) => String(e.classId || e.class_id) === String(classId));
+    } catch {
       return [];
     }
   },

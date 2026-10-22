@@ -1,16 +1,16 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { 
-  Edit3, 
-  X, 
-  User, 
-  Mail, 
-  Phone, 
-  Building2, 
-  Loader2, 
-  AlertCircle 
+import {
+  Edit3,
+  X,
+  User,
+  Mail,
+  Phone,
+  Building2,
+  Loader2,
+  AlertCircle
 } from "lucide-react";
-import { teacherService } from "../../services/teacherService";
+import { teacherService } from "../../services/educationhub/teacherService";
 
 const COMMON_DEPARTMENTS = [
   "Spiritual Education",
@@ -64,8 +64,8 @@ export default function EditTeacherModal({
       return;
     }
 
-    const selectedDept = formData.department === "OTHER" 
-      ? formData.customDepartment.trim() 
+    const selectedDept = formData.department === "OTHER"
+      ? formData.customDepartment.trim()
       : formData.department;
 
     if (!selectedDept) {
@@ -105,12 +105,11 @@ export default function EditTeacherModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
-      <div 
-        className={`w-full max-w-lg rounded-2xl border p-6 shadow-2xl transition-all relative ${
-          isDarkMode 
-            ? "bg-[#0b1b3d] border-white/10 text-slate-100" 
+      <div
+        className={`w-full max-w-lg rounded-2xl border p-6 shadow-2xl transition-all relative ${isDarkMode
+            ? "bg-[#0b1b3d] border-white/10 text-slate-100"
             : "bg-white border-slate-200 text-slate-800"
-        }`}
+          }`}
       >
         {/* Header */}
         <div className="flex items-start justify-between pb-4 border-b border-inherit">
@@ -128,11 +127,10 @@ export default function EditTeacherModal({
 
           <button
             onClick={onClose}
-            className={`p-1.5 rounded-lg border transition-colors cursor-pointer ${
-              isDarkMode 
-                ? "border-white/10 text-slate-400 hover:text-slate-200 hover:bg-white/5" 
+            className={`p-1.5 rounded-lg border transition-colors cursor-pointer ${isDarkMode
+                ? "border-white/10 text-slate-400 hover:text-slate-200 hover:bg-white/5"
                 : "border-slate-200 text-slate-500 hover:text-slate-800 hover:bg-slate-100"
-            }`}
+              }`}
           >
             <X className="w-4 h-4" />
           </button>
@@ -140,9 +138,8 @@ export default function EditTeacherModal({
 
         {/* Error message */}
         {errorMsg && (
-          <div className={`mt-4 p-3 rounded-xl border flex items-start gap-2 text-xs ${
-            isDarkMode ? "bg-rose-500/10 border-rose-500/30 text-rose-300" : "bg-rose-50 border-rose-200 text-rose-700"
-          }`}>
+          <div className={`mt-4 p-3 rounded-xl border flex items-start gap-2 text-xs ${isDarkMode ? "bg-rose-500/10 border-rose-500/30 text-rose-300" : "bg-rose-50 border-rose-200 text-rose-700"
+            }`}>
             <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
             <span>{errorMsg}</span>
           </div>
@@ -163,11 +160,10 @@ export default function EditTeacherModal({
                 onChange={handleChange}
                 required
                 disabled={isSubmitting}
-                className={`w-full pl-9 pr-3 py-2.5 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition font-medium ${
-                  isDarkMode 
-                    ? "bg-[#081226] border-white/10 text-slate-100" 
+                className={`w-full pl-9 pr-3 py-2.5 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition font-medium ${isDarkMode
+                    ? "bg-[#081226] border-white/10 text-slate-100"
                     : "bg-white border-slate-300 text-slate-900"
-                }`}
+                  }`}
               />
             </div>
           </div>
@@ -186,11 +182,10 @@ export default function EditTeacherModal({
                   onChange={handleChange}
                   required
                   disabled={isSubmitting}
-                  className={`w-full pl-9 pr-3 py-2.5 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition font-medium ${
-                    isDarkMode 
-                      ? "bg-[#081226] border-white/10 text-slate-100" 
+                  className={`w-full pl-9 pr-3 py-2.5 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition font-medium ${isDarkMode
+                      ? "bg-[#081226] border-white/10 text-slate-100"
                       : "bg-white border-slate-300 text-slate-900"
-                  }`}
+                    }`}
                 />
               </div>
             </div>
@@ -208,11 +203,10 @@ export default function EditTeacherModal({
                   onChange={handleChange}
                   required
                   disabled={isSubmitting}
-                  className={`w-full pl-9 pr-3 py-2.5 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition font-medium ${
-                    isDarkMode 
-                      ? "bg-[#081226] border-white/10 text-slate-100" 
-                    : "bg-white border-slate-300 text-slate-900"
-                  }`}
+                  className={`w-full pl-9 pr-3 py-2.5 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition font-medium ${isDarkMode
+                      ? "bg-[#081226] border-white/10 text-slate-100"
+                      : "bg-white border-slate-300 text-slate-900"
+                    }`}
                 />
               </div>
             </div>
@@ -229,11 +223,10 @@ export default function EditTeacherModal({
                 value={formData.department}
                 onChange={handleChange}
                 disabled={isSubmitting}
-                className={`w-full pl-9 pr-3 py-2.5 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition font-medium ${
-                  isDarkMode 
-                    ? "bg-[#081226] border-white/10 text-slate-100" 
+                className={`w-full pl-9 pr-3 py-2.5 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition font-medium ${isDarkMode
+                    ? "bg-[#081226] border-white/10 text-slate-100"
                     : "bg-white border-slate-300 text-slate-900"
-                }`}
+                  }`}
               >
                 {COMMON_DEPARTMENTS.map((dept) => (
                   <option key={dept} value={dept}>
@@ -257,11 +250,10 @@ export default function EditTeacherModal({
                 onChange={handleChange}
                 required
                 disabled={isSubmitting}
-                className={`w-full px-3 py-2.5 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition font-medium ${
-                  isDarkMode 
-                    ? "bg-[#081226] border-white/10 text-slate-100" 
+                className={`w-full px-3 py-2.5 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition font-medium ${isDarkMode
+                    ? "bg-[#081226] border-white/10 text-slate-100"
                     : "bg-white border-slate-300 text-slate-900"
-                }`}
+                  }`}
               />
             </div>
           )}
@@ -272,11 +264,10 @@ export default function EditTeacherModal({
               type="button"
               onClick={onClose}
               disabled={isSubmitting}
-              className={`px-4 py-2 rounded-xl text-xs font-semibold border transition ${
-                isDarkMode 
-                  ? "bg-white/5 border-white/10 hover:bg-white/10 text-slate-300" 
+              className={`px-4 py-2 rounded-xl text-xs font-semibold border transition ${isDarkMode
+                  ? "bg-white/5 border-white/10 hover:bg-white/10 text-slate-300"
                   : "bg-slate-100 border-slate-200 hover:bg-slate-200 text-slate-700"
-              }`}
+                }`}
             >
               Cancel
             </button>

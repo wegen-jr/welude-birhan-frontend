@@ -1,21 +1,21 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { 
-  BookOpen, 
-  Plus, 
-  Trash2, 
-  Search, 
-  RefreshCw, 
-  Loader2, 
-  Clock, 
-  AlertCircle, 
-  X, 
-  Check, 
+import {
+  BookOpen,
+  Plus,
+  Trash2,
+  Search,
+  RefreshCw,
+  Loader2,
+  Clock,
+  AlertCircle,
+  X,
+  Check,
   ExternalLink,
   School
 } from "lucide-react";
-import { courseService } from "../../services/courseService";
+import { courseService } from "../../services/educationhub/courseService";
 
 /**
  * ClassCourseManager Component
@@ -66,8 +66,8 @@ export default function ClassCourseManager({
           console.warn("Could not fetch course assignments:", err);
           return [];
         }),
-        catalogCourses.length > 0 
-          ? Promise.resolve(catalogCourses) 
+        catalogCourses.length > 0
+          ? Promise.resolve(catalogCourses)
           : courseService.getCourses().catch(() => []),
       ]);
 
@@ -129,7 +129,7 @@ export default function ClassCourseManager({
         // Enrich with course catalog metadata (e.g. creditHours)
         const matchedCourse = catalogCourses.find(
           (c) => Number(c.id) === Number(assignment.courseId) ||
-                 (c.courseName && assignment.courseName && c.courseName.toLowerCase() === assignment.courseName.toLowerCase())
+            (c.courseName && assignment.courseName && c.courseName.toLowerCase() === assignment.courseName.toLowerCase())
         );
 
         return {
@@ -263,12 +263,11 @@ export default function ClassCourseManager({
 
   return (
     <>
-      <div 
-        className={`rounded-2xl border p-6 sm:p-7 transition-all shadow-sm ${
-          isDarkMode 
-            ? "bg-[#0b1b3d]/60 border-white/10 text-slate-100" 
+      <div
+        className={`rounded-2xl border p-6 sm:p-7 transition-all shadow-sm ${isDarkMode
+            ? "bg-[#0b1b3d]/60 border-white/10 text-slate-100"
             : "bg-white border-slate-200 text-slate-900"
-        }`}
+          }`}
       >
         {/* Panel Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-inherit mb-6">
@@ -281,16 +280,15 @@ export default function ClassCourseManager({
                 <h3 className="text-base sm:text-lg font-serif font-bold tracking-tight text-slate-900 dark:text-slate-100">
                   Assigned Course(s)
                 </h3>
-                <span 
-                  className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full border ${
-                    classAssignments.length > 0
-                      ? (isDarkMode 
-                          ? "bg-purple-500/10 border-purple-500/20 text-purple-400" 
-                          : "bg-purple-50 border-purple-200 text-purple-700")
-                      : (isDarkMode 
-                          ? "bg-slate-500/10 border-slate-500/20 text-slate-400" 
-                          : "bg-slate-100 border-slate-200 text-slate-600")
-                  }`}
+                <span
+                  className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full border ${classAssignments.length > 0
+                      ? (isDarkMode
+                        ? "bg-purple-500/10 border-purple-500/20 text-purple-400"
+                        : "bg-purple-50 border-purple-200 text-purple-700")
+                      : (isDarkMode
+                        ? "bg-slate-500/10 border-slate-500/20 text-slate-400"
+                        : "bg-slate-100 border-slate-200 text-slate-600")
+                    }`}
                 >
                   {classAssignments.length} {classAssignments.length === 1 ? "Course" : "Courses"}
                 </span>
@@ -310,11 +308,10 @@ export default function ClassCourseManager({
               type="button"
               onClick={loadClassCourses}
               disabled={loadingAssigned}
-              className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold border transition-all ${
-                isDarkMode 
-                  ? "bg-white/5 border-white/10 text-slate-300 hover:bg-white/10" 
+              className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold border transition-all ${isDarkMode
+                  ? "bg-white/5 border-white/10 text-slate-300 hover:bg-white/10"
                   : "bg-white border-slate-200 text-slate-700 hover:bg-slate-50 shadow-sm"
-              }`}
+                }`}
             >
               <RefreshCw className={`w-3.5 h-3.5 ${loadingAssigned ? "animate-spin text-amber-500" : ""}`} />
               <span>Refresh</span>
@@ -341,10 +338,9 @@ export default function ClassCourseManager({
           </div>
         ) : classAssignments.length === 0 ? (
           /* Clean Empty State */
-          <div 
-            className={`p-6 sm:p-8 rounded-2xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 ${
-              isDarkMode ? "bg-white/[0.02] border-white/5" : "bg-slate-50 border-slate-200"
-            }`}
+          <div
+            className={`p-6 sm:p-8 rounded-2xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 ${isDarkMode ? "bg-white/[0.02] border-white/5" : "bg-slate-50 border-slate-200"
+              }`}
           >
             <div className="flex items-center gap-4">
               <div className="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center shrink-0">
@@ -383,23 +379,21 @@ export default function ClassCourseManager({
                   placeholder="Filter courses assigned to this class..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className={`w-full pl-9 pr-3 py-2 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 ${
-                    isDarkMode 
-                      ? "bg-white/5 border-white/10 text-slate-100 placeholder:text-slate-500" 
+                  className={`w-full pl-9 pr-3 py-2 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 ${isDarkMode
+                      ? "bg-white/5 border-white/10 text-slate-100 placeholder:text-slate-500"
                       : "bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400"
-                  }`}
+                    }`}
                 />
               </div>
             )}
 
             <div className="overflow-x-auto rounded-xl border border-inherit">
               <table className="w-full text-left text-xs border-collapse">
-                <thead 
-                  className={`text-[11px] font-semibold uppercase tracking-wider border-b ${
-                    isDarkMode 
-                      ? "bg-white/[0.02] border-white/10 text-slate-400" 
+                <thead
+                  className={`text-[11px] font-semibold uppercase tracking-wider border-b ${isDarkMode
+                      ? "bg-white/[0.02] border-white/10 text-slate-400"
                       : "bg-slate-100/80 border-slate-200 text-slate-600"
-                  }`}
+                    }`}
                 >
                   <tr>
                     <th className="py-4 px-6 font-semibold">Course ID</th>
@@ -422,19 +416,17 @@ export default function ClassCourseManager({
                     </tr>
                   ) : (
                     filteredAssignments.map((assignment) => (
-                      <tr 
+                      <tr
                         key={assignment.id || `${assignment.courseId}-${assignment.classLevel}`}
-                        className={`transition-colors ${
-                          isDarkMode ? "hover:bg-white/[0.02]" : "hover:bg-slate-50/80"
-                        }`}
+                        className={`transition-colors ${isDarkMode ? "hover:bg-white/[0.02]" : "hover:bg-slate-50/80"
+                          }`}
                       >
                         {/* Course ID */}
                         <td className="py-4 px-6 font-mono font-semibold">
-                          <span className={`px-2.5 py-1 rounded-lg text-xs font-mono font-semibold border ${
-                            isDarkMode 
-                              ? "text-purple-400 bg-purple-500/10 border-purple-500/20" 
+                          <span className={`px-2.5 py-1 rounded-lg text-xs font-mono font-semibold border ${isDarkMode
+                              ? "text-purple-400 bg-purple-500/10 border-purple-500/20"
                               : "text-purple-700 bg-purple-50 border-purple-200"
-                          }`}>
+                            }`}>
                             #{assignment.courseId || assignment.id}
                           </span>
                         </td>
@@ -468,18 +460,17 @@ export default function ClassCourseManager({
 
                         {/* Status */}
                         <td className="py-4 px-6">
-                          <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${
-                            isDarkMode 
-                              ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" 
+                          <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${isDarkMode
+                              ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
                               : "bg-emerald-50 text-emerald-700 border-emerald-200"
-                          }`}>
+                            }`}>
                             ACTIVE SYLLABUS
                           </span>
                         </td>
 
                         {/* Assigned Date */}
                         <td className="py-4 px-6 text-slate-600 dark:text-slate-400 text-xs">
-                          {assignment.createdAt 
+                          {assignment.createdAt
                             ? new Date(assignment.createdAt).toLocaleDateString()
                             : new Date().toLocaleDateString()}
                         </td>
@@ -516,7 +507,7 @@ export default function ClassCourseManager({
 
       {/* Course Assignment Modal */}
       {isModalOpen && (
-        <div 
+        <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn"
           onClick={(e) => {
             if (e.target === e.currentTarget && !isSubmitting) {
@@ -524,12 +515,11 @@ export default function ClassCourseManager({
             }
           }}
         >
-          <div 
-            className={`w-full max-w-lg rounded-2xl border p-6 shadow-2xl transition-all relative ${
-              isDarkMode 
-                ? "bg-[#0b1b3d] border-white/10 text-slate-100" 
+          <div
+            className={`w-full max-w-lg rounded-2xl border p-6 shadow-2xl transition-all relative ${isDarkMode
+                ? "bg-[#0b1b3d] border-white/10 text-slate-100"
                 : "bg-white border-slate-200 text-slate-800"
-            }`}
+              }`}
           >
             {/* Modal Header */}
             <div className="flex items-start justify-between pb-4 border-b border-inherit">
@@ -554,21 +544,19 @@ export default function ClassCourseManager({
                 type="button"
                 onClick={() => !isSubmitting && setIsModalOpen(false)}
                 disabled={isSubmitting}
-                className={`p-1.5 rounded-lg border transition-colors cursor-pointer ${
-                  isDarkMode 
-                    ? "border-white/10 text-slate-400 hover:text-slate-200 hover:bg-white/5" 
+                className={`p-1.5 rounded-lg border transition-colors cursor-pointer ${isDarkMode
+                    ? "border-white/10 text-slate-400 hover:text-slate-200 hover:bg-white/5"
                     : "border-slate-200 text-slate-500 hover:text-slate-800 hover:bg-slate-100"
-                }`}
+                  }`}
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
             {/* Target Class Pill */}
-            <div 
-              className={`mt-4 p-3 rounded-xl border flex items-center justify-between text-xs ${
-                isDarkMode ? "bg-white/5 border-white/5" : "bg-slate-50 border-slate-200"
-              }`}
+            <div
+              className={`mt-4 p-3 rounded-xl border flex items-center justify-between text-xs ${isDarkMode ? "bg-white/5 border-white/5" : "bg-slate-50 border-slate-200"
+                }`}
             >
               <div className="flex items-center gap-2">
                 <School className="w-4 h-4 text-amber-500" />
@@ -583,12 +571,11 @@ export default function ClassCourseManager({
 
             {/* Error Notification */}
             {modalError && (
-              <div 
-                className={`mt-4 p-3 rounded-xl border flex items-start gap-2 text-xs ${
-                  isDarkMode 
-                    ? "bg-rose-500/10 border-rose-500/30 text-rose-300" 
+              <div
+                className={`mt-4 p-3 rounded-xl border flex items-start gap-2 text-xs ${isDarkMode
+                    ? "bg-rose-500/10 border-rose-500/30 text-rose-300"
                     : "bg-rose-50 border-rose-200 text-rose-700"
-                }`}
+                  }`}
               >
                 <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
                 <span>{modalError}</span>
@@ -608,10 +595,9 @@ export default function ClassCourseManager({
                     <span>Loading available curriculum courses...</span>
                   </div>
                 ) : catalogCourses.length === 0 ? (
-                  <div 
-                    className={`p-4 rounded-xl border text-xs text-center space-y-2 ${
-                      isDarkMode ? "bg-[#081226] border-white/10" : "bg-slate-50 border-slate-200"
-                    }`}
+                  <div
+                    className={`p-4 rounded-xl border text-xs text-center space-y-2 ${isDarkMode ? "bg-[#081226] border-white/10" : "bg-slate-50 border-slate-200"
+                      }`}
                   >
                     <p className="text-slate-400">No courses found in the curriculum catalog.</p>
                     <Link
@@ -632,18 +618,17 @@ export default function ClassCourseManager({
                       }}
                       required
                       disabled={isSubmitting}
-                      className={`w-full px-3.5 py-2.5 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition cursor-pointer ${
-                        isDarkMode 
-                          ? "bg-[#081226] border-white/10 text-slate-100" 
+                      className={`w-full px-3.5 py-2.5 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition cursor-pointer ${isDarkMode
+                          ? "bg-[#081226] border-white/10 text-slate-100"
                           : "bg-slate-50 border-slate-200 text-slate-800"
-                      }`}
+                        }`}
                     >
                       <option value="">-- Choose a Course from Curriculum --</option>
                       {catalogCourses.map((course) => {
                         const isAlreadyAssigned = assignedCourseIds.has(Number(course.id));
                         return (
-                          <option 
-                            key={course.id} 
+                          <option
+                            key={course.id}
                             value={course.id}
                             disabled={isAlreadyAssigned}
                           >
@@ -666,11 +651,10 @@ export default function ClassCourseManager({
                   type="button"
                   onClick={() => setIsModalOpen(false)}
                   disabled={isSubmitting}
-                  className={`px-4 py-2 rounded-xl text-xs font-semibold border transition cursor-pointer ${
-                    isDarkMode 
-                      ? "bg-white/5 border-white/10 hover:bg-white/10 text-slate-300" 
+                  className={`px-4 py-2 rounded-xl text-xs font-semibold border transition cursor-pointer ${isDarkMode
+                      ? "bg-white/5 border-white/10 hover:bg-white/10 text-slate-300"
                       : "bg-slate-100 border-slate-200 hover:bg-slate-200 text-slate-700"
-                  }`}
+                    }`}
                 >
                   Cancel
                 </button>

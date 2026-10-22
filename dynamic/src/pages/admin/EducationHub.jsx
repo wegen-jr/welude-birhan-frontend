@@ -11,9 +11,9 @@ import {
   RefreshCw
 } from "lucide-react";
 import ClassOverview from "../../Components/SundaySchool/ClassOverview";
-import { sundaySchoolService } from "../../services/sundaySchoolService";
-import { teacherService } from "../../services/teacherService";
-import { courseService } from "../../services/courseService";
+import { sundaySchoolService } from "../../services/educationhub/sundaySchoolService";
+import { teacherService } from "../../services/educationhub/teacherService";
+import { courseService } from "../../services/educationhub/courseService";
 import { useLanguage } from "@/Contexts/LanguageContext";
 
 export function EducationHub() {

@@ -96,6 +96,7 @@ export async function apiClient(endpoint, { method = 'GET', body, headers = {}, 
 export const api = {
     get: (endpoint, config) => apiClient(endpoint, { method: 'GET', ...config }),
     post: (endpoint, body, config) => apiClient(endpoint, { method: 'POST', body, ...config }),
+    put: (endpoint, body, config) => apiClient(endpoint, { method: 'PUT', body, ...config }),
     patch: (endpoint, body, config) => apiClient(endpoint, { method: 'PATCH', body, ...config }),
     delete: (endpoint, config) => apiClient(endpoint, { method: 'DELETE', ...config }),
 };

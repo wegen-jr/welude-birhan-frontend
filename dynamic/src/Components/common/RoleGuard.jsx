@@ -15,7 +15,12 @@ export default function RoleGuard({ allowedRoles, children }) {
         return <Navigate to="/signin" replace />;
     }
 
-    if (!allowedRoles.includes(user.role)) {
+    const userRole = (user.role || '').trim();
+    const hasRole = Array.isArray(allowedRoles) && allowedRoles.some(
+        (role) => role.toUpperCase() === userRole.toUpperCase() || role === userRole
+    );
+
+    if (!hasRole) {
         return <Navigate to="/unauthorized" replace />;
     }
 

@@ -31,8 +31,9 @@ export default function SideBar({ isDarkMode, toggleTheme }) {
     settings: { path: '/dashboard/settings', icon: Settings, label: t.adminSide?.setting || 'Settings' },
   };
 
+  const normalizedRole = role.toUpperCase();
   let menuItems;
-  if (role === 'ADMIN') {
+  if (normalizedRole === 'ADMIN') {
     menuItems = [
       allItems.dashboard,
       allItems.registration,
@@ -43,7 +44,7 @@ export default function SideBar({ isDarkMode, toggleTheme }) {
       allItems.studentEnrollment,
       allItems.settings,
     ];
-  } else if (role === 'EDUCATION_LEADER') {
+  } else if (normalizedRole === 'EDUCATION_LEADER' || role === 'EducationHub') {
     menuItems = [
       allItems.education,
       allItems.teacherManagement,
@@ -58,7 +59,7 @@ export default function SideBar({ isDarkMode, toggleTheme }) {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    navigate("/signIn");
+    navigate("/signin");
   };
 
   return (

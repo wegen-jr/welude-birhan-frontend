@@ -1,20 +1,20 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { 
-  IdCard, 
-  Phone, 
-  CheckCircle2, 
-  Copy, 
-  Loader2, 
-  UserCheck, 
-  Calendar, 
-  Hash, 
+import {
+  IdCard,
+  Phone,
+  CheckCircle2,
+  Copy,
+  Loader2,
+  UserCheck,
+  Calendar,
+  Hash,
   ArrowRight,
   Sparkles,
   Info,
   Clock
 } from "lucide-react";
-import { sundaySchoolService } from "../../services/sundaySchoolService";
+import { sundaySchoolService } from "../../services/educationhub/sundaySchoolService";
 
 export default function StudentIdGeneration({ onStudentGenerated, isDarkMode = true }) {
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -78,11 +78,10 @@ export default function StudentIdGeneration({ onStudentGenerated, isDarkMode = t
   const isExisting = Boolean(studentData?.isExisting);
 
   return (
-    <div className={`rounded-2xl border p-6 transition-all shadow-sm ${
-      isDarkMode 
-        ? "bg-[#0b1b3d]/60 border-white/10 text-slate-100" 
+    <div className={`rounded-2xl border p-6 transition-all shadow-sm ${isDarkMode
+        ? "bg-[#0b1b3d]/60 border-white/10 text-slate-100"
         : "bg-white border-slate-200 text-slate-800"
-    }`}>
+      }`}>
       {/* Step Header */}
       <div className="flex items-center justify-between pb-4 mb-5 border-b border-inherit">
         <div className="flex items-center gap-3">
@@ -102,8 +101,8 @@ export default function StudentIdGeneration({ onStudentGenerated, isDarkMode = t
       {/* Form */}
       <form onSubmit={handleGenerate} className="space-y-4">
         <div>
-          <label 
-            htmlFor="member-phone" 
+          <label
+            htmlFor="member-phone"
             className="block text-xs font-semibold uppercase tracking-wider mb-2 text-slate-400"
           >
             Member Phone Number <span className="text-red-400">*</span>
@@ -119,11 +118,10 @@ export default function StudentIdGeneration({ onStudentGenerated, isDarkMode = t
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
               placeholder="e.g. 0911223344 or +251911223344"
-              className={`w-full pl-10 pr-4 py-2.5 rounded-xl text-sm transition-all focus:outline-none focus:ring-2 focus:ring-amber-500/50 border ${
-                isDarkMode 
-                  ? "bg-white/5 border-white/10 text-slate-100 placeholder:text-slate-500 focus:bg-white/10" 
+              className={`w-full pl-10 pr-4 py-2.5 rounded-xl text-sm transition-all focus:outline-none focus:ring-2 focus:ring-amber-500/50 border ${isDarkMode
+                  ? "bg-white/5 border-white/10 text-slate-100 placeholder:text-slate-500 focus:bg-white/10"
                   : "bg-slate-50 border-slate-200 text-slate-800 placeholder:text-slate-400 focus:bg-white"
-              }`}
+                }`}
             />
           </div>
           <p className="text-[11px] text-slate-400 mt-1.5">
@@ -152,18 +150,15 @@ export default function StudentIdGeneration({ onStudentGenerated, isDarkMode = t
 
       {/* Response Display Details */}
       {studentData && (
-        <div className={`mt-5 p-4 rounded-xl border animate-fadeIn transition-all ${
-          isExisting
+        <div className={`mt-5 p-4 rounded-xl border animate-fadeIn transition-all ${isExisting
             ? (isDarkMode ? "bg-sky-500/10 border-sky-500/30" : "bg-sky-50 border-sky-200")
             : (isDarkMode ? "bg-emerald-500/5 border-emerald-500/20" : "bg-emerald-50 border-emerald-200")
-        }`}>
-          {/* Status Header Badge */}
-          <div className={`flex items-center justify-between mb-3 pb-2 border-b ${
-            isExisting ? "border-sky-500/20" : "border-emerald-500/20"
           }`}>
-            <div className={`flex items-center gap-2 ${
-              isExisting ? "text-sky-400" : "text-emerald-500"
+          {/* Status Header Badge */}
+          <div className={`flex items-center justify-between mb-3 pb-2 border-b ${isExisting ? "border-sky-500/20" : "border-emerald-500/20"
             }`}>
+            <div className={`flex items-center gap-2 ${isExisting ? "text-sky-400" : "text-emerald-500"
+              }`}>
               {isExisting ? (
                 <Info className="w-4 h-4" />
               ) : (
@@ -176,9 +171,8 @@ export default function StudentIdGeneration({ onStudentGenerated, isDarkMode = t
             <button
               type="button"
               onClick={copyStudentId}
-              className={`flex items-center gap-1.5 text-xs transition-colors ${
-                isExisting ? "text-sky-300 hover:text-sky-100" : "text-slate-400 hover:text-emerald-400"
-              }`}
+              className={`flex items-center gap-1.5 text-xs transition-colors ${isExisting ? "text-sky-300 hover:text-sky-100" : "text-slate-400 hover:text-emerald-400"
+                }`}
               title="Copy Student ID"
             >
               <Copy className="w-3.5 h-3.5" />

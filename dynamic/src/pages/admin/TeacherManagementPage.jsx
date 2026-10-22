@@ -19,8 +19,8 @@ export default function TeacherManagementPage() {
       return {};
     }
   })();
-  const userRole = user?.role || "";
-  const isAuthorized = ["ADMIN", "EDUCATION_LEADER"].includes(userRole);
+  const userRole = (user?.role || "").toUpperCase();
+  const isAuthorized = ["ADMIN", "EDUCATION_LEADER", "EDUCATIONHUB"].includes(userRole);
 
   return (
     <div className={`p-6 sm:p-8 space-y-8 min-h-full transition-colors duration-300 ${isDarkMode ? "text-slate-100" : "text-slate-800"

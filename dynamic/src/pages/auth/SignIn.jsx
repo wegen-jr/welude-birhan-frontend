@@ -27,8 +27,12 @@ export default function SignIn() {
     const token = res.data?.access_token;
     const user = res.data?.user;
 
-    if (user && user.role === 'EducationHub') {
-      user.role = 'EDUCATION_LEADER';
+    if (user) {
+      if (user.role === 'EducationHub') {
+        user.role = 'EDUCATION_LEADER';
+      } else if (user.role === 'Teacher' || user.role?.toUpperCase() === 'TEACHER') {
+        user.role = 'TEACHER';
+      }
     }
 
     if (!token || !user) {
@@ -42,14 +46,19 @@ export default function SignIn() {
 
     toast.success("Logged in successfully");
 
+    const roleUpper = (user.role || '').toUpperCase();
     const dashboardRoles = ["ADMIN", "TEACHER", "STUDENT", "CHOIR_LEADER", "EDUCATION_LEADER", "FINANCE_LEADER", "PR_LEADER", "SECRETARIAT_LEADER"];
 
     // Redirect according to role
-    if (user.role === "ADMIN") {
+    if (roleUpper === "ADMIN") {
       navigate("/adminDashboard", { replace: true });
-    } else if (dashboardRoles.includes(user.role)) {
+    } else if (roleUpper === "TEACHER") {
+      navigate("/dashboard/teacher", { replace: true });
+    } else if (roleUpper === "EDUCATION_LEADER") {
+      navigate("/dashboard/education", { replace: true });
+    } else if (dashboardRoles.some((r) => r.toUpperCase() === roleUpper)) {
       navigate("/dashboard", { replace: true });
-    } else if (user.role === "MEMBER_USER") {
+    } else if (roleUpper === "MEMBER_USER") {
       navigate("/mediaDashboard", { replace: true });
     } else {
       navigate("/unauthorized", { replace: true });

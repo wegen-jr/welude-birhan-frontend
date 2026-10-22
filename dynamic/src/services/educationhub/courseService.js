@@ -1,4 +1,4 @@
-import { apiClient } from './api';
+import { apiClient } from '../api';
 
 /**
  * Normalizes course object from backend response
@@ -86,13 +86,21 @@ export const courseService = {
    * Fetch a single course by numeric ID (GET /cources/{id})
    * Swagger Operation: CourcesController_findOne
    */
+  /**
+   * Fetch a single course by numeric ID (GET /cources/{id})
+   * Swagger Operation: CourcesController_findOne
+   */
   getCourseById: async (id) => {
+    const numericId = parseInt(id, 10);
+    if (!numericId || isNaN(numericId)) {
+      throw new Error('Valid numeric Course ID is required.');
+    }
     try {
-      const data = await apiClient(`/cources/${id}`);
+      const data = await apiClient(`/cources/${numericId}`);
       return formatCourseRecord(data?.data || data);
     } catch (err) {
-      console.error(`Failed to fetch course #${id}:`, err);
-      throw parseCourseError(err, `Failed to fetch course #${id}.`);
+      console.error(`Failed to fetch course #${numericId}:`, err);
+      throw parseCourseError(err, `Failed to fetch course #${numericId}.`);
     }
   },
 
@@ -103,7 +111,7 @@ export const courseService = {
    */
   createCourse: async (courseData) => {
     const courseName = String(courseData.courseName || courseData.name || '').trim();
-    const craditHours = Number(courseData.craditHours ?? courseData.creditHours ?? 1);
+    const craditHours = parseInt(courseData.craditHours ?? courseData.creditHours ?? 1, 10);
 
     if (!courseName) {
       throw new Error('Course name is required.');
@@ -165,25 +173,29 @@ export const courseService = {
    * DTO: UpdateCourceDto { courseName, craditHours }
    */
   updateCourse: async (id, courseData) => {
+    const numericId = parseInt(id, 10);
+    if (!numericId || isNaN(numericId)) {
+      throw new Error('Valid numeric Course ID is required.');
+    }
     const payload = {};
     if (courseData.courseName !== undefined || courseData.name !== undefined) {
       payload.courseName = String(courseData.courseName || courseData.name).trim();
     }
     if (courseData.craditHours !== undefined || courseData.creditHours !== undefined) {
-      const ch = Number(courseData.craditHours ?? courseData.creditHours);
+      const ch = parseInt(courseData.craditHours ?? courseData.creditHours, 10);
       if (!isNaN(ch) && ch >= 1) payload.craditHours = ch;
     }
 
     try {
-      const result = await apiClient(`/cources/${id}`, {
+      const result = await apiClient(`/cources/${numericId}`, {
         method: 'PATCH',
         body: payload,
       });
 
       return formatCourseRecord(result?.data || result);
     } catch (err) {
-      console.error(`Failed to update course #${id}:`, err);
-      throw parseCourseError(err, `Failed to update course #${id}.`);
+      console.error(`Failed to update course #${numericId}:`, err);
+      throw parseCourseError(err, `Failed to update course #${numericId}.`);
     }
   },
 
@@ -192,14 +204,18 @@ export const courseService = {
    * Swagger Operation: CourcesController_remove
    */
   deleteCourse: async (id) => {
+    const numericId = parseInt(id, 10);
+    if (!numericId || isNaN(numericId)) {
+      throw new Error('Valid numeric Course ID is required.');
+    }
     try {
-      await apiClient(`/cources/${id}`, {
+      await apiClient(`/cources/${numericId}`, {
         method: 'DELETE',
       });
       return true;
     } catch (err) {
-      console.error(`Failed to delete course #${id}:`, err);
-      throw parseCourseError(err, `Failed to delete course #${id}.`);
+      console.error(`Failed to delete course #${numericId}:`, err);
+      throw parseCourseError(err, `Failed to delete course #${numericId}.`);
     }
   },
 
@@ -259,7 +275,7 @@ export const courseService = {
    * DTO: CreateAssignCourseForClassDto { courseId, courseName, classLevel }
    */
   assignCourseToClass: async ({ courseId, courseName, classLevel }) => {
-    const cId = Number(courseId);
+    const cId = parseInt(courseId, 10);
     const cName = String(courseName || '').trim();
     const cLevel = String(classLevel || '').trim();
 
@@ -288,8 +304,8 @@ export const courseService = {
 
       const resData = result?.data || result;
       return {
-        id: Number(resData?.id) || resData?.id,
-        courseId: Number(resData?.courseId || cId),
+        id: parseInt(resData?.id || 0, 10) || resData?.id,
+        courseId: parseInt(resData?.courseId || cId, 10),
         courseName: resData?.courseName || cName,
         classLevel: resData?.classLevel || cLevel,
         createdAt: resData?.createdAt || new Date().toISOString(),
@@ -306,9 +322,9 @@ export const courseService = {
    * Swagger Operation: AssignCourseForClassController_remove
    */
   unassignCourseFromClass: async (id) => {
-    const numericId = Number(id);
+    const numericId = parseInt(id, 10);
     if (!numericId || isNaN(numericId)) {
-      throw new Error('Valid assignment ID is required.');
+      throw new Error('Valid numeric assignment ID is required.');
     }
 
     try {

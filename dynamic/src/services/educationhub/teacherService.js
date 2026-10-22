@@ -1,4 +1,4 @@
-import { apiClient } from './api';
+import { apiClient } from '../api';
 
 const ASSIGNMENTS_STORAGE_KEY = 'welude_teacher_class_assignments';
 
@@ -88,24 +88,133 @@ function parseTeacherError(err, fallbackMessage) {
 
 export const teacherService = {
   /**
-   * Fetch all teachers (GET /teachers)
+   * Fetch all teachers with assigned classes joined (GET /teachers, GET /class, GET /assign-teacher-for-class)
    * Swagger Operation: TeacherController_findAll
    */
   getTeachers: async () => {
     try {
-      const data = await apiClient('/teachers');
-      let list = [];
-      if (Array.isArray(data)) {
-        list = data;
-      } else if (Array.isArray(data?.data)) {
-        list = data.data;
-      } else if (Array.isArray(data?.teachers)) {
-        list = data.teachers;
-      } else if (Array.isArray(data?.items)) {
-        list = data.items;
+      const [teachersRes, classesRes, assignmentsRes] = await Promise.all([
+        apiClient('/teachers').catch((err) => {
+          console.error('Failed to fetch teachers:', err);
+          return [];
+        }),
+        apiClient('/class').catch(async () => {
+          return await apiClient('/classes').catch(() => []);
+        }),
+        apiClient('/assign-teacher-for-class').catch(() => []),
+      ]);
+
+      let teacherRawList = [];
+      if (Array.isArray(teachersRes)) {
+        teacherRawList = teachersRes;
+      } else if (Array.isArray(teachersRes?.data)) {
+        teacherRawList = teachersRes.data;
+      } else if (Array.isArray(teachersRes?.teachers)) {
+        teacherRawList = teachersRes.teachers;
+      } else if (Array.isArray(teachersRes?.items)) {
+        teacherRawList = teachersRes.items;
       }
 
-      return list.map(formatTeacherRecord).filter(Boolean);
+      let classesList = [];
+      if (Array.isArray(classesRes)) {
+        classesList = classesRes;
+      } else if (Array.isArray(classesRes?.data)) {
+        classesList = classesRes.data;
+      } else if (Array.isArray(classesRes?.classes)) {
+        classesList = classesRes.classes;
+      } else if (Array.isArray(classesRes?.items)) {
+        classesList = classesRes.items;
+      }
+
+      let assignmentsList = [];
+      if (Array.isArray(assignmentsRes)) {
+        assignmentsList = assignmentsRes;
+      } else if (Array.isArray(assignmentsRes?.data)) {
+        assignmentsList = assignmentsRes.data;
+      } else if (Array.isArray(assignmentsRes?.assignments)) {
+        assignmentsList = assignmentsRes.assignments;
+      } else if (Array.isArray(assignmentsRes?.items)) {
+        assignmentsList = assignmentsRes.items;
+      }
+
+      // Base normalization
+      const teachers = teacherRawList.map(formatTeacherRecord).filter(Boolean);
+
+      // Attach assigned classes using both classes and assignments
+      return teachers.map((teacher) => {
+        const teacherId = String(teacher.id);
+
+        // 1. Direct class teacher_id match
+        const directClasses = classesList.filter((cls) => {
+          const cTeacherId = String(cls.teacher_id ?? cls.teacherId ?? cls.instructorId ?? '');
+          if (cTeacherId && cTeacherId === teacherId) return true;
+          if (Array.isArray(cls.teachers) && cls.teachers.some((t) => String(t?.id || t) === teacherId)) return true;
+          if (Array.isArray(cls.teacherIds) && cls.teacherIds.map(String).includes(teacherId)) return true;
+          return false;
+        }).map((cls) => ({
+          id: cls.id,
+          classId: cls.id,
+          class_id: cls.id,
+          gradeLevel: cls.gradeLevel || cls.classLevel || 'Class',
+          section: cls.section || 'A',
+          courseName: cls.courseName || cls.course || '',
+          source: 'class_teacher_id',
+        }));
+
+        // 2. Matches from GET /assign-teacher-for-class (assignments used in Overview dashboard)
+        const matchedAssignments = assignmentsList.filter((ba) => {
+          const baTeacherId = String(ba.teacherId ?? ba.teacher_id ?? '');
+          return baTeacherId && baTeacherId === teacherId;
+        });
+
+        const assignedViaBackend = matchedAssignments.map((ba) => {
+          const baGrade = String(ba.gradeLevel || ba.grade_level || '').trim().toLowerCase();
+          const matchingClass = classesList.find((c) => {
+            const cGrade = String(c.gradeLevel || c.classLevel || '').trim().toLowerCase();
+            return cGrade === baGrade || cGrade.includes(baGrade) || baGrade.includes(cGrade);
+          });
+
+          const classId = matchingClass?.id || ba.classId || ba.id || `${ba.gradeLevel}-${ba.section || 'A'}`;
+          return {
+            id: classId,
+            classId: classId,
+            class_id: classId,
+            gradeLevel: matchingClass?.gradeLevel || ba.gradeLevel,
+            section: matchingClass?.section || ba.section || 'A',
+            courseName: ba.courseName || ba.course_name || '',
+            courseId: ba.courseId || ba.course_id || null,
+            assignmentId: ba.id,
+            source: 'assign_teacher_for_class',
+          };
+        });
+
+        // 3. Existing assignedClasses (e.g. from local storage)
+        const existingAssigned = Array.isArray(teacher.assignedClasses) ? teacher.assignedClasses : [];
+
+        // Combine and deduplicate
+        const combined = [...directClasses, ...assignedViaBackend, ...existingAssigned];
+        const seen = new Set();
+        const uniqueAssigned = [];
+
+        combined.forEach((item) => {
+          if (!item) return;
+          const classKey = `${String(item.id || item.classId || '').toLowerCase()}::${String(item.gradeLevel || '').toLowerCase()}::${String(item.section || '').toLowerCase()}`;
+          if (!seen.has(classKey)) {
+            seen.add(classKey);
+            uniqueAssigned.push({
+              ...item,
+              id: item.id || item.classId || item.class_id,
+              classId: item.classId || item.id || item.class_id,
+              class_id: item.class_id || item.classId || item.id,
+            });
+          }
+        });
+
+        return {
+          ...teacher,
+          assignedClasses: uniqueAssigned,
+        };
+      });
     } catch (err) {
       console.error('Failed to fetch teachers:', err);
       throw parseTeacherError(err, 'Failed to fetch teachers directory. Please try again.');
@@ -117,27 +226,48 @@ export const teacherService = {
    * Swagger Operation: TeacherController_findOne
    */
   getTeacherById: async (id) => {
+    const numericId = parseInt(id, 10);
+    if (!numericId || isNaN(numericId)) {
+      throw new Error('Valid numeric Teacher ID is required.');
+    }
     try {
-      const data = await apiClient(`/teachers/${id}`);
-      return formatTeacherRecord(data?.data || data);
+      const [teacherRes, assignedClasses] = await Promise.all([
+        apiClient(`/teachers/${numericId}`),
+        teacherService.getAssignedClassesForTeacher(numericId).catch(() => []),
+      ]);
+      const base = formatTeacherRecord(teacherRes?.data || teacherRes);
+      if (!base) return null;
+      return {
+        ...base,
+        assignedClasses: assignedClasses.length > 0 ? assignedClasses : base.assignedClasses,
+      };
     } catch (err) {
-      console.error(`Failed to fetch teacher #${id}:`, err);
-      throw parseTeacherError(err, `Failed to fetch teacher #${id}.`);
+      console.error(`Failed to fetch teacher #${numericId}:`, err);
+      throw parseTeacherError(err, `Failed to fetch teacher #${numericId}.`);
     }
   },
 
   /**
    * Create a new teacher (POST /teachers)
    * Swagger Operation: TeacherController_create
-   * DTO: UpdateTeacherDto { name, email, phone, department }
+   * DTO: CreateTeacherDto { phone, email, password, role, department, name }
    */
   createTeacher: async (teacherData) => {
     // Sanitize phone number (strip whitespace, ensure string)
     const rawPhone = String(teacherData.phone || '').trim().replace(/\s+/g, '');
+
+    // Ensure role strictly adheres to the instructor role defined by backend ("Teacher" / "TEACHER"), never "USER"
+    const rawRole = String(teacherData.role || '').trim();
+    const assignedRole = (!rawRole || rawRole.toUpperCase() === 'USER')
+      ? 'Teacher'
+      : rawRole;
+
     const payload = {
       name: String(teacherData.name || '').trim(),
       email: String(teacherData.email || '').trim().toLowerCase(),
       phone: rawPhone,
+      password: String(teacherData.password || 'Teacher@2026').trim(),
+      role: assignedRole,
       department: String(teacherData.department || 'General Spiritual Education').trim(),
     };
 
@@ -149,6 +279,9 @@ export const teacherService = {
     }
     if (!payload.phone) {
       throw new Error('Phone number is required.');
+    }
+    if (!payload.password || payload.password.length < 6) {
+      throw new Error('Password must be at least 6 characters long.');
     }
 
     try {
@@ -174,7 +307,7 @@ export const teacherService = {
         // Step 1: Check if record was already committed to database despite dropped connection
         try {
           const list = await teacherService.getTeachers();
-          const existing = list.find((t) => 
+          const existing = list.find((t) =>
             (t.email && t.email.toLowerCase() === payload.email) ||
             (t.phone && t.phone === payload.phone)
           );
@@ -224,25 +357,34 @@ export const teacherService = {
   /**
    * Update an existing teacher (PATCH /teachers/{id})
    * Swagger Operation: TeacherController_update
-   * DTO: UpdateTeacherDto { name, email, phone, department }
+   * DTO: UpdateTeacherDto { phone, email, password, role, department, name }
    */
   updateTeacher: async (id, teacherData) => {
+    const numericId = parseInt(id, 10);
+    if (!numericId || isNaN(numericId)) {
+      throw new Error('Valid numeric Teacher ID is required.');
+    }
     const payload = {};
     if (teacherData.name !== undefined) payload.name = String(teacherData.name).trim();
     if (teacherData.email !== undefined) payload.email = String(teacherData.email).trim().toLowerCase();
     if (teacherData.phone !== undefined) payload.phone = String(teacherData.phone).trim();
     if (teacherData.department !== undefined) payload.department = String(teacherData.department).trim();
+    if (teacherData.role !== undefined) {
+      const rawRole = String(teacherData.role).trim();
+      payload.role = (!rawRole || rawRole.toUpperCase() === 'USER') ? 'Teacher' : rawRole;
+    }
+    if (teacherData.password !== undefined && teacherData.password) payload.password = String(teacherData.password).trim();
 
     try {
-      const result = await apiClient(`/teachers/${id}`, {
+      const result = await apiClient(`/teachers/${numericId}`, {
         method: 'PATCH',
         body: payload,
       });
 
       return formatTeacherRecord(result?.data || result);
     } catch (err) {
-      console.error(`Failed to update teacher #${id}:`, err);
-      throw parseTeacherError(err, `Failed to update teacher #${id}.`);
+      console.error(`Failed to update teacher #${numericId}:`, err);
+      throw parseTeacherError(err, `Failed to update teacher #${numericId}.`);
     }
   },
 
@@ -251,20 +393,24 @@ export const teacherService = {
    * Swagger Operation: TeacherController_remove
    */
   deleteTeacher: async (id) => {
+    const numericId = parseInt(id, 10);
+    if (!numericId || isNaN(numericId)) {
+      throw new Error('Valid numeric Teacher ID is required.');
+    }
     try {
-      await apiClient(`/teachers/${id}`, {
+      await apiClient(`/teachers/${numericId}`, {
         method: 'DELETE',
       });
 
       // Clean up assigned classes mapping
       const allAssignments = getStoredAssignments();
-      delete allAssignments[String(id)];
+      delete allAssignments[String(numericId)];
       saveStoredAssignments(allAssignments);
 
       return true;
     } catch (err) {
-      console.error(`Failed to delete teacher #${id}:`, err);
-      throw parseTeacherError(err, `Failed to delete teacher #${id}.`);
+      console.error(`Failed to delete teacher #${numericId}:`, err);
+      throw parseTeacherError(err, `Failed to delete teacher #${numericId}.`);
     }
   },
 
@@ -324,9 +470,9 @@ export const teacherService = {
     section,
     classId,
   }) => {
-    const tId = Number(teacherId);
+    const tId = parseInt(teacherId, 10);
     const tName = String(teacherName || '').trim();
-    const cId = Number(courseId);
+    const cId = parseInt(courseId, 10);
     const cName = String(courseName || '').trim();
     const gLevel = String(gradeLevel || '').trim();
 
@@ -387,7 +533,7 @@ export const teacherService = {
    * Swagger Operation: AssignTeacherForClassController_remove
    */
   unassignTeacherAssignment: async (assignmentId, teacherId, classId) => {
-    const numericId = Number(assignmentId);
+    const numericId = parseInt(assignmentId, 10);
     if (!numericId || isNaN(numericId)) {
       throw new Error('Valid assignment ID is required to remove.');
     }
@@ -414,23 +560,64 @@ export const teacherService = {
    * Swagger Operation: AssignTeacherForClassController_getStudentsByTeacherId
    */
   getStudentsForTeacher: async (teacherId) => {
+    const numericId = parseInt(teacherId, 10);
+    if (!numericId || isNaN(numericId)) {
+      throw new Error('Valid numeric Teacher ID is required.');
+    }
     try {
-      const data = await apiClient(`/assign-teacher-for-class/teacher/${teacherId}/students`);
+      const data = await apiClient(`/assign-teacher-for-class/teacher/${numericId}/students`);
       let studentList = [];
+      let detectedGrade = data?.gradeLevel || '';
+      let detectedTeacherName = data?.teacherName || '';
+
       if (Array.isArray(data)) {
-        studentList = data;
+        // If data is an array of course/grade groups with a nested students array
+        const hasNestedStudents = data.some((item) => Array.isArray(item?.students));
+        if (hasNestedStudents) {
+          studentList = data.flatMap((group) => {
+            const groupGrade = group.gradeLevel || group.classLevel || '';
+            const groupCourse = group.courseName || group.course || '';
+            const groupSection = group.section || '';
+            if (groupGrade && !detectedGrade.includes(groupGrade)) {
+              detectedGrade = detectedGrade ? `${detectedGrade}, ${groupGrade}` : groupGrade;
+            }
+            if (group.teacherName && !detectedTeacherName) {
+              detectedTeacherName = group.teacherName;
+            }
+            return (group.students || []).map((s) => ({
+              ...s,
+              gradeLevel: s.gradeLevel || groupGrade,
+              courseName: s.courseName || groupCourse,
+              section: s.section || groupSection,
+            }));
+          });
+        } else {
+          studentList = data.filter((item) => Boolean(item?.studentId || item?.fullname || item?.studentName));
+        }
       } else if (Array.isArray(data?.students)) {
-        studentList = data.students;
+        studentList = data.students.filter((item) => Boolean(item?.studentId || item?.fullname || item?.studentName));
       } else if (Array.isArray(data?.data)) {
-        studentList = data.data;
+        if (data.data.some((item) => Array.isArray(item?.students))) {
+          studentList = data.data.flatMap((g) => g.students || []).filter((item) => Boolean(item?.studentId || item?.fullname || item?.studentName));
+        } else {
+          studentList = data.data.filter((item) => Boolean(item?.studentId || item?.fullname || item?.studentName));
+        }
+      } else if (data && typeof data === 'object') {
+        const values = Object.values(data);
+        const arrayValues = values.filter(Array.isArray);
+        if (arrayValues.length > 0) {
+          studentList = arrayValues.flat().filter((item) => Boolean(item?.studentId || item?.fullname || item?.studentName));
+        }
       }
+
+      const validStudents = studentList.filter((s) => Boolean(s && (s.studentId || s.fullname || s.studentName)));
 
       return {
         teacherId: Number(data?.teacherId || teacherId),
-        teacherName: data?.teacherName || '',
-        gradeLevel: data?.gradeLevel || '',
-        studentsEnrolled: Number(data?.studentsEnrolled || studentList.length),
-        students: studentList,
+        teacherName: detectedTeacherName || data?.teacherName || '',
+        gradeLevel: detectedGrade || data?.gradeLevel || '',
+        studentsEnrolled: Number(data?.studentsEnrolled || validStudents.length),
+        students: validStudents,
         raw: data,
       };
     } catch (err) {
@@ -501,6 +688,43 @@ export const teacherService = {
     if (!teacherId) return [];
     const allAssignments = getStoredAssignments();
     return allAssignments[String(teacherId)] || [];
+  },
+
+  /**
+   * Retrieves all assigned classes for a teacher by aggregating backend assignments (GET /assign-teacher-for-class)
+   * and local storage state.
+   */
+  getAssignedClassesForTeacher: async (teacherId) => {
+    const tId = Number(teacherId);
+    if (!tId) return [];
+    const localAssigned = teacherService.getTeacherAssignmentsByTeacherId(tId);
+
+    try {
+      const backendAssignments = await teacherService.getTeacherAssignments();
+      const matched = backendAssignments.filter((a) => Number(a.teacherId) === tId).map((a) => ({
+        id: a.id,
+        assignmentId: a.id,
+        courseId: a.courseId,
+        courseName: a.courseName,
+        gradeLevel: a.gradeLevel,
+        section: a.section || 'General',
+      }));
+
+      const combined = [...matched];
+      localAssigned.forEach((loc) => {
+        const exists = combined.some(
+          (c) =>
+            String(c.gradeLevel || '').trim().toLowerCase() === String(loc.gradeLevel || '').trim().toLowerCase() &&
+            String(c.section || '').trim().toLowerCase() === String(loc.section || '').trim().toLowerCase()
+        );
+        if (!exists) combined.push(loc);
+      });
+
+      return combined;
+    } catch (e) {
+      console.warn(`Failed to fetch backend teacher assignments for #${tId}:`, e);
+      return localAssigned;
+    }
   },
 };
 

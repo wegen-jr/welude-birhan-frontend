@@ -44,7 +44,7 @@ import TeacherManagementPage from './pages/admin/TeacherManagementPage';
 import CourseManagementPage from './pages/admin/CourseManagementPage';
 
 function App() {
-  const allRoles = ["ADMIN", "TEACHER", "STUDENT", "CHOIR_LEADER", "EDUCATION_LEADER", "FINANCE_LEADER", "PR_LEADER", "SECRETARIAT_LEADER"];
+  const allRoles = ["ADMIN", "TEACHER", "Teacher", "STUDENT", "CHOIR_LEADER", "EDUCATION_LEADER", "EducationHub", "FINANCE_LEADER", "PR_LEADER", "SECRETARIAT_LEADER"];
 
   return (
     <Router>
@@ -61,9 +61,18 @@ function App() {
         </Route>
 
         <Route path="/signin" element={<SignIn />} />
+        <Route path="/sign in" element={<Navigate to="/signin" replace />} />
+        <Route path="/sign%20in" element={<Navigate to="/signin" replace />} />
+        <Route path="/signIn" element={<Navigate to="/signin" replace />} />
+        <Route path="/SignIn" element={<Navigate to="/signin" replace />} />
+        <Route path="/login" element={<Navigate to="/signin" replace />} />
 
         {/* Protected Routes */}
         <Route element={<ProtectedRoute />}>
+          {/* Teacher Dashboard route (displays 404 while teacher dashboard is developed on separate branch) */}
+          <Route path="/dashboard/teacher" element={<div className="min-h-screen bg-[#081226] text-white flex items-center justify-center text-xl">404 Not Found</div>} />
+          <Route path="/teacherDashboard" element={<Navigate to="/dashboard/teacher" replace />} />
+
           {/* Admin Dashboard legacy route alias */}
           <Route element={<RoleGuard allowedRoles={["ADMIN"]} />}>
             <Route path="/adminDashboard" element={<AdminLayout />}>
@@ -87,7 +96,6 @@ function App() {
               <Route path="settings/profile" element={<Profile />} />
               <Route path="settings/credentialsChanger" element={<EmailPasswordChanger />} />
 
-              <Route path="teacher" element={<Navigate to="/dashboard/admin" replace />} />
               <Route path="education" element={<RoleGuard allowedRoles={["ADMIN", "EDUCATION_LEADER"]}><EducationHub /></RoleGuard>} />
               <Route path="teachers" element={<RoleGuard allowedRoles={["ADMIN", "EDUCATION_LEADER"]}><TeacherManagementPage /></RoleGuard>} />
               <Route path="courses" element={<RoleGuard allowedRoles={["ADMIN", "EDUCATION_LEADER"]}><CourseManagementPage /></RoleGuard>} />
