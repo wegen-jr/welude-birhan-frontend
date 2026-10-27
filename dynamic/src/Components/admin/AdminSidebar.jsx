@@ -1,5 +1,5 @@
 import Logo from "../../assets/logo.png";
-import { UserPlus, HomeIcon, BadgeCheck, Settings, Globe, Moon, Sun, LogOut, Activity, BookOpen, Users, Music, Book, DollarSign, FileText, GraduationCap, Layers } from 'lucide-react';
+import { UserPlus, HomeIcon, BadgeCheck, Settings, Globe, Moon, Sun, LogOut, Activity, BookOpen, Users, Music, Book, DollarSign, FileText, GraduationCap, Layers, Package } from 'lucide-react';
 import { useLanguage } from "@/Contexts/LanguageContext";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -28,6 +28,8 @@ export default function SideBar({ isDarkMode, toggleTheme }) {
     teacherManagement: { path: '/dashboard/teachers', icon: Users, label: t.adminSide?.teacherManagement || 'Teacher Management' },
     courses: { path: '/dashboard/courses', icon: Layers, label: t.adminSide?.courses || 'Courses' },
     studentEnrollment: { path: '/dashboard/student-enrollment', icon: GraduationCap, label: t.adminSide?.studentEnrollment || 'Student Enrollment' },
+    property: { path: '/dashboard/property', icon: Package, label: t.adminSide?.property || 'Property Management' },
+    finance: { path: '/dashboard/finance', icon: DollarSign, label: t.adminSide?.finance || 'Finance & Sales' },
     settings: { path: '/dashboard/settings', icon: Settings, label: t.adminSide?.setting || 'Settings' },
   };
 
@@ -42,6 +44,14 @@ export default function SideBar({ isDarkMode, toggleTheme }) {
       allItems.teacherManagement,
       allItems.courses,
       allItems.studentEnrollment,
+      allItems.property,
+      allItems.finance,
+      allItems.settings,
+    ];
+  } else if (normalizedRole === 'FINANCE_LEADER') {
+    menuItems = [
+      allItems.property,
+      allItems.finance,
       allItems.settings,
     ];
   } else if (normalizedRole === 'EDUCATION_LEADER' || role === 'EducationHub') {

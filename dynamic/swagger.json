@@ -2534,6 +2534,647 @@
           "Student Results"
         ]
       }
+    },
+    "/products": {
+      "post": {
+        "operationId": "ProductController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProductDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The product has been successfully created."
+          },
+          "409": {
+            "description": "Product already registered."
+          }
+        },
+        "summary": "Register a new product",
+        "tags": [
+          "products"
+        ]
+      },
+      "get": {
+        "operationId": "ProductController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of products retrieved successfully."
+          }
+        },
+        "summary": "Get all products",
+        "tags": [
+          "products"
+        ]
+      }
+    },
+    "/products/byName": {
+      "get": {
+        "operationId": "ProductController_findOneByName",
+        "parameters": [
+          {
+            "name": "name",
+            "required": true,
+            "in": "query",
+            "description": "Name of the product",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Product found"
+          },
+          "404": {
+            "description": "Product not found."
+          }
+        },
+        "summary": "Get a specific product by its name",
+        "tags": [
+          "products"
+        ]
+      }
+    },
+    "/products/{id}": {
+      "get": {
+        "operationId": "ProductController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Product found with member details."
+          },
+          "404": {
+            "description": "Product not found."
+          }
+        },
+        "summary": "Get a specific product by its ID",
+        "tags": [
+          "products"
+        ]
+      },
+      "patch": {
+        "operationId": "ProductController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProductDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Product updated successfully."
+          },
+          "404": {
+            "description": "Product not found."
+          }
+        },
+        "summary": "Update an existing product by ID",
+        "tags": [
+          "products"
+        ]
+      },
+      "delete": {
+        "operationId": "ProductController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Product deleted successfully."
+          },
+          "404": {
+            "description": "Product not found."
+          }
+        },
+        "summary": "Delete a product by ID",
+        "tags": [
+          "products"
+        ]
+      }
+    },
+    "/purchase-products": {
+      "post": {
+        "operationId": "PurchaseProductController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePurchaseProductDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The purchase record has been successfully created."
+          },
+          "400": {
+            "description": "Bad request."
+          }
+        },
+        "summary": "Register a new product purchase",
+        "tags": [
+          "purchase-products"
+        ]
+      },
+      "get": {
+        "operationId": "PurchaseProductController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of purchases retrieved successfully."
+          }
+        },
+        "summary": "Get all purchase records",
+        "tags": [
+          "purchase-products"
+        ]
+      }
+    },
+    "/purchase-products/{id}": {
+      "get": {
+        "operationId": "PurchaseProductController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Purchase record found."
+          },
+          "404": {
+            "description": "Purchase record not found."
+          }
+        },
+        "summary": "Get a specific purchase record by ID",
+        "tags": [
+          "purchase-products"
+        ]
+      },
+      "patch": {
+        "operationId": "PurchaseProductController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePurchaseProductDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Purchase record updated successfully."
+          },
+          "404": {
+            "description": "Purchase record not found."
+          }
+        },
+        "summary": "Update an existing purchase record by ID",
+        "tags": [
+          "purchase-products"
+        ]
+      },
+      "delete": {
+        "operationId": "PurchaseProductController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Purchase record deleted successfully."
+          },
+          "404": {
+            "description": "Purchase record not found."
+          }
+        },
+        "summary": "Delete a purchase record by ID",
+        "tags": [
+          "purchase-products"
+        ]
+      }
+    },
+    "/suppliers": {
+      "post": {
+        "operationId": "SupplierController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSupplierDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The supplier has been successfully created."
+          },
+          "400": {
+            "description": "Validation failed."
+          }
+        },
+        "summary": "Register a new supplier",
+        "tags": [
+          "Suppliers"
+        ]
+      },
+      "get": {
+        "operationId": "SupplierController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of suppliers retrieved successfully."
+          }
+        },
+        "summary": "Get all suppliers",
+        "tags": [
+          "Suppliers"
+        ]
+      }
+    },
+    "/suppliers/{id}": {
+      "get": {
+        "operationId": "SupplierController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Supplier found, including related purchase records."
+          },
+          "404": {
+            "description": "Supplier not found."
+          }
+        },
+        "summary": "Get a specific supplier by ID",
+        "tags": [
+          "Suppliers"
+        ]
+      },
+      "patch": {
+        "operationId": "SupplierController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSupplierDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Supplier updated successfully."
+          },
+          "404": {
+            "description": "Supplier not found."
+          }
+        },
+        "summary": "Update an existing supplier by ID",
+        "tags": [
+          "Suppliers"
+        ]
+      },
+      "delete": {
+        "operationId": "SupplierController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Supplier deleted successfully."
+          },
+          "404": {
+            "description": "Supplier not found."
+          }
+        },
+        "summary": "Delete a supplier by ID",
+        "tags": [
+          "Suppliers"
+        ]
+      }
+    },
+    "/other-costs": {
+      "post": {
+        "operationId": "OtherCostController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOtherCostDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The cost record has been successfully created."
+          },
+          "400": {
+            "description": "Validation failed."
+          }
+        },
+        "summary": "Register a new supplementary cost",
+        "tags": [
+          "Other Costs"
+        ]
+      },
+      "get": {
+        "operationId": "OtherCostController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of all cost records retrieved successfully."
+          }
+        },
+        "summary": "Retrieve all cost records",
+        "tags": [
+          "Other Costs"
+        ]
+      }
+    },
+    "/other-costs/{id}": {
+      "get": {
+        "operationId": "OtherCostController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cost record found successfully."
+          },
+          "404": {
+            "description": "Cost record not found."
+          }
+        },
+        "summary": "Get a specific cost record by ID",
+        "tags": [
+          "Other Costs"
+        ]
+      },
+      "patch": {
+        "operationId": "OtherCostController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateOtherCostDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Cost record updated successfully."
+          },
+          "404": {
+            "description": "Cost record not found."
+          }
+        },
+        "summary": "Update an existing cost record by ID",
+        "tags": [
+          "Other Costs"
+        ]
+      },
+      "delete": {
+        "operationId": "OtherCostController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cost record deleted successfully."
+          },
+          "404": {
+            "description": "Cost record not found."
+          }
+        },
+        "summary": "Delete a cost record by ID",
+        "tags": [
+          "Other Costs"
+        ]
+      }
+    },
+    "/product-sales": {
+      "post": {
+        "operationId": "ProductSalesController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProductSaleDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Sale recorded successfully."
+          },
+          "400": {
+            "description": "Not enough stock or invalid data."
+          }
+        },
+        "summary": "Register a new sale and deduct from batch stock",
+        "tags": [
+          "Product Sales"
+        ]
+      },
+      "get": {
+        "operationId": "ProductSalesController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of sales retrieved."
+          }
+        },
+        "summary": "Get all sales records",
+        "tags": [
+          "Product Sales"
+        ]
+      }
+    },
+    "/product-sales/{id}": {
+      "get": {
+        "operationId": "ProductSalesController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sale found."
+          }
+        },
+        "summary": "Get a specific sale by ID",
+        "tags": [
+          "Product Sales"
+        ]
+      }
+    },
+    "/product-sales/report/{purchaseProductId}": {
+      "get": {
+        "operationId": "ProductSalesController_getBatchProfitReport",
+        "parameters": [
+          {
+            "name": "purchaseProductId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Financial report generated."
+          }
+        },
+        "summary": "Get profit, net income, and remaining stock for a purchase batch",
+        "tags": [
+          "Product Sales"
+        ]
+      }
     }
   },
   "info": {
@@ -2746,7 +3387,8 @@
               "MEMBER_USER",
               "ADMIN",
               "EducationHub",
-              "Teacher"
+              "Teacher",
+              "Finance"
             ],
             "description": "The access level or role assigned to the user within the system.",
             "example": "USER",
@@ -2767,7 +3409,8 @@
           "MEMBER_USER",
           "ADMIN",
           "EducationHub",
-          "Teacher"
+          "Teacher",
+          "Finance"
         ]
       },
       "UpdateUserDto": {
@@ -2796,7 +3439,8 @@
               "MEMBER_USER",
               "ADMIN",
               "EducationHub",
-              "Teacher"
+              "Teacher",
+              "Finance"
             ],
             "description": "The access level or role assigned to the user within the system.",
             "example": "USER",
@@ -3325,7 +3969,8 @@
               "MEMBER_USER",
               "ADMIN",
               "EducationHub",
-              "Teacher"
+              "Teacher",
+              "Finance"
             ],
             "description": "The access level or role assigned to the user within the system.",
             "example": "USER",
@@ -3376,7 +4021,8 @@
               "MEMBER_USER",
               "ADMIN",
               "EducationHub",
-              "Teacher"
+              "Teacher",
+              "Finance"
             ],
             "description": "The access level or role assigned to the user within the system.",
             "example": "USER",
@@ -3691,6 +4337,309 @@
             "maximum": 100
           }
         }
+      },
+      "CreateProductDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the product",
+            "example": "MacBook Pro 16-inch"
+          },
+          "description": {
+            "type": "string",
+            "description": "A detailed description of the product",
+            "example": "M3 Max chip, 36GB Unified Memory, 1TB SSD"
+          },
+          "creatBy": {
+            "type": "string",
+            "description": "A phone no of the register member",
+            "example": "09xxxxxxx"
+          }
+        },
+        "required": [
+          "name",
+          "description",
+          "creatBy"
+        ]
+      },
+      "UpdateProductDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the product",
+            "example": "MacBook Pro 16-inch"
+          },
+          "description": {
+            "type": "string",
+            "description": "A detailed description of the product",
+            "example": "M3 Max chip, 36GB Unified Memory, 1TB SSD"
+          },
+          "creatBy": {
+            "type": "string",
+            "description": "A phone no of the register member",
+            "example": "09xxxxxxx"
+          }
+        }
+      },
+      "CreatePurchaseProductDto": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "number",
+            "description": "ID of the product being purchased",
+            "example": 1
+          },
+          "supplierId": {
+            "type": "number",
+            "description": "ID of the supplier",
+            "example": 42
+          },
+          "purchaseDate": {
+            "type": "string",
+            "description": "Date the purchase was made",
+            "example": "2023-10-25T10:00:00.000Z"
+          },
+          "unitPrice": {
+            "type": "number",
+            "description": "Price per unit",
+            "example": 15.5
+          },
+          "salePrice": {
+            "type": "number",
+            "description": "Selling price per unit",
+            "example": 25.99
+          },
+          "totalPrice": {
+            "type": "number",
+            "description": "Total price of the purchase",
+            "example": 1550
+          },
+          "quantity": {
+            "type": "number",
+            "description": "Quantity purchased",
+            "example": 100
+          },
+          "purchaseBy": {
+            "type": "string",
+            "description": "phone no of purchased person",
+            "example": "09xxxxx"
+          }
+        },
+        "required": [
+          "productId",
+          "supplierId",
+          "purchaseDate",
+          "unitPrice",
+          "salePrice",
+          "totalPrice",
+          "quantity",
+          "purchaseBy"
+        ]
+      },
+      "UpdatePurchaseProductDto": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "number",
+            "description": "ID of the product being purchased",
+            "example": 1
+          },
+          "supplierId": {
+            "type": "number",
+            "description": "ID of the supplier",
+            "example": 42
+          },
+          "purchaseDate": {
+            "type": "string",
+            "description": "Date the purchase was made",
+            "example": "2023-10-25T10:00:00.000Z"
+          },
+          "unitPrice": {
+            "type": "number",
+            "description": "Price per unit",
+            "example": 15.5
+          },
+          "salePrice": {
+            "type": "number",
+            "description": "Selling price per unit",
+            "example": 25.99
+          },
+          "totalPrice": {
+            "type": "number",
+            "description": "Total price of the purchase",
+            "example": 1550
+          },
+          "quantity": {
+            "type": "number",
+            "description": "Quantity purchased",
+            "example": 100
+          },
+          "purchaseBy": {
+            "type": "string",
+            "description": "phone no of purchased person",
+            "example": "09xxxxx"
+          }
+        }
+      },
+      "CreateSupplierDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Acme Corp",
+            "description": "The name of the supplier"
+          },
+          "phone": {
+            "type": "string",
+            "example": "+1-555-0123",
+            "description": "The contact phone number for the supplier"
+          },
+          "address": {
+            "type": "string",
+            "example": "123 Business Rd, Metropolis",
+            "description": "The physical address of the supplier"
+          },
+          "purchaseBy": {
+            "type": "string",
+            "example": "09xxxxx",
+            "description": "The phone no of who register this suplier"
+          }
+        },
+        "required": [
+          "name",
+          "phone",
+          "address",
+          "purchaseBy"
+        ]
+      },
+      "UpdateSupplierDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Acme Corp",
+            "description": "The name of the supplier"
+          },
+          "phone": {
+            "type": "string",
+            "example": "+1-555-0123",
+            "description": "The contact phone number for the supplier"
+          },
+          "address": {
+            "type": "string",
+            "example": "123 Business Rd, Metropolis",
+            "description": "The physical address of the supplier"
+          },
+          "purchaseBy": {
+            "type": "string",
+            "example": "09xxxxx",
+            "description": "The phone no of who register this suplier"
+          }
+        }
+      },
+      "CreateOtherCostDto": {
+        "type": "object",
+        "properties": {
+          "costName": {
+            "type": "string",
+            "example": "Transport",
+            "description": "The name or category of the cost (e.g., Transport, Labor)"
+          },
+          "costDescription": {
+            "type": "string",
+            "example": "Freight charges for delivery",
+            "description": "A detailed description of the cost"
+          },
+          "costAmount": {
+            "type": "number",
+            "example": 150.5,
+            "description": "The monetary amount of the cost"
+          },
+          "purchaseProductsId": {
+            "type": "number",
+            "example": 1,
+            "description": "Optional ID of the associated purchase product"
+          },
+          "purchaseBy": {
+            "type": "string",
+            "example": "09xxxxxx",
+            "description": "phon No"
+          }
+        },
+        "required": [
+          "costName",
+          "costDescription",
+          "costAmount"
+        ]
+      },
+      "UpdateOtherCostDto": {
+        "type": "object",
+        "properties": {
+          "costName": {
+            "type": "string",
+            "example": "Transport",
+            "description": "The name or category of the cost (e.g., Transport, Labor)"
+          },
+          "costDescription": {
+            "type": "string",
+            "example": "Freight charges for delivery",
+            "description": "A detailed description of the cost"
+          },
+          "costAmount": {
+            "type": "number",
+            "example": 150.5,
+            "description": "The monetary amount of the cost"
+          },
+          "purchaseProductsId": {
+            "type": "number",
+            "example": 1,
+            "description": "Optional ID of the associated purchase product"
+          },
+          "purchaseBy": {
+            "type": "string",
+            "example": "09xxxxxx",
+            "description": "phon No"
+          }
+        }
+      },
+      "CreateProductSaleDto": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "number",
+            "example": 1,
+            "description": "The ID of the product being sold"
+          },
+          "purchaseProductId": {
+            "type": "number",
+            "example": 1,
+            "description": "The exact purchase batch ID this sale is pulled from"
+          },
+          "quantity": {
+            "type": "number",
+            "example": 2,
+            "description": "The amount of items being sold"
+          },
+          "unitPrice": {
+            "type": "number",
+            "example": 750,
+            "description": "The final sale price per unit for this transaction"
+          },
+          "purchaseBy": {
+            "type": "string",
+            "example": "09xxxxxxx",
+            "description": "phone no of member crate this sale"
+          }
+        },
+        "required": [
+          "productId",
+          "purchaseProductId",
+          "quantity",
+          "unitPrice",
+          "purchaseBy"
+        ]
       }
     }
   }

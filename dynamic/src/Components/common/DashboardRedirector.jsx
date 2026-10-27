@@ -18,6 +18,7 @@ export default function DashboardRedirector() {
   if (normalizedRole === 'ADMIN') return <Navigate to="/dashboard/admin" replace />;
   if (normalizedRole === 'TEACHER') return <Navigate to="/dashboard/teacher" replace />;
   if (normalizedRole === 'EDUCATION_LEADER' || role === 'EducationHub') return <Navigate to="/dashboard/education" replace />;
+  if (normalizedRole === 'FINANCE_LEADER') return <Navigate to="/dashboard/finance" replace />;
   if (role) return <Navigate to="/dashboard/settings" replace />;
   
   return <Navigate to="/unauthorized" replace />;

@@ -42,6 +42,8 @@ import { EducationHub } from './pages/admin/EducationHub';
 import StudentEnrollment from './pages/admin/StudentEnrollment';
 import TeacherManagementPage from './pages/admin/TeacherManagementPage';
 import CourseManagementPage from './pages/admin/CourseManagementPage';
+import PropertyManagementPage from './pages/admin/PropertyManagementPage';
+import FinanceManagementPage from './pages/admin/FinanceManagementPage';
 
 function App() {
   const allRoles = ["ADMIN", "TEACHER", "Teacher", "STUDENT", "CHOIR_LEADER", "EDUCATION_LEADER", "EducationHub", "FINANCE_LEADER", "PR_LEADER", "SECRETARIAT_LEADER"];
@@ -100,6 +102,8 @@ function App() {
               <Route path="teachers" element={<RoleGuard allowedRoles={["ADMIN", "EDUCATION_LEADER"]}><TeacherManagementPage /></RoleGuard>} />
               <Route path="courses" element={<RoleGuard allowedRoles={["ADMIN", "EDUCATION_LEADER"]}><CourseManagementPage /></RoleGuard>} />
               <Route path="student-enrollment" element={<RoleGuard allowedRoles={["ADMIN", "EDUCATION_LEADER"]}><StudentEnrollment /></RoleGuard>} />
+              <Route path="property" element={<RoleGuard allowedRoles={["ADMIN", "FINANCE_LEADER"]}><PropertyManagementPage /></RoleGuard>} />
+              <Route path="finance" element={<RoleGuard allowedRoles={["ADMIN", "FINANCE_LEADER"]}><FinanceManagementPage /></RoleGuard>} />
             </Route>
           </Route>
 

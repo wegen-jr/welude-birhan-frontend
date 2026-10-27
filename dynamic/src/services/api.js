@@ -71,12 +71,13 @@ export async function apiClient(endpoint, { method = 'GET', body, headers = {}, 
             }
 
             const errorMessage = Array.isArray(data.message)
-                ? data.message.join(', ')
-                : data.message || data.error || `HTTP error! status: ${response.status}`;
+                ? (data.message.length > 0 ? String(data.message[0]) : 'Validation error')
+                : (data.message || data.error || `HTTP error! status: ${response.status}`);
 
             const error = new Error(errorMessage);
             error.status = response.status;
             error.data = data;
+            error.response = { status: response.status, data, statusText: response.statusText };
             throw error;
         }
 

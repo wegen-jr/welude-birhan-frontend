@@ -7,3 +7,5 @@ export * from './educationhub/sundaySchoolService';
 export * from './educationhub/teacherService';
 export * from './userService';
 export * from './announcementService';
+export * from './propertyService';
+export * from './financeService';
