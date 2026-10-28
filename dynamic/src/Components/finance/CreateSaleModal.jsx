@@ -202,6 +202,8 @@ export default function CreateSaleModal({
     const prodId = parseInt(selectedProductId, 10);
     const batchId = parseInt(selectedBatchId, 10);
     const trimmedMemberPhone = memberPhone.trim();
+    const trimmedCustomerPhone = customerPhone.trim();
+    const finalPhone = trimmedMemberPhone || trimmedCustomerPhone;
 
     if (!supId || isNaN(supId)) {
       setErrorMessage("Please select a Supplier / Vendor first.");
@@ -215,8 +217,8 @@ export default function CreateSaleModal({
       setErrorMessage("Please select an active Purchase Batch for this product.");
       return;
     }
-    if (!trimmedMemberPhone) {
-      setErrorMessage("Member phone number (purchaseBy) is required.");
+    if (!finalPhone) {
+      setErrorMessage("Contact phone number (purchaseBy) is required.");
       return;
     }
     if (parsedQty < 1) {
@@ -228,7 +230,6 @@ export default function CreateSaleModal({
       return;
     }
 
-    const trimmedCustomerPhone = customerPhone.trim();
     if (trimmedCustomerPhone) {
       const phoneValidation = validatePhoneNumber(trimmedCustomerPhone, { required: false });
       if (!phoneValidation.isValid) {
@@ -244,7 +245,7 @@ export default function CreateSaleModal({
         purchaseProductId: batchId,
         quantity: parsedQty,
         unitPrice: parsedUnitPrice,
-        purchaseBy: trimmedMemberPhone,
+        purchaseBy: finalPhone,
       };
 
       const result = await financeService.createSale(payload);
@@ -255,8 +256,8 @@ export default function CreateSaleModal({
         })} ETB`
       );
       const enrichedResult = result && typeof result === "object"
-        ? { ...result, customerPhone: trimmedCustomerPhone, purchaseBy: trimmedMemberPhone }
-        : { id: result?.id, customerPhone: trimmedCustomerPhone, purchaseBy: trimmedMemberPhone };
+        ? { ...result, customerPhone: trimmedCustomerPhone, purchaseBy: finalPhone, contactPhone: finalPhone }
+        : { id: result?.id, customerPhone: trimmedCustomerPhone, purchaseBy: finalPhone, contactPhone: finalPhone };
       if (onSaleRecorded) onSaleRecorded(enrichedResult);
       setErrorMessage("");
       onClose();
@@ -505,10 +506,10 @@ export default function CreateSaleModal({
                 </div>
               </div>
 
-              {/* Member Phone Number (Who records this sale - required per Swagger CreateProductSaleDto) */}
+              {/* Contact Phone (Member Phone) - Required per Swagger CreateProductSaleDto.purchaseBy */}
               <div>
                 <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
-                  Member Phone Number (Recorded By) <span className="text-amber-500">*</span>
+                  Contact Phone (Member Phone) <span className="text-amber-500">*</span>
                 </label>
                 <div className="relative">
                   <Phone className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -529,7 +530,7 @@ export default function CreateSaleModal({
                   />
                 </div>
                 <p className="text-[11px] text-slate-400 mt-1">
-                  Validated against Sunday School church member directory.
+                  Contact phone of member recording this sale (Swagger: <span className="font-mono text-amber-400">purchaseBy</span>).
                 </p>
               </div>
 
@@ -621,7 +622,7 @@ export default function CreateSaleModal({
                 !selectedSupplierId ||
                 !selectedProductId ||
                 !selectedBatchId ||
-                !memberPhone.trim() ||
+                (!memberPhone.trim() && !customerPhone.trim()) ||
                 parsedQty < 1 ||
                 parsedUnitPrice <= 0
               }

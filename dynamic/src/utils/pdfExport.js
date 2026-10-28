@@ -717,7 +717,18 @@ export function generateSalesSummaryPdf(sales = [], options = {}) {
     const dateStr = rawDate ? new Date(rawDate).toLocaleDateString() : "N/A";
     const prodName = s.product?.name || s.productName || (s.productId ? `Product #${s.productId}` : "Item");
     const batchStr = s.purchaseProductId ? `Batch #${s.purchaseProductId}` : "—";
-    const contactInfo = s.customerPhone || s.phone || s.phoneNumber || s.purchaseProduct?.supplier?.phone || s.salesTo || s.customer || "—";
+    const contactInfo =
+      s.purchaseBy ||
+      s.contactPhone ||
+      s.memberPhone ||
+      s.customerPhone ||
+      s.phone ||
+      s.phoneNumber ||
+      s.purchasedBy ||
+      s.purchaseProduct?.supplier?.phone ||
+      s.salesTo ||
+      s.customer ||
+      "—";
 
     return [
       idx + 1,
@@ -819,7 +830,16 @@ export function generateSaleReceiptPdf(sale, options = {}) {
   curY += 5;
 
   // Add Contact Phone if present without overlap
-  const contactPhone = sale?.customerPhone || sale?.phone || sale?.phoneNumber || sale?.contactPhone || sale?.purchaseProduct?.supplier?.phone || null;
+  const contactPhone =
+    sale?.purchaseBy ||
+    sale?.contactPhone ||
+    sale?.memberPhone ||
+    sale?.customerPhone ||
+    sale?.phone ||
+    sale?.phoneNumber ||
+    sale?.purchasedBy ||
+    sale?.purchaseProduct?.supplier?.phone ||
+    null;
   if (contactPhone) {
     doc.text(`Contact Phone: ${contactPhone}`, 10, curY);
     curY += 5;
@@ -990,7 +1010,7 @@ export function generateBatchFinancialReportPdf(reportData = {}, batch = {}, opt
   const timestamp = new Date().toLocaleString();
   const subtitle = "Purchase Batch Financial Performance Report";
 
-  // Admin / User metadata for audit trail
+  // Admin / User metadata for audit trail (Logged-in Admin's phone / ID)
   const adminUser = options.adminUser || (() => {
     try {
       return JSON.parse(localStorage.getItem("user") || "{}");
@@ -998,13 +1018,11 @@ export function generateBatchFinancialReportPdf(reportData = {}, batch = {}, opt
       return {};
     }
   })();
-  const adminIdentifier =
-    adminUser?.fullname ||
-    adminUser?.name ||
-    adminUser?.email ||
-    adminUser?.phone ||
-    adminUser?.phoneNumber ||
-    (adminUser?.id ? `Admin #${adminUser.id}` : "Authorized Finance Officer");
+  const adminPhone = adminUser?.phone || adminUser?.phoneNo || adminUser?.phoneNumber;
+  const adminId = adminUser?.id ? `ID: #${adminUser.id}` : null;
+  const adminIdentifier = adminPhone && adminId
+    ? `${adminPhone} (${adminId})`
+    : adminPhone || adminId || adminUser?.fullname || adminUser?.name || adminUser?.email || "Authorized Admin";
 
   const batchId = batch?.id || reportData?.purchaseProductId || reportData?.batchId || "N/A";
   const prodName =
@@ -1039,9 +1057,10 @@ export function generateBatchFinancialReportPdf(reportData = {}, batch = {}, opt
   });
   const remainingStockFormatted = Number(rawRemainingStock).toLocaleString("en-US");
 
+  // Section 1: Official Header & Precise Metadata Block (zero text overlap)
   const startY = drawDocumentHeader(doc, {
-    title: "Purchase Batch Financial Performance Report",
-    subtitle: "Purchase Batch Financial Performance Report",
+    title: "WELUDE BIRHAN - OFFICIAL BATCH AUDIT REPORT",
+    subtitle: "Finance & Sales Administration • Office Audit Division",
     description:
       "Official financial reconciliation, net profitability, and inventory stock audit for formal office submission",
     leftColX: 14,
@@ -1049,12 +1068,12 @@ export function generateBatchFinancialReportPdf(reportData = {}, batch = {}, opt
     metaPairs: [
       { label: "Purchase Batch ID", value: `#BAT-${batchId}` },
       { label: "Generated Date", value: timestamp },
-      { label: "Target Product", value: prodName },
+      { label: "Product Name", value: prodName },
+      { label: "Auditor (Admin Phone/ID)", value: adminIdentifier },
       { label: "Vendor / Supplier", value: supName },
       { label: "Procurement Date", value: purchaseDate },
       { label: "Purchased / Recorded By", value: purchaser },
-      { label: "Audited / Submitted By", value: adminIdentifier },
-      { label: "Document Purpose", value: "Formal Parish Council & Office Submission" },
+      { label: "Document Status", value: "OFFICIAL OFFICE AUDIT" },
     ],
   });
 
@@ -1119,11 +1138,17 @@ export function generateBatchFinancialReportPdf(reportData = {}, batch = {}, opt
     }
   });
 
+  // Section 2: Financial Performance (AutoTable with striped rows and dark header)
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(10);
+  doc.setTextColor(15, 23, 42);
+  doc.text("Section 2: Financial Performance & Stock Reconciliation", 14, startY + 4);
+
   autoTable(doc, {
-    startY: startY + 2,
+    startY: startY + 7,
     head: metricsHead,
     body: metricsBody,
-    theme: "grid",
+    theme: "striped",
     headStyles: {
       fillColor: [11, 27, 61], // Brand Navy
       textColor: [255, 255, 255],
@@ -1135,13 +1160,16 @@ export function generateBatchFinancialReportPdf(reportData = {}, batch = {}, opt
       textColor: [30, 41, 59],
       cellPadding: 3.5,
     },
+    alternateRowStyles: {
+      fillColor: [248, 250, 252],
+    },
     columnStyles: {
       0: { cellWidth: 10, halign: "center" },
-      1: { cellWidth: 50, fontStyle: "bold" },
-      2: { cellWidth: 45, fontStyle: "bold", textColor: [180, 83, 9], halign: "right" },
-      3: { cellWidth: 85, textColor: [71, 85, 105], fontSize: 8 },
+      1: { cellWidth: 46, fontStyle: "bold" },
+      2: { cellWidth: 44, fontStyle: "bold", textColor: [180, 83, 9], halign: "right" },
+      3: { cellWidth: 82, textColor: [71, 85, 105], fontSize: 8 },
     },
-    margin: { left: 10, right: 10 },
+    margin: { left: 14, right: 14 },
   });
 
   // Table 2: Procurement Baseline Reference
@@ -1150,7 +1178,7 @@ export function generateBatchFinancialReportPdf(reportData = {}, batch = {}, opt
   doc.setFont("helvetica", "bold");
   doc.setFontSize(10);
   doc.setTextColor(15, 23, 42);
-  doc.text("Batch Procurement & Baseline Specifications", 10, nextY);
+  doc.text("Batch Procurement & Baseline Specifications", 14, nextY);
 
   const baselineHead = [["Specification Parameter", "Baseline Reconciled Value", "System Reference Notes"]];
   const unitCostNum = Number(batch?.unitPrice || 0);
@@ -1196,62 +1224,62 @@ export function generateBatchFinancialReportPdf(reportData = {}, batch = {}, opt
       fillColor: [248, 250, 252],
     },
     columnStyles: {
-      0: { cellWidth: 60, fontStyle: "bold" },
-      1: { cellWidth: 60, fontStyle: "bold", textColor: [15, 23, 42] },
+      0: { cellWidth: 56, fontStyle: "bold" },
+      1: { cellWidth: 56, fontStyle: "bold", textColor: [15, 23, 42] },
       2: { cellWidth: 70, textColor: [100, 116, 139] },
     },
-    margin: { left: 10, right: 10 },
+    margin: { left: 14, right: 14 },
   });
 
-  // Table 3: Formal Office Verification & Endorsement Sign-off Block
-  let signY = doc.lastAutoTable.finalY + 8;
+  // Section 3: Audit Sign-off (using doc.text() to draw literal signature lines)
+  let signY = doc.lastAutoTable.finalY + 12;
   const pageHeight = doc.internal.pageSize.getHeight();
 
-  if (signY + 35 > pageHeight - 16) {
+  if (signY + 38 > pageHeight - 16) {
     doc.addPage();
-    signY = 20;
+    signY = 24;
   }
 
   doc.setFont("helvetica", "bold");
-  doc.setFontSize(9.5);
+  doc.setFontSize(10);
   doc.setTextColor(15, 23, 42);
-  doc.text("Official Parish Administration Verification & Endorsement", 10, signY);
+  doc.text("Section 3: Audit Sign-off & Verification", 14, signY);
 
-  const signHead = [["Role / Authority", "Designated Officer Name", "Signature / Stamp", "Action Date"]];
-  const signBody = [
-    ["Prepared By (Finance Officer)", adminIdentifier, "", timestamp.slice(0, 10)],
-    ["Audited By (Internal Auditor)", "___________________________", "", ""],
-    ["Approved By (Parish Priest / Chair)", "___________________________", "", ""],
-  ];
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(8);
+  doc.setTextColor(100, 116, 139);
+  doc.text(
+    "This official batch financial audit report has been verified against backend ledger entries.",
+    14,
+    signY + 5
+  );
 
-  autoTable(doc, {
-    startY: signY + 3,
-    head: signHead,
-    body: signBody,
-    theme: "grid",
-    headStyles: {
-      fillColor: [241, 245, 249],
-      textColor: [15, 23, 42],
-      fontStyle: "bold",
-      fontSize: 8,
-    },
-    bodyStyles: {
-      fontSize: 8,
-      textColor: [51, 65, 85],
-      cellPadding: 4,
-    },
-    columnStyles: {
-      0: { cellWidth: 60, fontStyle: "bold" },
-      1: { cellWidth: 55 },
-      2: { cellWidth: 45 },
-      3: { cellWidth: 30, halign: "center" },
-    },
-    margin: { left: 10, right: 10 },
-  });
+  // Literal signature lines drawn using doc.text()
+  const lineY1 = signY + 18;
+  const lineY2 = signY + 24;
 
-  attachPageFooters(doc, subtitle);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(9);
+  doc.setTextColor(30, 41, 59);
+  doc.text("Prepared By: ___________________________", 14, lineY1);
+  doc.text("Approved By: ___________________________", 110, lineY1);
+
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(8);
+  doc.setTextColor(71, 85, 105);
+  doc.text(`Auditor (Admin Phone/ID): ${adminIdentifier}`, 14, lineY2);
+  doc.text("Parish Administration / Finance Chair", 110, lineY2);
+
+  const lineY3 = signY + 32;
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(8);
+  doc.setTextColor(100, 116, 139);
+  doc.text(`Date of Submission: ${timestamp.slice(0, 10)}`, 14, lineY3);
+  doc.text("Official Parish Stamp: [                           ]", 110, lineY3);
+
+  attachPageFooters(doc, "Finance & Sales Administration");
   const dateStr = new Date().toISOString().slice(0, 10);
-  const filename = `financial_report_batch_${batchId}_${dateStr}.pdf`;
+  const filename = `official_batch_audit_report_${batchId}_${dateStr}.pdf`;
   doc.save(filename);
   return filename;
 }

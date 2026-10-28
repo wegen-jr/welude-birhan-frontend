@@ -34,7 +34,17 @@ export default function SalesTab({
       const q = searchQuery.toLowerCase().trim();
       const pName = (s.product?.name || s.productName || (s.productId ? `Product #${s.productId}` : "")).toLowerCase();
       const batchStr = s.purchaseProductId ? `batch #${s.purchaseProductId}`.toLowerCase() : "";
-      const phoneStr = (s.customerPhone || s.phone || s.phoneNumber || s.purchaseProduct?.supplier?.phone || "").toLowerCase();
+      const phoneStr = (
+        s.purchaseBy ||
+        s.contactPhone ||
+        s.memberPhone ||
+        s.phone ||
+        s.phoneNumber ||
+        s.customerPhone ||
+        s.purchasedBy ||
+        s.purchaseProduct?.supplier?.phone ||
+        ""
+      ).toLowerCase();
       const matchesSearch =
         !q ||
         pName.includes(q) ||
@@ -254,7 +264,16 @@ export default function SalesTab({
                   const dateStr = rawDate ? new Date(rawDate).toLocaleDateString() : "N/A";
                   const productName = s.product?.name || s.productName || (s.productId ? `Product #${s.productId}` : "Item");
                   const batchText = s.purchaseProductId ? `Batch #${s.purchaseProductId}` : "—";
-                  const contactPhone = s.customerPhone || s.phone || s.phoneNumber || s.contactPhone || s.purchaseProduct?.supplier?.phone || null;
+                  const contactPhone =
+                    s.purchaseBy ||
+                    s.contactPhone ||
+                    s.memberPhone ||
+                    s.phone ||
+                    s.phoneNumber ||
+                    s.customerPhone ||
+                    s.purchasedBy ||
+                    s.purchaseProduct?.supplier?.phone ||
+                    null;
 
                   return (
                     <tr

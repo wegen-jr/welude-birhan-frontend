@@ -123,7 +123,7 @@ export default function BatchFinancialReportModal({
       generateBatchFinancialReportPdf(reportData, batch, {
         adminUser: user,
       });
-      toast.success("Office Report PDF generated successfully!");
+      toast.success("Official Audit PDF generated successfully!");
     } catch (err) {
       console.error("PDF generation failed:", err);
       toast.error("Failed to generate PDF document. Please try again.");
@@ -246,9 +246,13 @@ export default function BatchFinancialReportModal({
                   {/* Metric 1: Net Income */}
                   <div
                     className={`p-4 rounded-xl border transition-all ${
-                      netIncomeNum >= 0
-                        ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-400"
-                        : "bg-red-500/10 border-red-500/30 text-red-400"
+                      isDarkMode
+                        ? netIncomeNum >= 0
+                          ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-400"
+                          : "bg-red-500/10 border-red-500/30 text-red-400"
+                        : netIncomeNum >= 0
+                          ? "bg-emerald-50 border-emerald-200 text-emerald-700"
+                          : "bg-red-50 border-red-200 text-red-700"
                     }`}
                   >
                     <div className="flex items-center justify-between text-xs mb-1.5">
@@ -262,7 +266,7 @@ export default function BatchFinancialReportModal({
                       })}{" "}
                       <span className="text-xs font-normal">ETB</span>
                     </div>
-                    <p className="text-[11px] text-slate-400 mt-1">
+                    <p className={`text-[11px] mt-1 ${isDarkMode ? "text-slate-400" : "text-slate-600"}`}>
                       {netIncomeNum >= 0
                         ? "Positive net yield above total batch cost"
                         : "Deficit (batch capital still unrecovered)"}
@@ -270,7 +274,13 @@ export default function BatchFinancialReportModal({
                   </div>
 
                   {/* Metric 2: Profit */}
-                  <div className="p-4 rounded-xl border bg-amber-500/10 border-amber-500/30 text-amber-400">
+                  <div
+                    className={`p-4 rounded-xl border transition-all ${
+                      isDarkMode
+                        ? "bg-amber-500/10 border-amber-500/30 text-amber-400"
+                        : "bg-amber-50 border-amber-200 text-amber-800"
+                    }`}
+                  >
                     <div className="flex items-center justify-between text-xs mb-1.5">
                       <span className="font-semibold uppercase tracking-wider text-[11px]">Gross / Realized Profit</span>
                       <DollarSign className="w-4 h-4" />
@@ -282,13 +292,19 @@ export default function BatchFinancialReportModal({
                       })}{" "}
                       <span className="text-xs font-normal">ETB</span>
                     </div>
-                    <p className="text-[11px] text-slate-400 mt-1">
+                    <p className={`text-[11px] mt-1 ${isDarkMode ? "text-slate-400" : "text-slate-600"}`}>
                       Realized margin from completed POS sales
                     </p>
                   </div>
 
                   {/* Metric 3: Remaining Stock */}
-                  <div className="p-4 rounded-xl border bg-blue-500/10 border-blue-500/30 text-blue-400">
+                  <div
+                    className={`p-4 rounded-xl border transition-all ${
+                      isDarkMode
+                        ? "bg-blue-500/10 border-blue-500/30 text-blue-400"
+                        : "bg-blue-50 border-blue-200 text-blue-800"
+                    }`}
+                  >
                     <div className="flex items-center justify-between text-xs mb-1.5">
                       <span className="font-semibold uppercase tracking-wider text-[11px]">Remaining Stock</span>
                       <Package className="w-4 h-4" />
@@ -297,7 +313,7 @@ export default function BatchFinancialReportModal({
                       {remainingStockNum.toLocaleString()}{" "}
                       <span className="text-xs font-normal">Units</span>
                     </div>
-                    <p className="text-[11px] text-slate-400 mt-1">
+                    <p className={`text-[11px] mt-1 ${isDarkMode ? "text-slate-400" : "text-slate-600"}`}>
                       Available unsold stock in inventory pool
                     </p>
                   </div>
@@ -419,17 +435,17 @@ export default function BatchFinancialReportModal({
               type="button"
               onClick={handleDownloadPdf}
               disabled={isLoading || !reportData || isExporting}
-              className="inline-flex items-center justify-center gap-2 px-5 py-2 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-600 text-slate-950 shadow-md shadow-amber-500/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-600 text-slate-950 shadow-md shadow-amber-500/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             >
               {isExporting ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  <span>Preparing PDF...</span>
+                  <span>Preparing Audit PDF...</span>
                 </>
               ) : (
                 <>
                   <Download className="w-4 h-4" />
-                  <span>Download Office Report (PDF)</span>
+                  <span>Download Official Audit PDF</span>
                 </>
               )}
             </button>

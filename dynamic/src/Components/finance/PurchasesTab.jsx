@@ -332,7 +332,7 @@ export default function PurchasesTab({
                   <th className="px-4 py-3.5 text-right">Cost Price (COGS)</th>
                   <th className="px-4 py-3.5 text-right">Target Retail Price</th>
                   <th className="px-4 py-3.5 text-right">Total Batch Cost</th>
-                  <th className="px-4 py-3.5 text-center">Batch Report</th>
+                  <th className="px-4 py-3.5 text-center">Audit Report</th>
                   {isAuthorized && <th className="px-4 py-3.5 text-center">Actions</th>}
                 </tr>
               </thead>
@@ -409,11 +409,11 @@ export default function PurchasesTab({
                       <td className="px-4 py-3.5 text-center">
                         <button
                           onClick={() => handleOpenReport(b)}
-                          title="View Batch Financial Report"
+                          title="View Audit Report"
                           className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 transition-all hover:scale-[1.02] shadow-sm"
                         >
                           <FileSpreadsheet className="w-3.5 h-3.5 shrink-0" />
-                          <span>View Report</span>
+                          <span>View Audit Report</span>
                         </button>
                       </td>
 

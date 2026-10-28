@@ -400,8 +400,11 @@ export const financeService = {
     const unitPrice = Math.max(0, parseFloat(saleData?.unitPrice ?? saleData?.salesPrice) || 0);
     const purchaseBy = String(
       saleData?.purchaseBy ??
+      saleData?.contactPhone ??
+      saleData?.memberPhone ??
       saleData?.customerPhone ??
       saleData?.phone ??
+      saleData?.phoneNumber ??
       saleData?.phoneNo ??
       ''
     ).trim();
@@ -416,7 +419,7 @@ export const financeService = {
       throw new Error('Unit sale price must be greater than zero.');
     }
     if (!purchaseBy) {
-      throw new Error('Member contact phone number is required.');
+      throw new Error('Contact phone number (purchaseBy) is required.');
     }
 
     const payload = {
