@@ -44,7 +44,7 @@ export default function FinanceManagement({ isDarkMode = true }) {
     }
   })();
   const userRole = (user?.role || "").toUpperCase();
-  const isAuthorized = ["ADMIN", "FINANCE_LEADER", "LEADER"].includes(userRole);
+  const isAuthorized = ["ADMIN", "FINANCE_LEADER", "FINANCE", "LEADER"].includes(userRole);
 
   // Load all finance entities in parallel from live Swagger API
   const refreshAllData = useCallback(async () => {

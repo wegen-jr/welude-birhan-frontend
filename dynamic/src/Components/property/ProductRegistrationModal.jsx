@@ -5,17 +5,29 @@ import {
   PackagePlus,
   Loader2,
   DollarSign,
-  Calendar,
-  Building,
   User,
   Hash,
   AlertCircle,
   Tag,
+  Layers,
+  FileText,
+  Activity,
   Info
 } from "lucide-react";
 import { propertyService } from "../../services/propertyService";
 import { memberService } from "../../services/memberService";
 import { extractErrorMessage } from "../../utils/errorUtils";
+
+const ASSET_TYPES = [
+  { value: "ELECTRONICS", label: "Electronics & IT Equipment" },
+  { value: "AUDIO_VISUAL", label: "Sound & Audio/Visual Media" },
+  { value: "FURNITURE", label: "Furniture & Church Seating" },
+  { value: "INSTRUMENT", label: "Musical Instruments & Hymnal Items" },
+  { value: "BOOK", label: "Books, Scriptures & Publications" },
+  { value: "VEHICLE", label: "Vehicles & Transport" },
+  { value: "FACILITY", label: "Facility & Maintenance Tools" },
+  { value: "OTHER", label: "Other Parish Property" },
+];
 
 export default function ProductRegistrationModal({
   isOpen,
@@ -24,13 +36,13 @@ export default function ProductRegistrationModal({
   isDarkMode = true,
 }) {
   const [formData, setFormData] = useState({
-    productName: "",
-    quantity: "",
-    purchaseDate: new Date().toISOString().slice(0, 10),
-    purchaseFrom: "",
-    purchaseBy: "",
-    purchasePrice: "",
-    price: "",
+    name: "",
+    type: "ELECTRONICS",
+    value: "",
+    quantity: "1",
+    status: "ACTIVE",
+    description: "",
+    recordedByPhone: "",
   });
 
   const [members, setMembers] = useState([]);
@@ -51,7 +63,7 @@ export default function ProductRegistrationModal({
           setMembers(Array.isArray(data) ? data : []);
         }
       } catch (err) {
-        console.warn("Could not load members for purchaser selection:", err);
+        console.warn("Could not load members for custodian selection:", err);
       } finally {
         if (isMounted) setLoadingMembers(false);
       }
@@ -72,67 +84,59 @@ export default function ProductRegistrationModal({
 
   const handleMemberSelect = (e) => {
     const selectedPhone = e.target.value;
-    setFormData((prev) => ({ ...prev, purchaseBy: selectedPhone }));
+    setFormData((prev) => ({ ...prev, recordedByPhone: selectedPhone }));
     setErrorMessage("");
   };
 
-  // Calculations for quick preview
-  const cost = parseFloat(formData.purchasePrice) || 0;
-  const retail = parseFloat(formData.price) || 0;
   const qty = parseInt(formData.quantity, 10) || 0;
-  const totalValuation = qty * cost;
-  const unitMargin = retail - cost;
-  const marginPercent = retail > 0 ? ((unitMargin / retail) * 100).toFixed(1) : 0;
+  const unitVal = parseFloat(formData.value) || 0;
+  const totalValuation = qty * unitVal;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage("");
 
-    if (!formData.productName.trim()) {
-      setErrorMessage("Product name is required.");
+    if (!formData.name.trim()) {
+      setErrorMessage("Asset name is required.");
+      return;
+    }
+    if (!formData.type) {
+      setErrorMessage("Asset category / type is required.");
       return;
     }
     if (formData.quantity === "" || parseInt(formData.quantity, 10) < 0) {
       setErrorMessage("Quantity must be a non-negative integer.");
       return;
     }
-    if (!formData.purchaseFrom.trim()) {
-      setErrorMessage("Supplier / Store (Purchase From) is required.");
-      return;
-    }
-    if (!formData.purchaseBy.trim()) {
-      setErrorMessage("Purchaser / Custodian phone number is required.");
-      return;
-    }
-    if (formData.purchasePrice === "" || parseFloat(formData.purchasePrice) < 0) {
-      setErrorMessage("Purchase price must be a non-negative number.");
-      return;
-    }
-    if (formData.price === "" || parseFloat(formData.price) < 0) {
-      setErrorMessage("Selling price must be a non-negative number.");
+    if (formData.value === "" || parseFloat(formData.value) < 0) {
+      setErrorMessage("Asset monetary value must be a non-negative number.");
       return;
     }
 
     setIsSubmitting(true);
     try {
       const payload = {
-        productName: formData.productName.trim(),
+        name: formData.name.trim(),
+        description: formData.description.trim(),
+        type: formData.type.toUpperCase(),
+        value: parseFloat(formData.value),
         quantity: parseInt(formData.quantity, 10),
-        purchaseDate: new Date(formData.purchaseDate).toISOString(),
-        purchaseFrom: formData.purchaseFrom.trim(),
-        purchaseBy: formData.purchaseBy.trim(),
-        purchasePrice: parseFloat(formData.purchasePrice),
-        price: parseFloat(formData.price),
+        status: formData.status,
       };
 
-      const result = await propertyService.createProduct(payload);
-      toast.success(`Asset "${formData.productName}" successfully registered!`);
+      if (formData.recordedByPhone.trim()) {
+        payload.recordedByPhone = formData.recordedByPhone.trim();
+        payload.purchaseBy = formData.recordedByPhone.trim();
+      }
+
+      const result = await propertyService.createAsset(payload);
+      toast.success(`Asset "${formData.name}" successfully registered!`);
       if (onProductCreated) onProductCreated(result);
       setErrorMessage("");
       onClose();
     } catch (err) {
-      console.error("Product registration error:", err);
-      const dynamicMsg = extractErrorMessage(err, "Failed to register product.");
+      console.error("Asset registration error:", err);
+      const dynamicMsg = extractErrorMessage(err, "Failed to register asset. Please verify input data.");
       setErrorMessage(dynamicMsg);
       toast.error(dynamicMsg);
     } finally {
@@ -157,10 +161,10 @@ export default function ProductRegistrationModal({
             </div>
             <div>
               <h3 className="text-lg font-serif font-bold tracking-tight">
-                Register New Asset / Product
+                Register New Asset / Property
               </h3>
               <p className="text-xs text-slate-400">
-                Record new inventory into organizational asset management
+                Register physical inventory into the church property ledger
               </p>
             </div>
           </div>
@@ -186,19 +190,19 @@ export default function ProductRegistrationModal({
             </div>
           )}
 
-          {/* Product Name */}
+          {/* Asset Name */}
           <div>
             <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
-              Product / Asset Name <span className="text-amber-500">*</span>
+              Asset Name <span className="text-amber-500">*</span>
             </label>
             <div className="relative">
               <Tag className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
               <input
                 type="text"
-                name="productName"
-                value={formData.productName}
+                name="name"
+                value={formData.name}
                 onChange={handleChange}
-                placeholder="e.g. Sunday School Hymn Book, Sound Console"
+                placeholder="e.g. Dell Inspiron 15, Yamaha Audio Mixer, Solid Wood Pews"
                 required
                 className={`w-full pl-10 pr-4 py-2.5 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition-all ${
                   isDarkMode
@@ -209,11 +213,64 @@ export default function ProductRegistrationModal({
             </div>
           </div>
 
-          {/* Grid: Quantity, Purchase Price, Selling Price */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {/* Grid: Type & Status */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
-                Quantity <span className="text-amber-500">*</span>
+                Asset Category / Type <span className="text-amber-500">*</span>
+              </label>
+              <div className="relative">
+                <Layers className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                <select
+                  name="type"
+                  value={formData.type}
+                  onChange={handleChange}
+                  required
+                  className={`w-full pl-10 pr-4 py-2.5 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition-all ${
+                    isDarkMode
+                      ? "bg-[#081226] border-white/10 text-slate-100"
+                      : "bg-slate-50 border-slate-200 text-slate-900"
+                  }`}
+                >
+                  {ASSET_TYPES.map((t) => (
+                    <option key={t.value} value={t.value}>
+                      {t.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
+                Initial Operational Status <span className="text-amber-500">*</span>
+              </label>
+              <div className="relative">
+                <Activity className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                <select
+                  name="status"
+                  value={formData.status}
+                  onChange={handleChange}
+                  required
+                  className={`w-full pl-10 pr-4 py-2.5 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition-all ${
+                    isDarkMode
+                      ? "bg-[#081226] border-white/10 text-slate-100"
+                      : "bg-slate-50 border-slate-200 text-slate-900"
+                  }`}
+                >
+                  <option value="ACTIVE">ACTIVE (Operational & In-Service)</option>
+                  <option value="MAINTENANCE">MAINTENANCE (Under Repair / Servicing)</option>
+                  <option value="RETIRED">RETIRED (Decommissioned / Archival)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          {/* Grid: Quantity & Monetary Value */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
+                Quantity on Hand <span className="text-amber-500">*</span>
               </label>
               <div className="relative">
                 <Hash className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -224,7 +281,7 @@ export default function ProductRegistrationModal({
                   step="1"
                   value={formData.quantity}
                   onChange={handleChange}
-                  placeholder="e.g. 50"
+                  placeholder="e.g. 10"
                   required
                   className={`w-full pl-10 pr-4 py-2.5 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition-all ${
                     isDarkMode
@@ -237,42 +294,18 @@ export default function ProductRegistrationModal({
 
             <div>
               <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
-                Cost Price (ETB) <span className="text-amber-500">*</span>
+                Unit Value / Cost (ETB) <span className="text-amber-500">*</span>
               </label>
               <div className="relative">
                 <DollarSign className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
                 <input
                   type="number"
-                  name="purchasePrice"
+                  name="value"
                   min="0"
                   step="0.01"
-                  value={formData.purchasePrice}
+                  value={formData.value}
                   onChange={handleChange}
-                  placeholder="e.g. 150.00"
-                  required
-                  className={`w-full pl-10 pr-4 py-2.5 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition-all ${
-                    isDarkMode
-                      ? "bg-white/5 border-white/10 text-slate-100 placeholder-slate-500"
-                      : "bg-slate-50 border-slate-200 text-slate-900 placeholder-slate-400"
-                  }`}
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
-                Selling Price (ETB) <span className="text-amber-500">*</span>
-              </label>
-              <div className="relative">
-                <DollarSign className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-                <input
-                  type="number"
-                  name="price"
-                  min="0"
-                  step="0.01"
-                  value={formData.price}
-                  onChange={handleChange}
-                  placeholder="e.g. 200.00"
+                  placeholder="e.g. 2500.50"
                   required
                   className={`w-full pl-10 pr-4 py-2.5 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition-all ${
                     isDarkMode
@@ -284,7 +317,7 @@ export default function ProductRegistrationModal({
             </div>
           </div>
 
-          {/* Pricing Margin Preview Pill */}
+          {/* Total Valuation Preview Pill */}
           <div
             className={`p-3 rounded-xl border flex flex-wrap items-center justify-between gap-3 text-xs ${
               isDarkMode ? "bg-white/5 border-white/10" : "bg-slate-50 border-slate-200"
@@ -296,78 +329,54 @@ export default function ProductRegistrationModal({
             </div>
             <div className="flex items-center gap-4">
               <span>
-                Total Batch Cost:{" "}
+                Total Batch Valuation:{" "}
                 <strong className="text-amber-500 font-mono">
-                  {totalValuation.toLocaleString("en-US", { minimumFractionDigits: 2 })} ETB
+                  {totalValuation.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ETB
                 </strong>
               </span>
               <span>
-                Unit Margin:{" "}
-                <strong className={unitMargin >= 0 ? "text-emerald-400 font-mono" : "text-red-400 font-mono"}>
-                  {unitMargin.toFixed(2)} ETB ({marginPercent}%)
+                Status:{" "}
+                <strong className={qty <= 5 ? "text-amber-400 font-semibold" : "text-emerald-400 font-semibold"}>
+                  {qty <= 5 ? "Low Stock Warning Triggered" : "Healthy Stock Level"}
                 </strong>
               </span>
             </div>
           </div>
 
-          {/* Supplier and Purchase Date */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
-                Supplier / Store <span className="text-amber-500">*</span>
-              </label>
-              <div className="relative">
-                <Building className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-                <input
-                  type="text"
-                  name="purchaseFrom"
-                  value={formData.purchaseFrom}
-                  onChange={handleChange}
-                  placeholder="e.g. Holy Trinity Bookstore, Commercial Vendor"
-                  required
-                  className={`w-full pl-10 pr-4 py-2.5 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition-all ${
-                    isDarkMode
-                      ? "bg-white/5 border-white/10 text-slate-100 placeholder-slate-500"
-                      : "bg-slate-50 border-slate-200 text-slate-900 placeholder-slate-400"
-                  }`}
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
-                Purchase Date <span className="text-amber-500">*</span>
-              </label>
-              <div className="relative">
-                <Calendar className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-                <input
-                  type="date"
-                  name="purchaseDate"
-                  value={formData.purchaseDate}
-                  onChange={handleChange}
-                  required
-                  className={`w-full pl-10 pr-4 py-2.5 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition-all ${
-                    isDarkMode
-                      ? "bg-white/5 border-white/10 text-slate-100"
-                      : "bg-slate-50 border-slate-200 text-slate-900"
-                  }`}
-                />
-              </div>
+          {/* Description */}
+          <div>
+            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
+              Description & Specifications
+            </label>
+            <div className="relative">
+              <FileText className="w-4 h-4 absolute left-3.5 top-3 text-slate-400" />
+              <textarea
+                name="description"
+                rows="2"
+                value={formData.description}
+                onChange={handleChange}
+                placeholder="Serial number, physical condition, storage location, or model notes"
+                className={`w-full pl-10 pr-4 py-2.5 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition-all ${
+                  isDarkMode
+                    ? "bg-white/5 border-white/10 text-slate-100 placeholder-slate-500"
+                    : "bg-slate-50 border-slate-200 text-slate-900 placeholder-slate-400"
+                }`}
+              />
             </div>
           </div>
 
-          {/* Purchaser / Custodian (verified member phone number) */}
+          {/* Custodian / Purchaser Member Phone (Optional) */}
           <div>
             <div className="flex items-center justify-between mb-1.5">
               <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400">
-                Purchaser / Staff Member Phone <span className="text-amber-500">*</span>
+                Custodian / Staff Member Phone (Optional)
               </label>
               <button
                 type="button"
                 onClick={() => setUseManualPhone((prev) => !prev)}
                 className="text-[11px] text-amber-500 hover:underline font-medium"
               >
-                {useManualPhone ? "Select from Members" : "Enter Phone Manually"}
+                {useManualPhone ? "Select from Church Members" : "Enter Phone Manually"}
               </button>
             </div>
 
@@ -375,9 +384,8 @@ export default function ProductRegistrationModal({
               <div className="relative">
                 <User className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
                 <select
-                  value={formData.purchaseBy}
+                  value={formData.recordedByPhone}
                   onChange={handleMemberSelect}
-                  required
                   disabled={loadingMembers}
                   className={`w-full pl-10 pr-4 py-2.5 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition-all ${
                     isDarkMode
@@ -386,7 +394,7 @@ export default function ProductRegistrationModal({
                   }`}
                 >
                   <option value="">
-                    {loadingMembers ? "-- Loading church members... --" : "-- Select Church Member / Staff --"}
+                    {loadingMembers ? "-- Loading church members... --" : "-- Select Custodian (Optional) --"}
                   </option>
                   {members.map((m) => {
                     const phone = m.phone || m.phoneNumber || "";
@@ -404,11 +412,10 @@ export default function ProductRegistrationModal({
                 <User className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
                 <input
                   type="text"
-                  name="purchaseBy"
-                  value={formData.purchaseBy}
+                  name="recordedByPhone"
+                  value={formData.recordedByPhone}
                   onChange={handleChange}
-                  placeholder="e.g. 0911223344 (Verified Member Phone Number)"
-                  required
+                  placeholder="e.g. 0911223344"
                   className={`w-full pl-10 pr-4 py-2.5 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition-all ${
                     isDarkMode
                       ? "bg-white/5 border-white/10 text-slate-100 placeholder-slate-500"
@@ -418,7 +425,7 @@ export default function ProductRegistrationModal({
               </div>
             )}
             <p className="text-[11px] text-slate-400 mt-1">
-              Backend verifies the purchaser phone number against the church member roster.
+              Links the recorded asset to an authorized parish custodian.
             </p>
           </div>
 
@@ -439,7 +446,7 @@ export default function ProductRegistrationModal({
             <button
               type="submit"
               disabled={isSubmitting}
-              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-semibold bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold shadow-lg shadow-amber-500/20 transition-all disabled:opacity-50"
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-600 text-slate-950 shadow-lg shadow-amber-500/20 transition-all disabled:opacity-50"
             >
               {isSubmitting ? (
                 <>

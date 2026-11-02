@@ -1,35 +1,41 @@
 import {
   X,
-  FileText,
-  Calendar,
-  Building,
-  User,
-  Hash,
-  DollarSign,
   Package,
-  TrendingUp,
-  Clock,
+  Layers,
+  Activity,
+  DollarSign,
+  Hash,
+  FileText,
+  User,
+  Calendar,
   Printer
 } from "lucide-react";
-import { generateSingleProductSlipPdf } from "../../utils/pdfExport";
+import { generateSingleAssetSlipPdf } from "../../utils/pdfExport";
 
 export default function ProductDetailsModal({
   isOpen,
   onClose,
   product,
+  asset,
   isDarkMode = true,
 }) {
-  if (!isOpen || !product) return null;
+  const currentAsset = asset || product;
+  if (!isOpen || !currentAsset) return null;
 
-  const qty = Number(product.quantity) || 0;
-  const cost = Number(product.purchasePrice) || 0;
-  const price = Number(product.price) || 0;
-  const totalCost = qty * cost;
-  const totalRetail = qty * price;
-  const margin = price > 0 ? (((price - cost) / price) * 100).toFixed(1) : 0;
+  const rawId = String(currentAsset.id || currentAsset._id || "");
+  const displayId = rawId.length > 10 ? `#AST-${rawId.slice(0, 8)}` : `#AST-${rawId}`;
+  const name = currentAsset.name || currentAsset.productName || currentAsset.assetName || "Asset";
+  const type = String(currentAsset.type || currentAsset.category || "EQUIPMENT").toUpperCase();
+  const status = String(currentAsset.status || "ACTIVE").toUpperCase();
+  const qty = Number(currentAsset.quantity ?? currentAsset.stockQuantity) || 0;
+  const value = Number(currentAsset.value ?? currentAsset.purchasePrice ?? currentAsset.price) || 0;
+  const totalValuation = qty * value;
+  const description = currentAsset.description || "No specific details recorded for this asset.";
+  const recordedBy = currentAsset.recordedByPhone || currentAsset.purchaseBy || currentAsset.recordedBy || "Authorized Custodian";
+  const createdAt = currentAsset.createdAt ? new Date(currentAsset.createdAt).toLocaleString() : "Recently Recorded";
 
   const handleDownloadSlip = () => {
-    generateSingleProductSlipPdf(product, { subtitle: "Property & Asset Management" });
+    generateSingleAssetSlipPdf(currentAsset, { subtitle: "Property & Asset Management" });
   };
 
   return (
@@ -49,10 +55,10 @@ export default function ProductDetailsModal({
             </div>
             <div>
               <h3 className="text-lg font-serif font-bold tracking-tight">
-                {product.productName || "Asset Details"}
+                {name}
               </h3>
               <p className="text-xs text-amber-500 font-mono">
-                Asset ID: #PRD-{product.id}
+                Asset ID: {displayId}
               </p>
             </div>
           </div>
@@ -70,17 +76,17 @@ export default function ProductDetailsModal({
 
         {/* Content */}
         <div className="p-6 overflow-y-auto space-y-6">
-          {/* Quick status pill */}
+          {/* Quick status banner */}
           <div className="flex items-center justify-between p-4 rounded-xl border bg-amber-500/5 border-amber-500/20">
             <div>
               <span className="text-xs uppercase text-slate-400 font-semibold block">
-                Inventory Status
+                Stock Status
               </span>
               <span className="text-base font-bold">
                 {qty > 5 ? (
                   <span className="text-emerald-400">In Stock ({qty} available)</span>
                 ) : qty > 0 ? (
-                  <span className="text-amber-400">Low Stock ({qty} available)</span>
+                  <span className="text-amber-400">Low Stock ({qty} units remaining)</span>
                 ) : (
                   <span className="text-red-400">Out of Stock (0 units)</span>
                 )}
@@ -88,10 +94,10 @@ export default function ProductDetailsModal({
             </div>
             <div className="text-right">
               <span className="text-xs uppercase text-slate-400 font-semibold block">
-                Total Asset Valuation
+                Total Valuation
               </span>
               <span className="text-base font-bold font-mono text-amber-500">
-                {totalCost.toLocaleString("en-US", { minimumFractionDigits: 2 })} ETB
+                {totalValuation.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ETB
               </span>
             </div>
           </div>
@@ -101,62 +107,83 @@ export default function ProductDetailsModal({
             <div className={`p-3.5 rounded-xl border ${isDarkMode ? "bg-white/5 border-white/10" : "bg-slate-50 border-slate-200"}`}>
               <div className="flex items-center gap-1.5 text-slate-400 mb-1">
                 <DollarSign className="w-3.5 h-3.5 text-amber-500" />
-                <span className="font-semibold uppercase tracking-wider">Acquisition Cost</span>
+                <span className="font-semibold uppercase tracking-wider">Unit Value</span>
               </div>
               <p className="text-sm font-bold font-mono">
-                {cost.toFixed(2)} ETB
+                {value.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ETB
               </p>
             </div>
 
             <div className={`p-3.5 rounded-xl border ${isDarkMode ? "bg-white/5 border-white/10" : "bg-slate-50 border-slate-200"}`}>
               <div className="flex items-center gap-1.5 text-slate-400 mb-1">
-                <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />
-                <span className="font-semibold uppercase tracking-wider">Selling / Retail Price</span>
+                <Hash className="w-3.5 h-3.5 text-blue-400" />
+                <span className="font-semibold uppercase tracking-wider">On-Hand Count</span>
               </div>
               <p className="text-sm font-bold font-mono">
-                {price.toFixed(2)} ETB
+                {qty} Units
               </p>
             </div>
 
             <div className={`p-3.5 rounded-xl border ${isDarkMode ? "bg-white/5 border-white/10" : "bg-slate-50 border-slate-200"}`}>
               <div className="flex items-center gap-1.5 text-slate-400 mb-1">
-                <Building className="w-3.5 h-3.5 text-blue-400" />
-                <span className="font-semibold uppercase tracking-wider">Supplier / Vendor</span>
+                <Layers className="w-3.5 h-3.5 text-emerald-400" />
+                <span className="font-semibold uppercase tracking-wider">Classification</span>
               </div>
               <p className="text-sm font-semibold truncate">
-                {product.purchaseFrom || "N/A"}
+                {type}
               </p>
             </div>
 
             <div className={`p-3.5 rounded-xl border ${isDarkMode ? "bg-white/5 border-white/10" : "bg-slate-50 border-slate-200"}`}>
               <div className="flex items-center gap-1.5 text-slate-400 mb-1">
-                <User className="w-3.5 h-3.5 text-purple-400" />
-                <span className="font-semibold uppercase tracking-wider">Purchaser / Phone</span>
-              </div>
-              <p className="text-sm font-semibold truncate">
-                {product.purchaseBy || "N/A"}
-              </p>
-            </div>
-
-            <div className={`p-3.5 rounded-xl border ${isDarkMode ? "bg-white/5 border-white/10" : "bg-slate-50 border-slate-200"}`}>
-              <div className="flex items-center gap-1.5 text-slate-400 mb-1">
-                <Calendar className="w-3.5 h-3.5 text-amber-500" />
-                <span className="font-semibold uppercase tracking-wider">Purchase Date</span>
+                <Activity className="w-3.5 h-3.5 text-purple-400" />
+                <span className="font-semibold uppercase tracking-wider">Condition / Status</span>
               </div>
               <p className="text-sm font-semibold">
-                {product.purchaseDate ? new Date(product.purchaseDate).toLocaleDateString() : "N/A"}
+                <span
+                  className={`inline-block px-2 py-0.5 rounded-full text-[11px] font-bold ${
+                    status === "ACTIVE"
+                      ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                      : status === "MAINTENANCE"
+                      ? "bg-amber-500/10 text-amber-400 border border-amber-500/20"
+                      : "bg-slate-500/10 text-slate-400 border border-slate-500/20"
+                  }`}
+                >
+                  {status}
+                </span>
               </p>
             </div>
 
             <div className={`p-3.5 rounded-xl border ${isDarkMode ? "bg-white/5 border-white/10" : "bg-slate-50 border-slate-200"}`}>
               <div className="flex items-center gap-1.5 text-slate-400 mb-1">
-                <Clock className="w-3.5 h-3.5 text-slate-400" />
-                <span className="font-semibold uppercase tracking-wider">Gross Margin %</span>
+                <User className="w-3.5 h-3.5 text-amber-500" />
+                <span className="font-semibold uppercase tracking-wider">Custodian / Contact</span>
               </div>
-              <p className="text-sm font-bold text-emerald-400">
-                {margin}%
+              <p className="text-sm font-semibold truncate">
+                {recordedBy}
               </p>
             </div>
+
+            <div className={`p-3.5 rounded-xl border ${isDarkMode ? "bg-white/5 border-white/10" : "bg-slate-50 border-slate-200"}`}>
+              <div className="flex items-center gap-1.5 text-slate-400 mb-1">
+                <Calendar className="w-3.5 h-3.5 text-slate-400" />
+                <span className="font-semibold uppercase tracking-wider">Registered Timestamp</span>
+              </div>
+              <p className="text-sm font-semibold">
+                {createdAt}
+              </p>
+            </div>
+          </div>
+
+          {/* Description Section */}
+          <div className={`p-4 rounded-xl border ${isDarkMode ? "bg-white/5 border-white/10" : "bg-slate-50 border-slate-200"}`}>
+            <div className="flex items-center gap-1.5 text-slate-400 mb-1.5 text-xs">
+              <FileText className="w-3.5 h-3.5 text-amber-500" />
+              <span className="font-semibold uppercase tracking-wider">Specifications & Audit Remarks</span>
+            </div>
+            <p className="text-xs leading-relaxed text-slate-300 dark:text-slate-300">
+              {description}
+            </p>
           </div>
         </div>
 
@@ -177,7 +204,7 @@ export default function ProductDetailsModal({
           <button
             type="button"
             onClick={handleDownloadSlip}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-semibold bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold shadow-lg shadow-amber-500/20 transition-all"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-600 text-slate-950 shadow-lg shadow-amber-500/20 transition-all"
           >
             <Printer className="w-4 h-4" />
             <span>Generate Asset Slip (PDF)</span>

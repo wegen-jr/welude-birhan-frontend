@@ -487,62 +487,90 @@ export function generateClassRosterSlipPdf(selectedClass, roster = [], options =
 }
 
 /**
- * 5. Generate Inventory Stock Report (PDF)
+ * 5. Generate Inventory Stock & Asset Catalog Report (PDF)
  * Exports the comprehensive property and asset inventory list
+ * Subtitle strictly set to "Property & Asset Management"
  */
-export function generateInventoryReportPdf(products = [], options = {}) {
+export function generatePropertyInventoryPdf(assets = [], options = {}) {
   const doc = new jsPDF("p", "mm", "a4");
   const timestamp = new Date().toLocaleString();
-  const subtitle = options.subtitle || "Property & Asset Management";
+  const subtitle = "Property & Asset Management";
 
-  const totalQuantity = products.reduce((acc, p) => acc + (Number(p.quantity) || 0), 0);
-  const totalPurchaseValue = products.reduce(
-    (acc, p) => acc + (Number(p.quantity) || 0) * (Number(p.purchasePrice) || 0),
+  // Admin / User metadata for audit trail
+  const adminUser = options.adminUser || (() => {
+    try {
+      return JSON.parse(localStorage.getItem("user") || "{}");
+    } catch {
+      return {};
+    }
+  })();
+  const adminPhone = adminUser?.phone || adminUser?.phoneNo || adminUser?.phoneNumber;
+  const adminName = adminUser?.fullName || adminUser?.name || adminUser?.full_name || adminUser?.email || "Authorized Administrator";
+  const adminRole = (adminUser?.role || "ADMIN").toUpperCase();
+  const adminIdentifier = adminPhone
+    ? `${adminName} (${adminPhone} - ${adminRole})`
+    : `${adminName} (${adminRole})`;
+
+  const list = Array.isArray(assets) ? assets : [];
+  const totalUnits = list.reduce(
+    (acc, a) => acc + (Number(a.quantity ?? a.stockQuantity) || 0),
     0
   );
-  const totalRetailValue = products.reduce(
-    (acc, p) => acc + (Number(p.quantity) || 0) * (Number(p.price) || 0),
+  const totalValuation = list.reduce(
+    (acc, a) => {
+      const q = Number(a.quantity ?? a.stockQuantity) || 0;
+      const v = Number(a.value ?? a.purchasePrice ?? a.price ?? 0);
+      return acc + (q * v);
+    },
     0
   );
-  const lowStockCount = products.filter((p) => Number(p.quantity) <= 5).length;
+  const lowStockCount = list.filter(
+    (a) => Number(a.quantity ?? a.stockQuantity) <= 5
+  ).length;
 
+  // Balanced 2-column layout (leftColX: 14, rightColX: 112) guarantees zero text collision
   const startY = drawDocumentHeader(doc, {
-    title: "Property & Asset Inventory Report",
+    title: "Official Property & Asset Inventory Report",
     subtitle,
-    description: "Official organizational inventory audit, stock balances, and asset valuation",
-    rightColX: 130,
+    description: "Official organizational inventory audit, asset valuation, and stock balance ledger",
+    leftColX: 14,
+    rightColX: 112,
     metaPairs: [
-      { label: "Total Asset Types", value: products.length },
+      { label: "Total Registered Assets", value: `${list.length} catalog item(s)` },
       { label: "Generated Date", value: timestamp },
-      { label: "Total In-Stock Units", value: totalQuantity.toLocaleString() },
-      { label: "Low Stock Items (<= 5)", value: lowStockCount },
-      { label: "Total Cost Valuation", value: `${totalPurchaseValue.toLocaleString("en-US", { minimumFractionDigits: 2 })} ETB` },
-      { label: "Total Retail Valuation", value: `${totalRetailValue.toLocaleString("en-US", { minimumFractionDigits: 2 })} ETB` },
+      { label: "Total In-Stock Units", value: `${totalUnits.toLocaleString()} units` },
+      { label: "Logged-in Admin", value: adminIdentifier },
+      { label: "Total Inventory Valuation", value: `${totalValuation.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ETB` },
+      { label: "Low Stock Warnings (<= 5)", value: `${lowStockCount} item(s)` },
     ],
   });
 
-  const tableHead = [["#", "ID", "Product / Asset Name", "Qty", "Cost Price", "Selling Price", "Total Cost", "Supplier / Source", "Purchaser"]];
-  const tableBody = products.map((p, idx) => {
-    const qty = Number(p.quantity) || 0;
-    const cost = Number(p.purchasePrice) || 0;
-    const price = Number(p.price) || 0;
-    const totalCost = qty * cost;
+  const tableHead = [["#", "Asset ID", "Asset Name & Description", "Category / Type", "Status", "Qty", "Unit Value (ETB)", "Total Valuation (ETB)"]];
+  const tableBody = list.map((a, idx) => {
+    const rawId = String(a.id || a._id || idx + 1);
+    const displayId = rawId.length > 10 ? `#AST-${rawId.slice(0, 8)}` : `#AST-${rawId}`;
+    const name = a.name || a.productName || a.assetName || "Unnamed Asset";
+    const desc = a.description ? `\n${a.description.slice(0, 40)}` : "";
+    const type = String(a.type || a.category || "GENERAL").toUpperCase();
+    const status = String(a.status || (Number(a.quantity) > 0 ? "ACTIVE" : "OUT_OF_STOCK")).toUpperCase();
+    const qty = Number(a.quantity ?? a.stockQuantity) || 0;
+    const unitVal = Number(a.value ?? a.purchasePrice ?? a.price ?? 0);
+    const lineVal = qty * unitVal;
 
     return [
       idx + 1,
-      `PRD-${p.id || "N/A"}`,
-      p.productName || "Unnamed Asset",
-      qty,
-      `${cost.toFixed(2)} ETB`,
-      `${price.toFixed(2)} ETB`,
-      `${totalCost.toFixed(2)} ETB`,
-      p.purchaseFrom || "N/A",
-      p.purchaseBy || "N/A",
+      displayId,
+      `${name}${desc}`,
+      type,
+      status,
+      `${qty.toLocaleString()}`,
+      unitVal.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+      lineVal.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
     ];
   });
 
   if (tableBody.length === 0) {
-    tableBody.push(["—", "—", "No products or assets currently recorded in inventory", "—", "—", "—", "—", "—", "—"]);
+    tableBody.push(["—", "—", "No assets currently registered in the database", "—", "—", "—", "—", "—"]);
   }
 
   autoTable(doc, {
@@ -551,7 +579,7 @@ export function generateInventoryReportPdf(products = [], options = {}) {
     body: tableBody,
     theme: "striped",
     headStyles: {
-      fillColor: [11, 27, 61], // Brand Navy
+      fillColor: [11, 27, 61], // Brand Navy (#0b1b3d)
       textColor: [255, 255, 255],
       fontStyle: "bold",
       fontSize: 8,
@@ -559,62 +587,117 @@ export function generateInventoryReportPdf(products = [], options = {}) {
     bodyStyles: {
       fontSize: 7.5,
       textColor: [30, 41, 59],
+      cellPadding: 2.5,
     },
     alternateRowStyles: {
       fillColor: [248, 250, 252],
     },
     columnStyles: {
       0: { cellWidth: 8, halign: "center" },
-      1: { cellWidth: 18, fontStyle: "bold", textColor: [180, 83, 9] },
-      2: { cellWidth: 38 },
-      3: { cellWidth: 14, halign: "center" },
-      4: { cellWidth: 22, halign: "right" },
-      5: { cellWidth: 22, halign: "right" },
-      6: { cellWidth: 24, halign: "right", fontStyle: "bold" },
-      7: { cellWidth: 24 },
-      8: { cellWidth: 20 },
+      1: { cellWidth: 22, fontStyle: "bold", textColor: [180, 83, 9] },
+      2: { cellWidth: 44, fontStyle: "bold" },
+      3: { cellWidth: 24, halign: "center" },
+      4: { cellWidth: 20, halign: "center" },
+      5: { cellWidth: 16, halign: "center" },
+      6: { cellWidth: 24, halign: "right" },
+      7: { cellWidth: 28, halign: "right", fontStyle: "bold", textColor: [15, 23, 42] },
     },
-    margin: { left: 10, right: 10, bottom: 16 },
+    margin: { left: 12, right: 12, bottom: 22 },
   });
+
+  // Section: Verification Sign-off Box
+  let signY = doc.lastAutoTable.finalY + 8;
+  const pageHeight = doc.internal.pageSize.getHeight();
+
+  if (signY + 36 > pageHeight - 16) {
+    doc.addPage();
+    signY = 24;
+  }
+
+  doc.setDrawColor(226, 232, 240);
+  doc.setLineWidth(0.5);
+  doc.line(12, signY, doc.internal.pageSize.getWidth() - 12, signY);
+
+  const lineY1 = signY + 10;
+  const lineY2 = signY + 16;
+  const lineY3 = signY + 24;
+
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(8.5);
+  doc.setTextColor(30, 41, 59);
+  doc.text("Prepared By Custodian: ___________________________", 14, lineY1);
+  doc.text("Approved By (Parish Admin): ___________________________", 112, lineY1);
+
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(7.5);
+  doc.setTextColor(71, 85, 105);
+  doc.text(`Logged-in Admin: ${adminIdentifier}`, 14, lineY2);
+  doc.text("Parish Administration / Property Custodian Division", 112, lineY2);
+
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(7.5);
+  doc.setTextColor(100, 116, 139);
+  doc.text(`Audit Date: ${timestamp.slice(0, 10)}`, 14, lineY3);
+  doc.text("Official Parish Stamp: [                                    ]", 112, lineY3);
 
   attachPageFooters(doc, subtitle);
   const dateStr = new Date().toISOString().slice(0, 10);
-  const filename = `inventory_report_${dateStr}.pdf`;
+  const filename = `property_asset_inventory_report_${dateStr}.pdf`;
   doc.save(filename);
   return filename;
 }
 
 /**
+ * Backward-compatible alias for generatePropertyInventoryPdf
+ */
+export function generateInventoryReportPdf(products = [], options = {}) {
+  return generatePropertyInventoryPdf(products, options);
+}
+
+/**
  * 6. Generate Single Product / Asset Slip (PDF)
  */
-export function generateSingleProductSlipPdf(product, options = {}) {
+export function generateSingleAssetSlipPdf(asset, options = {}) {
   const doc = new jsPDF("p", "mm", "a4");
   const timestamp = new Date().toLocaleString();
-  const subtitle = options.subtitle || "Property & Asset Management";
-  const prodName = product?.productName || "Asset";
-  const qty = Number(product?.quantity) || 0;
-  const cost = Number(product?.purchasePrice) || 0;
-  const price = Number(product?.price) || 0;
-  const totalCost = qty * cost;
-  const totalRetail = qty * price;
-  const margin = price > 0 ? (((price - cost) / price) * 100).toFixed(1) : 0;
+  const subtitle = "Property & Asset Management";
+  const assetName = asset?.name || asset?.productName || asset?.assetName || "Asset";
+  const rawId = String(asset?.id || asset?._id || "N/A");
+  const displayId = rawId.length > 10 ? `#AST-${rawId.slice(0, 8)}` : `#AST-${rawId}`;
+  const qty = Number(asset?.quantity ?? asset?.stockQuantity) || 0;
+  const value = Number(asset?.value ?? asset?.purchasePrice ?? asset?.price) || 0;
+  const totalValuation = qty * value;
+  const type = String(asset?.type || asset?.category || "EQUIPMENT").toUpperCase();
+  const status = String(asset?.status || "ACTIVE").toUpperCase();
+
+  // Admin metadata
+  const adminUser = options.adminUser || (() => {
+    try {
+      return JSON.parse(localStorage.getItem("user") || "{}");
+    } catch {
+      return {};
+    }
+  })();
+  const adminPhone = adminUser?.phone || adminUser?.phoneNo || adminUser?.phoneNumber;
+  const adminName = adminUser?.fullName || adminUser?.name || adminUser?.full_name || adminUser?.email || "Authorized Administrator";
+  const adminRole = (adminUser?.role || "ADMIN").toUpperCase();
+  const adminIdentifier = adminPhone ? `${adminName} (${adminPhone} - ${adminRole})` : `${adminName} (${adminRole})`;
 
   const startY = drawDocumentHeader(doc, {
-    title: `Asset Registration Slip - ${prodName}`,
+    title: `Asset Registration Slip - ${assetName}`,
     subtitle,
-    description: "Official property registration verification and asset specifications",
-    rightColX: 130,
+    description: "Official property registration verification, inventory balance, and asset specifications",
+    leftColX: 14,
+    rightColX: 112,
     metaPairs: [
-      { label: "Product / Asset ID", value: `#${product?.id || "N/A"}` },
+      { label: "Asset ID", value: displayId },
       { label: "Generated Date", value: timestamp },
       { label: "Current In-Stock", value: `${qty} units` },
-      { label: "Purchase Date", value: product?.purchaseDate ? new Date(product.purchaseDate).toLocaleDateString() : "N/A" },
-      { label: "Unit Cost (ETB)", value: `${cost.toFixed(2)} ETB` },
-      { label: "Selling Price (ETB)", value: `${price.toFixed(2)} ETB` },
-      { label: "Supplier / Store", value: product?.purchaseFrom || "N/A" },
-      { label: "Registered By (Phone)", value: product?.purchaseBy || "N/A" },
-      { label: "Total Cost Valuation", value: `${totalCost.toFixed(2)} ETB` },
-      { label: "Estimated Gross Margin", value: `${margin}%` },
+      { label: "Logged-in Admin", value: adminIdentifier },
+      { label: "Unit Value (ETB)", value: `${value.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ETB` },
+      { label: "Operational Status", value: status },
+      { label: "Asset Category / Type", value: type },
+      { label: "Total Asset Valuation", value: `${totalValuation.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ETB` },
     ],
   });
 
@@ -623,15 +706,16 @@ export function generateSingleProductSlipPdf(product, options = {}) {
     startY,
     head: [["Specification", "Property Detail", "Audit Note"]],
     body: [
-      ["Product / Item Name", prodName, "Official Registered Nomenclature"],
-      ["Available Stock", `${qty} Units`, qty <= 5 ? "LOW STOCK WARNING" : "Optimal Stock Level"],
-      ["Cost Per Unit", `${cost.toFixed(2)} ETB`, "Acquisition Unit Value"],
-      ["Retail / Sale Unit Price", `${price.toFixed(2)} ETB`, "Standard Offering Price"],
-      ["Gross Inventory Cost", `${totalCost.toFixed(2)} ETB`, "Current Asset Balance"],
-      ["Expected Gross Revenue", `${totalRetail.toFixed(2)} ETB`, "At Full Realization"],
-      ["Vendor / Source", product?.purchaseFrom || "N/A", "Procurement Origin"],
-      ["Purchaser / Custodian", product?.purchaseBy || "N/A", "Authorized Contact Phone"],
-      ["System Record Created", product?.createdAt ? new Date(product.createdAt).toLocaleString() : timestamp, "Database Log"],
+      ["Official Asset Name", assetName, "Registered Church Nomenclature"],
+      ["Asset UUID / System ID", rawId, "Unique Database Identification"],
+      ["Classification / Category", type, "Asset Inventory Category"],
+      ["Operational Status", status, status === "ACTIVE" ? "Operational in Parish" : status],
+      ["Available Physical Quantity", `${qty} Units`, qty <= 5 ? "LOW STOCK WARNING" : "Adequate Physical Reserve"],
+      ["Unit Monetary Value (ETB)", `${value.toLocaleString("en-US", { minimumFractionDigits: 2 })} ETB`, "Acquisition / Current Recorded Value"],
+      ["Total Valuation Balance", `${totalValuation.toLocaleString("en-US", { minimumFractionDigits: 2 })} ETB`, "Calculated from Quantity × Unit Value"],
+      ["Item Description / Notes", asset?.description || "No specific remarks registered", "Operational Purpose / Specifications"],
+      ["Custodian / Member Recorded", asset?.recordedByPhone || asset?.purchaseBy || "Authorized Custodian", "Church Member Audit Identifier"],
+      ["System Record Created", asset?.createdAt ? new Date(asset.createdAt).toLocaleString() : timestamp, "Database Log Timestamp"],
     ],
     theme: "striped",
     headStyles: {
@@ -654,18 +738,22 @@ export function generateSingleProductSlipPdf(product, options = {}) {
 
   // Verification Sign-off Box
   const pageHeight = doc.internal.pageSize.getHeight();
-  const signY = pageHeight - 40;
+  const signY = pageHeight - 38;
   doc.setFont("helvetica", "normal");
-  doc.setFontSize(8.5);
+  doc.setFontSize(8);
   doc.setTextColor(71, 85, 105);
   doc.text("Verified by Property Custodian: ____________________", 14, signY);
-  doc.text("Authorized Department Signature: ____________________", 110, signY);
+  doc.text("Authorized Admin / Parish Seal: ____________________", 112, signY);
 
   attachPageFooters(doc, subtitle);
-  const safeName = prodName.replace(/[^a-zA-Z0-9_-]/g, "_").toLowerCase();
-  const filename = `asset_slip_${safeName}_${product?.id || "doc"}.pdf`;
+  const safeName = assetName.replace(/[^a-zA-Z0-9_-]/g, "_").toLowerCase();
+  const filename = `asset_slip_${safeName}_${rawId.slice(0, 8)}.pdf`;
   doc.save(filename);
   return filename;
+}
+
+export function generateSingleProductSlipPdf(product, options = {}) {
+  return generateSingleAssetSlipPdf(product, options);
 }
 
 /**

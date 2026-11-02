@@ -1,52 +1,67 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import {
   X,
   Edit3,
   Loader2,
   DollarSign,
-  Calendar,
-  Building,
   User,
   Hash,
   AlertCircle,
-  Tag
+  Tag,
+  Layers,
+  FileText,
+  Activity,
+  Info
 } from "lucide-react";
 import { propertyService } from "../../services/propertyService";
 import { extractErrorMessage } from "../../utils/errorUtils";
 
-function getInitialFormData(prod) {
+const ASSET_TYPES = [
+  { value: "ELECTRONICS", label: "Electronics & IT Equipment" },
+  { value: "AUDIO_VISUAL", label: "Sound & Audio/Visual Media" },
+  { value: "FURNITURE", label: "Furniture & Church Seating" },
+  { value: "INSTRUMENT", label: "Musical Instruments & Hymnal Items" },
+  { value: "BOOK", label: "Books, Scriptures & Publications" },
+  { value: "VEHICLE", label: "Vehicles & Transport" },
+  { value: "FACILITY", label: "Facility & Maintenance Tools" },
+  { value: "OTHER", label: "Other Parish Property" },
+];
+
+function getInitialFormData(asset) {
   return {
-    productName: prod?.productName || "",
-    quantity: prod?.quantity !== undefined ? String(prod.quantity) : "0",
-    purchaseDate: prod?.purchaseDate
-      ? new Date(prod.purchaseDate).toISOString().slice(0, 10)
-      : new Date().toISOString().slice(0, 10),
-    purchaseFrom: prod?.purchaseFrom || "",
-    purchaseBy: prod?.purchaseBy || "",
-    purchasePrice: prod?.purchasePrice !== undefined ? String(prod.purchasePrice) : "0",
-    price: prod?.price !== undefined ? String(prod.price) : "0",
+    name: asset?.name ?? asset?.productName ?? asset?.assetName ?? "",
+    type: String(asset?.type ?? asset?.category ?? "ELECTRONICS").toUpperCase(),
+    value: asset?.value !== undefined ? String(asset.value) : (asset?.purchasePrice !== undefined ? String(asset.purchasePrice) : "0"),
+    quantity: asset?.quantity !== undefined ? String(asset.quantity) : (asset?.stockQuantity !== undefined ? String(asset.stockQuantity) : "1"),
+    status: String(asset?.status || "ACTIVE").toUpperCase(),
+    description: asset?.description || "",
+    recordedByPhone: asset?.recordedByPhone || asset?.purchaseBy || "",
   };
 }
 
 export default function ProductEditModal({
   isOpen,
   onClose,
-  product,
+  product, // accepts asset as product or asset
+  asset,   // alias
   onProductUpdated,
+  onAssetUpdated,
   isDarkMode = true,
 }) {
-  const [prevProductId, setPrevProductId] = useState(product?.id);
-  const [formData, setFormData] = useState(() => getInitialFormData(product));
+  const currentAsset = asset || product;
+  const [formData, setFormData] = useState(() => getInitialFormData(currentAsset));
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  if (product && product.id !== prevProductId) {
-    setPrevProductId(product.id);
-    setFormData(getInitialFormData(product));
-  }
+  useEffect(() => {
+    if (currentAsset) {
+      setFormData(getInitialFormData(currentAsset));
+      setErrorMessage("");
+    }
+  }, [currentAsset]);
 
-  if (!isOpen || !product) return null;
+  if (!isOpen || !currentAsset) return null;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -54,39 +69,54 @@ export default function ProductEditModal({
     setErrorMessage("");
   };
 
+  const qty = parseInt(formData.quantity, 10) || 0;
+  const unitVal = parseFloat(formData.value) || 0;
+  const totalValuation = qty * unitVal;
+  const rawId = String(currentAsset.id || currentAsset._id || "");
+  const displayId = rawId.length > 10 ? `#AST-${rawId.slice(0, 8)}` : `#AST-${rawId}`;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage("");
 
-    if (!formData.productName.trim()) {
-      setErrorMessage("Product name is required.");
+    if (!formData.name.trim()) {
+      setErrorMessage("Asset name is required.");
       return;
     }
     if (formData.quantity === "" || parseInt(formData.quantity, 10) < 0) {
       setErrorMessage("Quantity must be a non-negative integer.");
       return;
     }
+    if (formData.value === "" || parseFloat(formData.value) < 0) {
+      setErrorMessage("Monetary value must be a non-negative number.");
+      return;
+    }
 
     setIsSubmitting(true);
     try {
       const payload = {
-        productName: formData.productName.trim(),
+        name: formData.name.trim(),
+        description: formData.description.trim(),
+        type: formData.type.toUpperCase(),
+        value: parseFloat(formData.value),
         quantity: parseInt(formData.quantity, 10),
-        purchaseDate: new Date(formData.purchaseDate).toISOString(),
-        purchaseFrom: formData.purchaseFrom.trim(),
-        purchaseBy: formData.purchaseBy.trim(),
-        purchasePrice: parseFloat(formData.purchasePrice) || 0,
-        price: parseFloat(formData.price) || 0,
+        status: formData.status,
       };
 
-      const result = await propertyService.updateProduct(product.id, payload);
-      toast.success(`Asset "${formData.productName}" updated successfully!`);
+      if (formData.recordedByPhone.trim()) {
+        payload.recordedByPhone = formData.recordedByPhone.trim();
+        payload.purchaseBy = formData.recordedByPhone.trim();
+      }
+
+      const result = await propertyService.updateAsset(currentAsset.id, payload);
+      toast.success(`Asset "${formData.name}" updated successfully!`);
       if (onProductUpdated) onProductUpdated(result);
+      if (onAssetUpdated) onAssetUpdated(result);
       setErrorMessage("");
       onClose();
     } catch (err) {
-      console.error("Product update error:", err);
-      const dynamicMsg = extractErrorMessage(err, "Failed to update product.");
+      console.error("Asset update error:", err);
+      const dynamicMsg = extractErrorMessage(err, "Failed to update asset.");
       setErrorMessage(dynamicMsg);
       toast.error(dynamicMsg);
     } finally {
@@ -111,10 +141,10 @@ export default function ProductEditModal({
             </div>
             <div>
               <h3 className="text-lg font-serif font-bold tracking-tight">
-                Edit Asset / Product #PRD-{product.id}
+                Edit Asset {displayId}
               </h3>
               <p className="text-xs text-slate-400">
-                Update inventory specifications and price valuations
+                Update inventory specifications, valuation, and operational status
               </p>
             </div>
           </div>
@@ -140,17 +170,17 @@ export default function ProductEditModal({
             </div>
           )}
 
-          {/* Product Name */}
+          {/* Asset Name */}
           <div>
             <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
-              Product / Asset Name
+              Asset Name <span className="text-amber-500">*</span>
             </label>
             <div className="relative">
               <Tag className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
               <input
                 type="text"
-                name="productName"
-                value={formData.productName}
+                name="name"
+                value={formData.name}
                 onChange={handleChange}
                 required
                 className={`w-full pl-10 pr-4 py-2.5 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition-all ${
@@ -162,11 +192,62 @@ export default function ProductEditModal({
             </div>
           </div>
 
-          {/* Quantity, Cost, Price */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {/* Grid: Type & Status */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
-                Quantity
+                Category / Classification
+              </label>
+              <div className="relative">
+                <Layers className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                <select
+                  name="type"
+                  value={formData.type}
+                  onChange={handleChange}
+                  className={`w-full pl-10 pr-4 py-2.5 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition-all ${
+                    isDarkMode
+                      ? "bg-[#081226] border-white/10 text-slate-100"
+                      : "bg-slate-50 border-slate-200 text-slate-900"
+                  }`}
+                >
+                  {ASSET_TYPES.map((t) => (
+                    <option key={t.value} value={t.value}>
+                      {t.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
+                Operational Status
+              </label>
+              <div className="relative">
+                <Activity className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                <select
+                  name="status"
+                  value={formData.status}
+                  onChange={handleChange}
+                  className={`w-full pl-10 pr-4 py-2.5 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition-all ${
+                    isDarkMode
+                      ? "bg-[#081226] border-white/10 text-slate-100"
+                      : "bg-slate-50 border-slate-200 text-slate-900"
+                  }`}
+                >
+                  <option value="ACTIVE">ACTIVE (Operational & In-Service)</option>
+                  <option value="MAINTENANCE">MAINTENANCE (Under Repair / Servicing)</option>
+                  <option value="RETIRED">RETIRED (Decommissioned / Archival)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          {/* Grid: Quantity & Value */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
+                Quantity on Hand
               </label>
               <div className="relative">
                 <Hash className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -189,39 +270,16 @@ export default function ProductEditModal({
 
             <div>
               <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
-                Cost Price (ETB)
+                Unit Value (ETB)
               </label>
               <div className="relative">
                 <DollarSign className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
                 <input
                   type="number"
-                  name="purchasePrice"
+                  name="value"
                   min="0"
                   step="0.01"
-                  value={formData.purchasePrice}
-                  onChange={handleChange}
-                  required
-                  className={`w-full pl-10 pr-4 py-2.5 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition-all ${
-                    isDarkMode
-                      ? "bg-white/5 border-white/10 text-slate-100"
-                      : "bg-slate-50 border-slate-200 text-slate-900"
-                  }`}
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
-                Selling Price (ETB)
-              </label>
-              <div className="relative">
-                <DollarSign className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-                <input
-                  type="number"
-                  name="price"
-                  min="0"
-                  step="0.01"
-                  value={formData.price}
+                  value={formData.value}
                   onChange={handleChange}
                   required
                   className={`w-full pl-10 pr-4 py-2.5 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition-all ${
@@ -234,60 +292,54 @@ export default function ProductEditModal({
             </div>
           </div>
 
-          {/* Supplier and Date */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
-                Supplier / Store
-              </label>
-              <div className="relative">
-                <Building className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-                <input
-                  type="text"
-                  name="purchaseFrom"
-                  value={formData.purchaseFrom}
-                  onChange={handleChange}
-                  className={`w-full pl-10 pr-4 py-2.5 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition-all ${
-                    isDarkMode
-                      ? "bg-white/5 border-white/10 text-slate-100"
-                      : "bg-slate-50 border-slate-200 text-slate-900"
-                  }`}
-                />
-              </div>
+          {/* Valuation Preview */}
+          <div
+            className={`p-3 rounded-xl border flex flex-wrap items-center justify-between gap-3 text-xs ${
+              isDarkMode ? "bg-white/5 border-white/10" : "bg-slate-50 border-slate-200"
+            }`}
+          >
+            <div className="flex items-center gap-2 text-slate-400">
+              <Info className="w-3.5 h-3.5 text-amber-500" />
+              <span>Reconciled Valuation:</span>
             </div>
-
-            <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
-                Purchase Date
-              </label>
-              <div className="relative">
-                <Calendar className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-                <input
-                  type="date"
-                  name="purchaseDate"
-                  value={formData.purchaseDate}
-                  onChange={handleChange}
-                  className={`w-full pl-10 pr-4 py-2.5 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition-all ${
-                    isDarkMode
-                      ? "bg-white/5 border-white/10 text-slate-100"
-                      : "bg-slate-50 border-slate-200 text-slate-900"
-                  }`}
-                />
-              </div>
-            </div>
+            <span className="font-mono text-amber-500 font-bold">
+              {totalValuation.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ETB
+            </span>
           </div>
 
-          {/* Purchaser / Custodian */}
+          {/* Description */}
           <div>
             <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
-              Purchaser / Custodian (Phone Number)
+              Description & Specifications
+            </label>
+            <div className="relative">
+              <FileText className="w-4 h-4 absolute left-3.5 top-3 text-slate-400" />
+              <textarea
+                name="description"
+                rows="2"
+                value={formData.description}
+                onChange={handleChange}
+                placeholder="Serial number, physical condition, storage location, or model notes"
+                className={`w-full pl-10 pr-4 py-2.5 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition-all ${
+                  isDarkMode
+                    ? "bg-white/5 border-white/10 text-slate-100"
+                    : "bg-slate-50 border-slate-200 text-slate-900"
+                }`}
+              />
+            </div>
+          </div>
+
+          {/* Custodian Phone */}
+          <div>
+            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
+              Custodian / Recorded Member Phone
             </label>
             <div className="relative">
               <User className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
               <input
                 type="text"
-                name="purchaseBy"
-                value={formData.purchaseBy}
+                name="recordedByPhone"
+                value={formData.recordedByPhone}
                 onChange={handleChange}
                 placeholder="e.g. 0911223344"
                 className={`w-full pl-10 pr-4 py-2.5 rounded-xl text-sm border focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition-all ${
@@ -316,7 +368,7 @@ export default function ProductEditModal({
             <button
               type="submit"
               disabled={isSubmitting}
-              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-semibold bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold shadow-lg shadow-amber-500/20 transition-all disabled:opacity-50"
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-600 text-slate-950 shadow-lg shadow-amber-500/20 transition-all disabled:opacity-50"
             >
               {isSubmitting ? (
                 <>

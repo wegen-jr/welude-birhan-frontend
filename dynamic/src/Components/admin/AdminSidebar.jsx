@@ -48,13 +48,18 @@ export default function SideBar({ isDarkMode, toggleTheme }) {
       allItems.finance,
       allItems.settings,
     ];
-  } else if (normalizedRole === 'FINANCE_LEADER') {
+  } else if (normalizedRole === 'PROPERTY_MANAGER' || normalizedRole === 'PROPERTYMANAGER' || role === 'PropertyManager') {
+    menuItems = [
+      allItems.property,
+      allItems.settings,
+    ];
+  } else if (normalizedRole === 'FINANCE_LEADER' || normalizedRole === 'FINANCE') {
     menuItems = [
       allItems.property,
       allItems.finance,
       allItems.settings,
     ];
-  } else if (normalizedRole === 'EDUCATION_LEADER' || role === 'EducationHub') {
+  } else if (normalizedRole === 'EDUCATION_LEADER' || role === 'EducationHub' || normalizedRole === 'EDUCATIONHUB') {
     menuItems = [
       allItems.education,
       allItems.teacherManagement,

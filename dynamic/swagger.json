@@ -3175,6 +3175,175 @@
           "Product Sales"
         ]
       }
+    },
+    "/assets": {
+      "post": {
+        "operationId": "AssetsController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAssetDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The asset has been successfully registered."
+          },
+          "400": {
+            "description": "Invalid input data."
+          }
+        },
+        "summary": "Register a new asset",
+        "tags": [
+          "Assets"
+        ]
+      },
+      "get": {
+        "operationId": "AssetsController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Returns an array of all registered assets."
+          }
+        },
+        "summary": "Get all assets",
+        "tags": [
+          "Assets"
+        ]
+      }
+    },
+    "/assets/{id}": {
+      "get": {
+        "operationId": "AssetsController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Asset UUID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the requested asset."
+          },
+          "404": {
+            "description": "Asset not found."
+          }
+        },
+        "summary": "Get a specific asset by ID",
+        "tags": [
+          "Assets"
+        ]
+      },
+      "patch": {
+        "operationId": "AssetsController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Asset UUID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAssetDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The asset has been successfully updated."
+          },
+          "404": {
+            "description": "Asset not found."
+          }
+        },
+        "summary": "Update an asset details",
+        "tags": [
+          "Assets"
+        ]
+      },
+      "delete": {
+        "operationId": "AssetsController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Asset UUID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The asset has been successfully deleted."
+          },
+          "404": {
+            "description": "Asset not found."
+          }
+        },
+        "summary": "Delete an asset",
+        "tags": [
+          "Assets"
+        ]
+      }
+    },
+    "/assets/{id}/decrement": {
+      "patch": {
+        "operationId": "AssetsController_decrementQuantity",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Asset UUID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DecrementAssetDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The quantity has been successfully reduced."
+          },
+          "400": {
+            "description": "Not enough quantity left."
+          }
+        },
+        "summary": "Decrease asset quantity (e.g., when an item breaks)",
+        "tags": [
+          "Assets"
+        ]
+      }
     }
   },
   "info": {
@@ -3388,7 +3557,8 @@
               "ADMIN",
               "EducationHub",
               "Teacher",
-              "Finance"
+              "Finance",
+              "PropertyManager"
             ],
             "description": "The access level or role assigned to the user within the system.",
             "example": "USER",
@@ -3410,7 +3580,8 @@
           "ADMIN",
           "EducationHub",
           "Teacher",
-          "Finance"
+          "Finance",
+          "PropertyManager"
         ]
       },
       "UpdateUserDto": {
@@ -3440,7 +3611,8 @@
               "ADMIN",
               "EducationHub",
               "Teacher",
-              "Finance"
+              "Finance",
+              "PropertyManager"
             ],
             "description": "The access level or role assigned to the user within the system.",
             "example": "USER",
@@ -4639,6 +4811,105 @@
           "quantity",
           "unitPrice",
           "purchaseBy"
+        ]
+      },
+      "CreateAssetDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the asset",
+            "example": "Dell XPS 15"
+          },
+          "description": {
+            "type": "string",
+            "description": "Detailed description of the asset",
+            "example": "Company issued laptop"
+          },
+          "type": {
+            "type": "string",
+            "description": "The category or type of the asset",
+            "example": "ELECTRONICS"
+          },
+          "value": {
+            "type": "number",
+            "description": "The monetary value of the asset",
+            "example": 2500.5
+          },
+          "status": {
+            "type": "string",
+            "description": "Current operational status",
+            "enum": [
+              "ACTIVE",
+              "MAINTENANCE",
+              "RETIRED"
+            ],
+            "default": "ACTIVE"
+          },
+          "quantity": {
+            "type": "number",
+            "description": "How many of this asset you have",
+            "example": 5
+          }
+        },
+        "required": [
+          "name",
+          "type",
+          "value",
+          "quantity"
+        ]
+      },
+      "UpdateAssetDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the asset",
+            "example": "Dell XPS 15"
+          },
+          "description": {
+            "type": "string",
+            "description": "Detailed description of the asset",
+            "example": "Company issued laptop"
+          },
+          "type": {
+            "type": "string",
+            "description": "The category or type of the asset",
+            "example": "ELECTRONICS"
+          },
+          "value": {
+            "type": "number",
+            "description": "The monetary value of the asset",
+            "example": 2500.5
+          },
+          "status": {
+            "type": "string",
+            "description": "Current operational status",
+            "enum": [
+              "ACTIVE",
+              "MAINTENANCE",
+              "RETIRED"
+            ],
+            "default": "ACTIVE"
+          },
+          "quantity": {
+            "type": "number",
+            "description": "How many of this asset you have",
+            "example": 5
+          }
+        }
+      },
+      "DecrementAssetDto": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "description": "How many items to deduct (e.g., how many broke)",
+            "example": 1
+          }
+        },
+        "required": [
+          "amount"
         ]
       }
     }

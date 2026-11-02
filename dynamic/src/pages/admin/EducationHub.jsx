@@ -30,7 +30,7 @@ export function EducationHub() {
     }
   })();
   const userRole = user?.role || "";
-  const isAuthorized = ["ADMIN", "EDUCATION_LEADER"].includes(userRole);
+  const isAuthorized = ["ADMIN", "EDUCATION_LEADER", "EducationHub"].includes(userRole);
 
   const [stats, setStats] = useState({
     totalClasses: 0,

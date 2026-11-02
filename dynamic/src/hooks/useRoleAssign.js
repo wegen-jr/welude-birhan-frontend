@@ -11,6 +11,19 @@ export const toLocalEthiopianPhone = (phoneStr) => {
     return digits;
 };
 
+export const normalizeBackendRole = (role) => {
+    if (!role) return 'USER';
+    const trimmed = String(role).trim();
+    if (trimmed === 'Finance Leader' || trimmed === 'FINANCE_LEADER' || trimmed === 'Finance' || trimmed === 'FINANCE') return 'Finance';
+    if (trimmed === 'Property Manager' || trimmed === 'PROPERTY_MANAGER' || trimmed === 'PropertyManager' || trimmed === 'PROPERTYMANAGER') return 'PropertyManager';
+    if (trimmed === 'Education Hub Admin' || trimmed === 'EDUCATION_LEADER' || trimmed === 'EducationHub' || trimmed === 'EDUCATIONHUB') return 'EducationHub';
+    if (trimmed === 'Teacher / Instructor' || trimmed === 'TEACHER' || trimmed === 'Teacher') return 'Teacher';
+    if (trimmed === 'Member User' || trimmed === 'MEMBER_USER') return 'MEMBER_USER';
+    if (trimmed === 'User' || trimmed === 'USER') return 'USER';
+    if (trimmed === 'Admin' || trimmed === 'ADMIN') return 'ADMIN';
+    return trimmed;
+};
+
 export function useRoleAssign(onSuccess) {
     const [submitting, setSubmitting] = useState(false);
 
@@ -39,7 +52,7 @@ export function useRoleAssign(onSuccess) {
             phone: phone, // exact phone string stored in the database
             email: email.trim(),
             password: password,
-            role: role ? role : 'USER',
+            role: normalizeBackendRole(role),
         };
 
         setSubmitting(true);

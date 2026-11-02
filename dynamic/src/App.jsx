@@ -46,7 +46,7 @@ import PropertyManagementPage from './pages/admin/PropertyManagementPage';
 import FinanceManagementPage from './pages/admin/FinanceManagementPage';
 
 function App() {
-  const allRoles = ["ADMIN", "TEACHER", "Teacher", "STUDENT", "CHOIR_LEADER", "EDUCATION_LEADER", "EducationHub", "FINANCE_LEADER", "PR_LEADER", "SECRETARIAT_LEADER"];
+  const allRoles = ["ADMIN", "TEACHER", "Teacher", "STUDENT", "CHOIR_LEADER", "EDUCATION_LEADER", "EducationHub", "FINANCE_LEADER", "Finance", "PropertyManager", "PROPERTY_MANAGER", "PR_LEADER", "SECRETARIAT_LEADER"];
 
   return (
     <Router>
@@ -98,12 +98,12 @@ function App() {
               <Route path="settings/profile" element={<Profile />} />
               <Route path="settings/credentialsChanger" element={<EmailPasswordChanger />} />
 
-              <Route path="education" element={<RoleGuard allowedRoles={["ADMIN", "EDUCATION_LEADER"]}><EducationHub /></RoleGuard>} />
-              <Route path="teachers" element={<RoleGuard allowedRoles={["ADMIN", "EDUCATION_LEADER"]}><TeacherManagementPage /></RoleGuard>} />
-              <Route path="courses" element={<RoleGuard allowedRoles={["ADMIN", "EDUCATION_LEADER"]}><CourseManagementPage /></RoleGuard>} />
-              <Route path="student-enrollment" element={<RoleGuard allowedRoles={["ADMIN", "EDUCATION_LEADER"]}><StudentEnrollment /></RoleGuard>} />
-              <Route path="property" element={<RoleGuard allowedRoles={["ADMIN", "FINANCE_LEADER"]}><PropertyManagementPage /></RoleGuard>} />
-              <Route path="finance" element={<RoleGuard allowedRoles={["ADMIN", "FINANCE_LEADER"]}><FinanceManagementPage /></RoleGuard>} />
+              <Route path="education" element={<RoleGuard allowedRoles={["ADMIN", "EDUCATION_LEADER", "EducationHub"]}><EducationHub /></RoleGuard>} />
+              <Route path="teachers" element={<RoleGuard allowedRoles={["ADMIN", "EDUCATION_LEADER", "EducationHub"]}><TeacherManagementPage /></RoleGuard>} />
+              <Route path="courses" element={<RoleGuard allowedRoles={["ADMIN", "EDUCATION_LEADER", "EducationHub"]}><CourseManagementPage /></RoleGuard>} />
+              <Route path="student-enrollment" element={<RoleGuard allowedRoles={["ADMIN", "EDUCATION_LEADER", "EducationHub"]}><StudentEnrollment /></RoleGuard>} />
+              <Route path="property" element={<RoleGuard allowedRoles={["ADMIN", "FINANCE_LEADER", "Finance", "PropertyManager", "PROPERTY_MANAGER"]}><PropertyManagementPage /></RoleGuard>} />
+              <Route path="finance" element={<RoleGuard allowedRoles={["ADMIN", "FINANCE_LEADER", "Finance"]}><FinanceManagementPage /></RoleGuard>} />
             </Route>
           </Route>
 

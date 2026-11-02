@@ -41,7 +41,7 @@ export default function CourseManagementPage() {
     }
   })();
   const userRole = user?.role || "";
-  const isAuthorized = ["ADMIN", "EDUCATION_LEADER"].includes(userRole);
+  const isAuthorized = ["ADMIN", "EDUCATION_LEADER", "EducationHub"].includes(userRole);
 
   const handleGenerateAllPdf = async () => {
     if (courses.length === 0) {

@@ -20,7 +20,7 @@ export default function PropertyManagementPage() {
     }
   })();
   const userRole = (user?.role || "").toUpperCase();
-  const isAuthorized = ["ADMIN", "FINANCE_LEADER", "LEADER"].includes(userRole);
+  const isAuthorized = ["ADMIN", "FINANCE_LEADER", "FINANCE", "PROPERTY_MANAGER", "PROPERTYMANAGER", "LEADER"].includes(userRole);
 
   return (
     <div

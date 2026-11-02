@@ -42,7 +42,7 @@ export default function ClassOverview({
     }
   })();
   const userRole = user?.role || "";
-  const isAuthorized = propIsAuthorized ?? ["ADMIN", "EDUCATION_LEADER"].includes(userRole);
+  const isAuthorized = propIsAuthorized ?? ["ADMIN", "EDUCATION_LEADER", "EducationHub"].includes(userRole);
 
   const [classes, setClasses] = useState([]);
   const [teachers, setTeachers] = useState([]);

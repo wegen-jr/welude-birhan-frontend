@@ -24,9 +24,24 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const PhoneInput = PhoneInputModule.default || PhoneInputModule;
 
+export const ROLE_OPTIONS = [
+  { value: 'USER', labelKey: 'USER', defaultLabel: 'User' },
+  { value: 'MEMBER_USER', labelKey: 'MEMBER_USER', defaultLabel: 'Member User' },
+  { value: 'ADMIN', labelKey: 'ADMIN', defaultLabel: 'Admin' },
+  { value: 'EducationHub', labelKey: 'EducationHub', fallbackKey: 'EDUCATION_LEADER', defaultLabel: 'Education Hub Admin' },
+  { value: 'Teacher', labelKey: 'Teacher', fallbackKey: 'TEACHER', defaultLabel: 'Teacher / Instructor' },
+  { value: 'Finance', labelKey: 'Finance', fallbackKey: 'FINANCE_LEADER', defaultLabel: 'Finance Leader' },
+  { value: 'PropertyManager', labelKey: 'PropertyManager', fallbackKey: 'PROPERTY_MANAGER', defaultLabel: 'Property Manager' },
+];
+
 export default function RoleAssignment() {
   const { isDarkMode } = useOutletContext();
   const { t } = useLanguage();
+
+  const roleOptions = ROLE_OPTIONS.map((opt) => ({
+    value: opt.value,
+    label: t?.roleAssign?.roles?.[opt.labelKey] || (opt.fallbackKey && t?.roleAssign?.roles?.[opt.fallbackKey]) || opt.defaultLabel,
+  }));
 
   const {
     members,
@@ -98,10 +113,20 @@ export default function RoleAssignment() {
       setIsPhoneValid(false);
     }
 
+    const normalizeRole = (r) => {
+      if (!r) return 'USER';
+      if (r === 'FINANCE_LEADER' || r === 'Finance' || r === 'Finance Leader') return 'Finance';
+      if (r === 'TEACHER' || r === 'Teacher' || r === 'Teacher / Instructor') return 'Teacher';
+      if (r === 'EDUCATION_LEADER' || r === 'EducationHub' || r === 'Education Hub Admin') return 'EducationHub';
+      if (r === 'Property_Manager' || r === 'PROPERTY_MANAGER' || r === 'PropertyManager' || r === 'Property Manager') return 'PropertyManager';
+      if (['USER', 'MEMBER_USER', 'ADMIN', 'EducationHub', 'Teacher', 'Finance', 'PropertyManager'].includes(r)) return r;
+      return 'USER';
+    };
+
     setFormData((prev) => ({
       ...prev,
       email: member.email || '',
-      role: member.role ? member.role : 'USER',
+      role: normalizeRole(member.role),
     }));
     toast.info(`Selected: ${member.fullname || member.name || 'Member'}`);
   };
@@ -394,16 +419,15 @@ export default function RoleAssignment() {
                 onChange={(e) => setFormData({ ...formData, role: e.target.value })}
                 className={`w-full px-5 py-3.5 rounded-xl border outline-none focus:ring-2 focus:ring-amber-500/50 ${isDarkMode ? 'bg-white/5 border-white/10 text-white' : 'bg-slate-50 border-slate-200 text-slate-900'}`}
               >
-                <option value="USER" className="bg-white text-slate-900 dark:bg-[#0b1b3d] dark:text-white">{t?.roleAssign?.roles?.USER || 'USER'}</option>
-                <option value="MEMBER_USER" className="bg-white text-slate-900 dark:bg-[#0b1b3d] dark:text-white">{t?.roleAssign?.roles?.MEMBER_USER || 'MEMBER_USER'}</option>
-                <option value="ADMIN" className="bg-white text-slate-900 dark:bg-[#0b1b3d] dark:text-white">{t?.roleAssign?.roles?.ADMIN || 'ADMIN'}</option>
-                <option value="TEACHER" className="bg-white text-slate-900 dark:bg-[#0b1b3d] dark:text-white">{t?.roleAssign?.roles?.TEACHER || 'TEACHER'}</option>
-                <option value="STUDENT" className="bg-white text-slate-900 dark:bg-[#0b1b3d] dark:text-white">{t?.roleAssign?.roles?.STUDENT || 'STUDENT'}</option>
-                <option value="CHOIR_LEADER" className="bg-white text-slate-900 dark:bg-[#0b1b3d] dark:text-white">{t?.roleAssign?.roles?.CHOIR_LEADER || 'CHOIR_LEADER'}</option>
-                <option value="EducationHub" className="bg-white text-slate-900 dark:bg-[#0b1b3d] dark:text-white">{t?.roleAssign?.roles?.EDUCATION_LEADER || 'EducationHub'}</option>
-                <option value="FINANCE_LEADER" className="bg-white text-slate-900 dark:bg-[#0b1b3d] dark:text-white">{t?.roleAssign?.roles?.FINANCE_LEADER || 'FINANCE_LEADER'}</option>
-                <option value="PR_LEADER" className="bg-white text-slate-900 dark:bg-[#0b1b3d] dark:text-white">{t?.roleAssign?.roles?.PR_LEADER || 'PR_LEADER'}</option>
-                <option value="SECRETARIAT_LEADER" className="bg-white text-slate-900 dark:bg-[#0b1b3d] dark:text-white">{t?.roleAssign?.roles?.SECRETARIAT_LEADER || 'SECRETARIAT_LEADER'}</option>
+                {roleOptions.map((option) => (
+                  <option
+                    key={option.value}
+                    value={option.value}
+                    className="bg-white text-slate-900 dark:bg-[#0b1b3d] dark:text-white"
+                  >
+                    {option.label}
+                  </option>
+                ))}
               </select>
 
               <button

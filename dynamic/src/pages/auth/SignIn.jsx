@@ -47,15 +47,19 @@ export default function SignIn() {
     toast.success("Logged in successfully");
 
     const roleUpper = (user.role || '').toUpperCase();
-    const dashboardRoles = ["ADMIN", "TEACHER", "STUDENT", "CHOIR_LEADER", "EDUCATION_LEADER", "FINANCE_LEADER", "PR_LEADER", "SECRETARIAT_LEADER"];
+    const dashboardRoles = ["ADMIN", "TEACHER", "Teacher", "STUDENT", "CHOIR_LEADER", "EDUCATION_LEADER", "EducationHub", "FINANCE_LEADER", "Finance", "PropertyManager", "PROPERTY_MANAGER", "PR_LEADER", "SECRETARIAT_LEADER"];
 
     // Redirect according to role
     if (roleUpper === "ADMIN") {
       navigate("/adminDashboard", { replace: true });
+    } else if (roleUpper === "PROPERTYMANAGER" || roleUpper === "PROPERTY_MANAGER") {
+      navigate("/dashboard/property", { replace: true });
     } else if (roleUpper === "TEACHER") {
       navigate("/dashboard/teacher", { replace: true });
-    } else if (roleUpper === "EDUCATION_LEADER") {
+    } else if (roleUpper === "EDUCATION_LEADER" || roleUpper === "EDUCATIONHUB") {
       navigate("/dashboard/education", { replace: true });
+    } else if (roleUpper === "FINANCE" || roleUpper === "FINANCE_LEADER") {
+      navigate("/dashboard/finance", { replace: true });
     } else if (dashboardRoles.some((r) => r.toUpperCase() === roleUpper)) {
       navigate("/dashboard", { replace: true });
     } else if (roleUpper === "MEMBER_USER") {
