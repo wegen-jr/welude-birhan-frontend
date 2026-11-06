@@ -24,10 +24,13 @@
   "dependencies": {
     "@react-google-maps/api": "^2.20.8",
     "clsx": "^2.1.1",
+    "html5-qrcode": "^2.3.8",
     "jspdf": "^4.2.1",
     "jspdf-autotable": "^5.0.9",
     "libphonenumber-js": "^1.13.7",
     "lucide-react": "^1.23.0",
+    "qrcode": "^1.5.4",
+    "qrcode.react": "^4.2.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "react-phone-input-2": "^2.15.1",

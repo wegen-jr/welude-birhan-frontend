@@ -607,5 +607,70 @@
     "loading": "Loading testimonials...",
     "error": "Unable to load testimonials.",
     "empty": "There are no testimonials available yet."
+  },
+  "teacher": {
+    "sidebar": {
+      "title": "Teacher Portal",
+      "subtitle": "Welude Birhan",
+      "workspace": "Workspace",
+      "dashboard": "Dashboard",
+      "attendance": "Attendance",
+      "logout": "Sign Out",
+      "open": "Open navigation",
+      "close": "Close navigation"
+    },
+    "layout": {
+      "subtitle": "Manage your assigned class and students"
+    },
+    "common": {
+      "loading": "Loading...",
+      "refresh": "Refresh",
+      "loadError": "Unable to load the requested data."
+    },
+    "students": {
+      "table": {
+        "number": "No.",
+        "name": "Student Name",
+        "studentId": "Student ID",
+        "gradeLevel":"Grade LeveL",
+        "actions": "Actions",
+        "empty": "No students found",
+        "emptyDescription": "Students assigned to your class will appear here."
+      }
+    },
+    "dashboard": {
+      "title": "Teacher Dashboard",
+      "welcome": "Welcome to your classroom",
+      "noClass": "No class assigned",
+      "noSubject": "No subject information",
+      "noAssignment": "You do not currently have an assigned class. Contact the administrator.",
+      "totalStudents": "Total Students",
+      "presentToday": "Present Today",
+      "absentToday": "Absent Today",
+      "lateToday": "Late Today",
+      "studentList": "My Students",
+      "studentListDescription": "Students assigned to your class",
+      "attendanceDate": "Attendance date",
+      "takeAttendance": "Take Attendance"
+    },
+    "attendance": {
+      "title": "Class Attendance",
+      "selectDate": "Select Date",
+      "studentAttendance": "Student Attendance",
+      "status": "Attendance Status",
+      "present": "Present",
+      "absent": "Absent",
+      "late": "Late",
+      "marked": "Students marked",
+      "selectedDate": "Selected date",
+      "save": "Save Attendance",
+      "saving": "Saving...",
+      "saveSuccess": "Attendance saved successfully.",
+      "saveError": "Unable to save attendance.",
+      "noClass": "No class is assigned to you.",
+      "noStudents": "No students are assigned to this class.",
+      "markAll": "Please mark attendance for every student before saving."
+    }
   }
+
 }

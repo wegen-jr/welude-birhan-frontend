@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { signIn, signUp } from "@/services/authService";
+import { signIn } from "@/services/authService";
 export default function useAuth() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -25,31 +25,10 @@ export default function useAuth() {
     }
   };
 
-  const register = async (formData) => {
-    setLoading(true);
-    setError("");
-
-    try {
-      const res = await signUp(formData);
-
-      if (!res.ok) {
-        setError(res.data?.message || "Signup failed");
-        return { success: false, data: res.data };
-      }
-
-      return { success: true, data: res.data };
-    } catch {
-      setError("Network error");
-      return { success: false };
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return {
     loading,
     error,
     login,
-    register,
   };
 }

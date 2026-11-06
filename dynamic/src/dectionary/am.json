@@ -609,5 +609,70 @@
       "title": "ያግኙን",
       "description": "ይምጡና የአምልኮ፣ የኅብረትና የአገልግሎት ማኅበረሰባችን አካል ይሁኑ።"
     }
+  },
+  "teacher": {
+    "sidebar": {
+      "title": "የመምህራን መግቢያ",
+      "subtitle": "ወሉደ ብርሃን",
+      "workspace": "የሥራ ክፍል",
+      "dashboard": "ዋና ገጽ",
+      "attendance": "የተማሪዎች አቴንዳንስ",
+      "logout": "ውጣ",
+      "open": "የአሰሳ ምናሌን ክፈት",
+      "close": "የአሰሳ ምናሌን ዝጋ"
+    },
+    "layout": {
+      "subtitle": "የተመደበልዎትን ክፍልና ተማሪዎች ያስተዳድሩ"
+    },
+    "common": {
+      "loading": "በመጫን ላይ...",
+      "refresh": "አድስ",
+      "loadError": "የተጠየቀውን መረጃ ማምጣት አልተቻለም።"
+    },
+    "students": {
+      "table": {
+        "number": "ተ.ቁ",
+        "name": "የተማሪ ስም",
+        "studentId": "የተማሪ መለያ",
+        "gradeLevel":"ክፍል",
+        "actions": "ድርጊቶች",
+        "empty": "ምንም ተማሪ አልተገኘም",
+        "emptyDescription": "በክፍልዎ የተመደቡ ተማሪዎች እዚህ ይታያሉ።"
+      }
+    },
+    "dashboard": {
+      "title": "የመምህር ዋና ገጽ",
+      "welcome": "ወደ ክፍልዎ እንኳን በደህና መጡ",
+      "noClass": "ክፍል አልተመደበም",
+      "noSubject": "የትምህርት መረጃ የለም",
+      "noAssignment": "በአሁኑ ጊዜ ክፍል አልተመደበልዎትም። አስተዳዳሪውን ያነጋግሩ።",
+      "totalStudents": "ጠቅላላ ተማሪዎች",
+      "presentToday": "ዛሬ የተገኙ",
+      "absentToday": "ዛሬ ያልተገኙ",
+      "lateToday": "ዘግይተው የመጡ",
+      "studentList": "የክፍሌ ተማሪዎች",
+      "studentListDescription": "በክፍልዎ የተመደቡ ተማሪዎች",
+      "attendanceDate": "የአቴንዳንስ ቀን",
+      "takeAttendance": "አቴንዳንስ መዝግብ"
+    },
+    "attendance": {
+      "title": "የክፍል አቴንዳንስ",
+      "selectDate": "ቀን ይምረጡ",
+      "studentAttendance": "የተማሪዎች አቴንዳንስ",
+      "status": "የአቴንዳንስ ሁኔታ",
+      "present": "ተገኝቷል",
+      "absent": "አልተገኘም",
+      "late": "ዘግይቷል",
+      "marked": "አቴንዳንስ የተመዘገበላቸው",
+      "selectedDate": "የተመረጠው ቀን",
+      "save": "አቴንዳንስ አስቀምጥ",
+      "saving": "በማስቀመጥ ላይ...",
+      "saveSuccess": "አቴንዳንሱ በተሳካ ሁኔታ ተቀምጧል።",
+      "saveError": "አቴንዳንሱን ማስቀመጥ አልተቻለም።",
+      "noClass": "ምንም ክፍል አልተመደበልዎትም።",
+      "noStudents": "በዚህ ክፍል የተመደቡ ተማሪዎች የሉም።",
+      "markAll": "ከማስቀመጥዎ በፊት የሁሉንም ተማሪዎች አቴንዳንስ ይመዝግቡ።"
+    }
   }
 }
+

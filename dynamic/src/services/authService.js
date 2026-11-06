@@ -11,11 +11,4 @@ export async function signIn(email, password) {
   return res.json().then((data) => ({ ok: res.ok, data }));
 }
 
-export async function signUp(formData) {
-  try {
-    const data = await userService.signupUser(formData);
-    return { ok: true, data };
-  } catch (error) {
-    return { ok: false, data: error.data || { message: error.message } };
-  }
-}
+

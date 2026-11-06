@@ -9,6 +9,7 @@ export const API_BASE_URL = (envBase && typeof envBase === 'string' && envBase !
  * Universal fetch wrapper for authorized requests with Render cold-start handling
  */
 export async function apiClient(endpoint, { method = 'GET', body, headers = {}, retries = 1, ...customConfig } = {}) {
+    console.log("body: ", body);
     const rawToken = localStorage.getItem('token');
     const token = (rawToken && rawToken !== 'undefined' && rawToken !== 'null' && rawToken.trim())
         ? rawToken.trim()

@@ -31,6 +31,8 @@ export default function SideBar({ isDarkMode, toggleTheme }) {
     property: { path: '/dashboard/property', icon: Package, label: t.adminSide?.property || 'Property Management' },
     finance: { path: '/dashboard/finance', icon: DollarSign, label: t.adminSide?.finance || 'Finance & Sales' },
     settings: { path: '/dashboard/settings', icon: Settings, label: t.adminSide?.setting || 'Settings' },
+    qrGenerator: { path: '/dashboard/qr-generator', icon: Settings, label: "QR Generator"|| 'QR Generator' },
+
   };
 
   const normalizedRole = role.toUpperCase();
@@ -47,6 +49,7 @@ export default function SideBar({ isDarkMode, toggleTheme }) {
       allItems.property,
       allItems.finance,
       allItems.settings,
+      allItems.qrGenerator,
     ];
   } else if (normalizedRole === 'PROPERTY_MANAGER' || normalizedRole === 'PROPERTYMANAGER' || role === 'PropertyManager') {
     menuItems = [
@@ -66,6 +69,8 @@ export default function SideBar({ isDarkMode, toggleTheme }) {
       allItems.courses,
       allItems.studentEnrollment,
       allItems.settings,
+      allItems.qrGenerator,
+
     ];
   } else {
     menuItems = [allItems.settings];

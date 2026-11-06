@@ -17,7 +17,7 @@ export default function SignIn() {
     e.preventDefault();
 
     const res = await login(email, password);
-
+    console.log(res);
     // Login failed
     if (!res.success) {
       toast.error(res.data?.message || "Login failed");
@@ -27,14 +27,7 @@ export default function SignIn() {
     const token = res.data?.access_token;
     const user = res.data?.user;
 
-    if (user) {
-      if (user.role === 'EducationHub') {
-        user.role = 'EDUCATION_LEADER';
-      } else if (user.role === 'Teacher' || user.role?.toUpperCase() === 'TEACHER') {
-        user.role = 'TEACHER';
-      }
-    }
-
+    console.log("logged in role:", user.role);
     if (!token || !user) {
       toast.error("Invalid login response from server");
       return;
@@ -43,29 +36,26 @@ export default function SignIn() {
     // Store authentication data
     localStorage.setItem("token", token);
     localStorage.setItem("user", JSON.stringify(user));
-
     toast.success("Logged in successfully");
 
     const roleUpper = (user.role || '').toUpperCase();
-    const dashboardRoles = ["ADMIN", "TEACHER", "Teacher", "STUDENT", "CHOIR_LEADER", "EDUCATION_LEADER", "EducationHub", "FINANCE_LEADER", "Finance", "PropertyManager", "PROPERTY_MANAGER", "PR_LEADER", "SECRETARIAT_LEADER"];
-
+    console.log("User role after login:", roleUpper);
     // Redirect according to role
     if (roleUpper === "ADMIN") {
       navigate("/adminDashboard", { replace: true });
     } else if (roleUpper === "PROPERTYMANAGER" || roleUpper === "PROPERTY_MANAGER") {
       navigate("/dashboard/property", { replace: true });
-    } else if (roleUpper === "TEACHER") {
-      navigate("/dashboard/teacher", { replace: true });
-    } else if (roleUpper === "EDUCATION_LEADER" || roleUpper === "EDUCATIONHUB") {
+    } else if (roleUpper === "EDUCATIONHUB" || roleUpper === "EDUCATIONHUB") {
       navigate("/dashboard/education", { replace: true });
     } else if (roleUpper === "FINANCE" || roleUpper === "FINANCE_LEADER") {
       navigate("/dashboard/finance", { replace: true });
-    } else if (dashboardRoles.some((r) => r.toUpperCase() === roleUpper)) {
-      navigate("/dashboard", { replace: true });
     } else if (roleUpper === "MEMBER_USER") {
       navigate("/mediaDashboard", { replace: true });
-    } else {
-      navigate("/unauthorized", { replace: true });
+    }else if (roleUpper === "TEACHER") {
+      console.log("Navigating to teacher dashboard");
+      navigate("/teacherDashboard", { replace: true });
+    }else {
+      navigate("/unauthorizeder", { replace: true });
     }
   };
 

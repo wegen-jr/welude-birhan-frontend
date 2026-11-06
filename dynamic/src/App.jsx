@@ -45,8 +45,15 @@ import CourseManagementPage from './pages/admin/CourseManagementPage';
 import PropertyManagementPage from './pages/admin/PropertyManagementPage';
 import FinanceManagementPage from './pages/admin/FinanceManagementPage';
 
+import TeacherLayout from './Layout/TeacherLayout';
+import TeacherDashboard from './pages/teacher/TeacherDashboard';
+import Attendance from './pages/teacher/Attendance';
+import AttendanceList from './pages/teacher/AttendanceList';
+import StudentResults from './pages/teacher/StudentResults';
+import QRCodeGenerator from './Components/SundaySchool/StudentQRManager';
+import StudentQRPage from './pages/admin/SundaySchool/StudentQRPage';
+import TeacherAttendanceScanner from './Components/teacher/TeacherAttendanceScanner';
 function App() {
-  const allRoles = ["ADMIN", "TEACHER", "Teacher", "STUDENT", "CHOIR_LEADER", "EDUCATION_LEADER", "EducationHub", "FINANCE_LEADER", "Finance", "PropertyManager", "PROPERTY_MANAGER", "PR_LEADER", "SECRETARIAT_LEADER"];
 
   return (
     <Router>
@@ -88,7 +95,7 @@ function App() {
           </Route>
 
           {/* Unified Dashboard for all departmental roles */}
-          <Route element={<RoleGuard allowedRoles={allRoles} />}>
+          <Route element={<RoleGuard allowedRoles={['ADMIN','EDUCATIONHUB','FINANCE','PROPERTYMANAGER']} />}>
             <Route path="/dashboard" element={<AdminLayout />}>
               <Route index element={<DashboardRedirector />} />
               <Route path="admin" element={<RoleGuard allowedRoles={["ADMIN"]}><Dashboard /></RoleGuard>} />
@@ -98,7 +105,9 @@ function App() {
               <Route path="settings/profile" element={<Profile />} />
               <Route path="settings/credentialsChanger" element={<EmailPasswordChanger />} />
 
-              <Route path="education" element={<RoleGuard allowedRoles={["ADMIN", "EDUCATION_LEADER", "EducationHub"]}><EducationHub /></RoleGuard>} />
+              <Route path="education" element={<RoleGuard allowedRoles={["ADMIN", "EDUCATION_LEADER", "EDUCATIONHUB"]}><EducationHub /></RoleGuard>} />
+              <Route path="qr-generator" element={<RoleGuard allowedRoles={["ADMIN", "EDUCATION_LEADER", "EDUCATIONHUB"]}><StudentQRPage/></RoleGuard>} />
+
               <Route path="teachers" element={<RoleGuard allowedRoles={["ADMIN", "EDUCATION_LEADER", "EducationHub"]}><TeacherManagementPage /></RoleGuard>} />
               <Route path="courses" element={<RoleGuard allowedRoles={["ADMIN", "EDUCATION_LEADER", "EducationHub"]}><CourseManagementPage /></RoleGuard>} />
               <Route path="student-enrollment" element={<RoleGuard allowedRoles={["ADMIN", "EDUCATION_LEADER", "EducationHub"]}><StudentEnrollment /></RoleGuard>} />
@@ -117,6 +126,15 @@ function App() {
             </Route>
           </Route>
 
+          <Route element={<RoleGuard allowedRoles={["TEACHER"]} />}>
+            <Route path="/teacherDashboard" element={<TeacherLayout />} >
+            <Route index element={<TeacherDashboard/>}/>
+            <Route path="attendance" element={<Attendance/>}/>
+            <Route path='scanner' element={<TeacherAttendanceScanner/>}/>
+            <Route path="attendance-list" element={<AttendanceList/>}/>
+            <Route path="results" element={<StudentResults/>}/>
+            </Route>
+          </Route>
         </Route>
 
         <Route path="/unauthorized" element={<div className="min-h-screen bg-[#081226] text-white flex items-center justify-center text-xl">Unauthorized Access</div>} />
