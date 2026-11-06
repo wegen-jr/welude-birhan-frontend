@@ -372,7 +372,7 @@ export default function Attendance() {
         </div>
       ) : (
         <>
-          <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
               { label: "Total students", value: students.length },
               { label: "Present", value: presentCount },
@@ -412,7 +412,7 @@ export default function Attendance() {
                 No students are enrolled in this class.
               </p>
             ) : (
-              <div className="overflow-x-auto">
+              <div className="overflow-x-auto w-full">
                 <table className="w-full min-w-[720px] text-left">
                   <thead className="bg-white/5 text-xs uppercase tracking-wide text-slate-400">
                     <tr>

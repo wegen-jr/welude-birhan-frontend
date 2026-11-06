@@ -62,7 +62,7 @@ export default function AssetDecrementModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
       <div
-        className={`w-full max-w-md rounded-2xl border shadow-2xl overflow-hidden flex flex-col transition-all ${
+        className={`w-full max-w-[92vw] sm:max-w-md max-h-[90vh] overflow-y-auto rounded-2xl border shadow-2xl flex flex-col transition-all ${
           isDarkMode
             ? "bg-[#0b1b3d] border-white/10 text-slate-100"
             : "bg-white border-slate-200 text-slate-900"

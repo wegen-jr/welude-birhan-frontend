@@ -1,80 +1,39 @@
-
-const API_BASE_URL = (import.meta.env.VITE_BASE_URL || "").replace(/\/+$/, "");
-
-async function request(endpoint, options = {}) {
-  if (!API_BASE_URL) {
-    throw new Error("VITE_BASE_URL is not configured.");
-  }
-
-  const token = localStorage.getItem("token");
-
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-    ...options,
-    headers: {
-      ...(options.body ? { "Content-Type": "application/json" } : {}),
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      ...options.headers,
-    },
-  });
-
-  const text = await response.text();
-  let data = null;
-
-  if (text) {
-    try {
-      data = JSON.parse(text);
-    } catch {
-      data = text;
-    }
-  }
-
-  if (!response.ok) {
-    const message =
-      typeof data === "object" && data !== null
-        ? data.message || data.error
-        : data;
-
-    throw new Error(
-      message || `Request failed with status ${response.status}`
-    );
-  }
-
-  return data;
-}
+import teacherApiClient from "./teacherApiClient";
 
 const StudentResultService = {
-  getAll() {
-    return request("/student-results");
+  // Retrieve all results
+  async getAll() {
+    return teacherApiClient.get("/student-results");
   },
 
-  getByStudent(studentId) {
-    return request(
+  // Retrieve results for a specific student ID
+  async getByStudent(studentId) {
+    return teacherApiClient.get(
       `/student-results/student/${encodeURIComponent(studentId)}`
     );
   },
 
-  getById(id) {
-    return request(`/student-results/${encodeURIComponent(id)}`);
+  // Retrieve single result by record ID
+  async getById(id) {
+    return teacherApiClient.get(`/student-results/${encodeURIComponent(id)}`);
   },
 
-  create(payload) {
-    return request("/student-results", {
-      method: "POST",
-      body: JSON.stringify(payload),
-    });
+  // Record a student assessment score
+  async create(payload) {
+    return teacherApiClient.post("/student-results", payload);
   },
 
-  update(id, payload) {
-    return request(`/student-results/${encodeURIComponent(id)}`, {
-      method: "PATCH",
-      body: JSON.stringify(payload),
-    });
+  // Update an existing student assessment score
+  async update(id, payload) {
+    return teacherApiClient.patch(
+      `/student-results/${encodeURIComponent(id)}`,
+      payload
+    );
   },
 
-  remove(id) {
-    return request(`/student-results/${encodeURIComponent(id)}`, {
-      method: "DELETE",
-    });
+  // Remove a result record
+  async remove(id) {
+    return teacherApiClient.delete(`/student-results/${encodeURIComponent(id)}`);
   },
 };
 

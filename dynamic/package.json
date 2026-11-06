@@ -23,6 +23,7 @@
   "homepage": "https://github.com/wegen-jr/welude-birhan-frontend#readme",
   "dependencies": {
     "@react-google-maps/api": "^2.20.8",
+    "axios": "^1.21.0",
     "clsx": "^2.1.1",
     "html5-qrcode": "^2.3.8",
     "jspdf": "^4.2.1",

@@ -1,49 +1,19 @@
-const API_BASE_URL = (import.meta.env.VITE_BASE_URL || "").replace(
-  /\/+$/,
-  ""
-);
-
-async function request(endpoint, options = {}) {
-  if (!API_BASE_URL) {
-    throw new Error("VITE_BASE_URL is not configured.");
-  }
-
-  const token = localStorage.getItem("token");
-
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-    ...options,
-    headers: {
-      ...(options.body
-        ? { "Content-Type": "application/json" }
-        : {}),
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      ...options.headers,
-    },
-  });
-
-  const data = await response.json().catch(() => null);
-
-  if (!response.ok) {
-    throw new Error(
-      data?.message ||
-        data?.error ||
-        `Request failed: ${response.status}`
-    );
-  }
-
-  return data;
-}
+import teacherApiClient from "./teacherApiClient";
 
 const AttendanceService = {
-  getAll() {
-    return request("/student-attendance");
+  // Retrieve all attendance records
+  async getAll() {
+    return teacherApiClient.get("/student-attendance");
   },
 
-  create(payload) {
-    return request("/student-attendance", {
-      method: "POST",
-      body: JSON.stringify(payload),
-    });
+  // Record new attendance entry
+  async create(payload) {
+    return teacherApiClient.post("/student-attendance", payload);
+  },
+
+  // Filter attendance records
+  async filter(payload) {
+    return teacherApiClient.post("/student-attendance/filter", payload);
   },
 };
 

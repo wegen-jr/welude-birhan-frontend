@@ -3,7 +3,7 @@ import { UserPlus, HomeIcon, BadgeCheck, Settings, Globe, Moon, Sun, LogOut, Act
 import { useLanguage } from "@/Contexts/LanguageContext";
 import { useNavigate, useLocation } from "react-router-dom";
 
-export default function SideBar({ isDarkMode, toggleTheme }) {
+export default function SideBar({ isDarkMode, toggleTheme, onClose }) {
   const { t, language, toggleLanguage } = useLanguage();
   const navigate = useNavigate();
   const location = useLocation();
@@ -31,8 +31,7 @@ export default function SideBar({ isDarkMode, toggleTheme }) {
     property: { path: '/dashboard/property', icon: Package, label: t.adminSide?.property || 'Property Management' },
     finance: { path: '/dashboard/finance', icon: DollarSign, label: t.adminSide?.finance || 'Finance & Sales' },
     settings: { path: '/dashboard/settings', icon: Settings, label: t.adminSide?.setting || 'Settings' },
-    qrGenerator: { path: '/dashboard/qr-generator', icon: Settings, label: "QR Generator"|| 'QR Generator' },
-
+    qrGenerator: { path: '/dashboard/qr-generator', icon: Settings, label: "QR Generator" || 'QR Generator' },
   };
 
   const normalizedRole = role.toUpperCase();
@@ -70,7 +69,6 @@ export default function SideBar({ isDarkMode, toggleTheme }) {
       allItems.studentEnrollment,
       allItems.settings,
       allItems.qrGenerator,
-
     ];
   } else {
     menuItems = [allItems.settings];
@@ -82,27 +80,51 @@ export default function SideBar({ isDarkMode, toggleTheme }) {
     navigate("/signin");
   };
 
+  const handleItemClick = (path) => {
+    navigate(path);
+    if (onClose) {
+      onClose();
+    }
+  };
+
   return (
-    <div className="flex flex-col h-full py-6 px-4">
-      <div className='flex flex-col items-center mb-8'>
-        <img
-          src={Logo}
-          alt="logo"
-          className={`w-20 h-20 rounded-xl shadow-lg p-2 mb-4 border transition-colors duration-300 ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-slate-50 border-slate-200'}`}
-        />
-        <h1 className='text-amber-500 font-serif font-bold text-lg tracking-wide capitalize text-center'>
-          {t.adminSide?.title || 'Welude Birhan'}
-        </h1>
+    <div className="flex flex-col h-full py-5 px-4">
+      <div className="flex items-center justify-between md:justify-center mb-6 relative">
+        <div className='flex flex-col items-center flex-1'>
+          <img
+            src={Logo}
+            alt="logo"
+            className={`w-16 h-16 rounded-xl shadow-lg p-2 mb-2 border transition-colors duration-300 ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-slate-50 border-slate-200'}`}
+          />
+          <h1 className='text-amber-500 font-serif font-bold text-base tracking-wide capitalize text-center'>
+            {t.adminSide?.title || 'Welude Birhan'}
+          </h1>
+        </div>
+
+        {onClose && (
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close navigation"
+            className={`p-2 rounded-xl border transition-colors md:hidden absolute right-0 top-0 ${
+              isDarkMode
+                ? "border-white/10 text-slate-400 hover:text-white hover:bg-white/5"
+                : "border-slate-200 text-slate-500 hover:text-slate-900 hover:bg-slate-100"
+            }`}
+          >
+            <X className="h-5 w-5" />
+          </button>
+        )}
       </div>
 
-      <nav className='flex-1 space-y-2 mt-4 overflow-y-auto pr-2'>
+      <nav className='flex-1 space-y-1.5 mt-2 overflow-y-auto pr-1'>
         {menuItems.map((item) => {
           const isActive = location.pathname === item.path;
           return (
             <button
               key={item.path}
-              onClick={() => navigate(item.path)}
-              className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all duration-300 ${isActive
+              onClick={() => handleItemClick(item.path)}
+              className={`w-full flex items-center gap-3.5 px-3.5 py-3 rounded-xl transition-all duration-200 cursor-pointer ${isActive
                 ? 'bg-amber-500/15 text-amber-400 border border-amber-500/30 shadow-sm font-semibold'
                 : (isDarkMode ? 'text-slate-300 hover:bg-white/10 hover:text-white border border-transparent' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900 border border-transparent')
                 }`}

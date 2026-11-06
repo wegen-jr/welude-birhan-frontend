@@ -170,7 +170,7 @@ export default function CourseDataTable({
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto w-full">
         <table className="w-full text-left text-xs border-collapse">
           <thead>
             <tr className={`border-b uppercase tracking-wider text-[11px] font-semibold ${isDarkMode

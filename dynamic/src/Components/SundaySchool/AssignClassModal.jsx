@@ -176,7 +176,7 @@ export default function AssignClassModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
       <div
-        className={`w-full max-w-lg rounded-2xl border p-6 shadow-2xl transition-all relative ${isDarkMode
+        className={`w-full max-w-[92vw] sm:max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl border p-5 sm:p-6 shadow-2xl transition-all relative ${isDarkMode
             ? "bg-[#0b1b3d] border-white/10 text-slate-100"
             : "bg-white border-slate-200 text-slate-800"
           }`}

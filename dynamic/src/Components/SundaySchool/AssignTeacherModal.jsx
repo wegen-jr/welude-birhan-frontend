@@ -213,7 +213,7 @@ export default function AssignTeacherModal({
       }}
     >
       <div
-        className={`w-full max-w-xl rounded-2xl border p-6 sm:p-7 shadow-2xl transition-all relative ${isDarkMode
+        className={`w-full max-w-[92vw] sm:max-w-xl max-h-[90vh] overflow-y-auto rounded-2xl border p-5 sm:p-7 shadow-2xl transition-all relative ${isDarkMode
             ? "bg-[#0b1b3d] border-white/10 text-slate-100"
             : "bg-white border-slate-200 text-slate-900"
           }`}

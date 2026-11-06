@@ -491,7 +491,7 @@ export default function StudentResults() {
       </section>
 
       {/* Grading rules */}
-      <section className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {COMPONENTS.map((component) => (
           <div
             key={component.key}
@@ -532,7 +532,7 @@ export default function StudentResults() {
             </p>
           </div>
 
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto w-full">
             <table className="w-full min-w-[1050px] text-left">
               <thead className="bg-white/5 text-xs uppercase tracking-wide text-slate-400">
                 <tr>

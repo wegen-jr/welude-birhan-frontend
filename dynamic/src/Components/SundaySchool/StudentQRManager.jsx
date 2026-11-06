@@ -322,7 +322,7 @@ function StudentQRManager({
             </div>
 
             {/* Student table */}
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto w-full">
 
               <table className="w-full text-left">
 

@@ -1,13 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import Sidebar from "../Components/cms/Sidebar";
 
 export default function CMSlayout() {
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    const saved = localStorage.getItem("welude_theme");
+    return saved !== null ? saved === "dark" : true;
+  });
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const toggleTheme = () => setIsDarkMode(!isDarkMode);
+  const toggleTheme = () => {
+    setIsDarkMode((prev) => {
+      const next = !prev;
+      localStorage.setItem("welude_theme", next ? "dark" : "light");
+      return next;
+    });
+  };
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [isDarkMode]);
 
   const themeClasses = isDarkMode
     ? "bg-[#081226] text-slate-100"

@@ -447,7 +447,7 @@ export default function AttendanceList() {
             No students match the current filters.
           </div>
         ) : (
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto w-full">
             <table className="w-full min-w-[600px] text-left">
               <thead className="bg-white/5 text-xs uppercase tracking-wide text-slate-400">
                 <tr>
@@ -538,7 +538,7 @@ export default function AttendanceList() {
           </div>
 
           {/* Monthly summary */}
-          <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
               {
                 label: "Present",

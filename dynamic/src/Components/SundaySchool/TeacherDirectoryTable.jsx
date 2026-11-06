@@ -201,7 +201,7 @@ export default function TeacherDirectoryTable({
       </div>
 
       {/* Directory Table */}
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto w-full">
         <table className="w-full text-left text-xs border-collapse">
           <thead>
             <tr className={`border-b transition-colors uppercase tracking-wider text-[11px] font-semibold ${isDarkMode

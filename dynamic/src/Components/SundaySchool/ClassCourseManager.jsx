@@ -387,7 +387,7 @@ export default function ClassCourseManager({
               </div>
             )}
 
-            <div className="overflow-x-auto rounded-xl border border-inherit">
+            <div className="overflow-x-auto w-full rounded-xl border border-inherit">
               <table className="w-full text-left text-xs border-collapse">
                 <thead
                   className={`text-[11px] font-semibold uppercase tracking-wider border-b ${isDarkMode

@@ -582,7 +582,7 @@ export default function PropertyManagement({ isDarkMode = true }) {
           </div>
         ) : (
           /* Inventory Data Table */
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto w-full">
             <table className="w-full text-left text-xs">
               <thead
                 className={`border-b text-[11px] font-semibold uppercase tracking-wider ${

@@ -302,9 +302,9 @@ export default function TeacherStudentsModal({
   if (!isOpen || !teacher) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-sm animate-fadeIn">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-sm animate-fadeIn">
       <div
-        className={`w-full max-w-4xl max-h-[90vh] rounded-3xl border shadow-2xl flex flex-col overflow-hidden transition-all duration-200 ${isDarkMode
+        className={`w-full max-w-[92vw] sm:max-w-4xl max-h-[90vh] rounded-3xl border shadow-2xl flex flex-col overflow-hidden transition-all duration-200 ${isDarkMode
             ? "bg-[#0b1b3d] border-white/10 text-slate-100"
             : "bg-white border-slate-200 text-slate-900"
           }`}
@@ -462,62 +462,64 @@ export default function TeacherStudentsModal({
               </p>
             </div>
           ) : (
-            <table className="w-full text-left text-xs border-collapse">
-              <thead className={`text-[11px] font-semibold uppercase tracking-wider border-b sticky top-0 z-10 ${isDarkMode ? "bg-[#081226] border-white/10 text-slate-400" : "bg-slate-100 border-slate-200 text-slate-600"
-                }`}>
-                <tr>
-                  <th className="py-3.5 px-6 font-semibold">#</th>
-                  <th className="py-3.5 px-6 font-semibold">Student ID</th>
-                  <th className="py-3.5 px-6 font-semibold">Full Name</th>
-                  <th className="py-3.5 px-6 font-semibold">Grade & Section</th>
-                  <th className="py-3.5 px-6 font-semibold">Enrollment Date</th>
-                  <th className="py-3.5 px-6 font-semibold">Status</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-inherit">
-                {filteredStudents?.map((student, idx) => (
-                  <tr
-                    key={student.id || `${student.studentId}-${idx}`}
-                    className={`transition-colors ${isDarkMode ? "hover:bg-white/[0.02]" : "hover:bg-slate-50"
-                      }`}
-                  >
-                    <td className="py-3.5 px-6 text-slate-500 dark:text-slate-400 font-mono text-[11px]">
-                      {idx + 1}
-                    </td>
-                    <td className="py-3.5 px-6 font-mono font-semibold">
-                      <span className={`px-2 py-0.5 rounded-md text-[11px] font-mono font-semibold border ${isDarkMode
-                          ? "text-amber-400 bg-amber-500/10 border-amber-500/20"
-                          : "text-amber-700 bg-amber-50 border-amber-200"
-                        }`}>
-                        {student.studentId || "—"}
-                      </span>
-                    </td>
-                    <td className="py-3.5 px-6 font-semibold text-slate-900 dark:text-slate-100">
-                      {student.fullname || student.name || "Unknown"}
-                    </td>
-                    <td className="py-3.5 px-6">
-                      <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-medium border ${isDarkMode ? "bg-sky-500/10 border-sky-500/20 text-sky-400" : "bg-sky-50 border-sky-200 text-sky-700"
-                        }`}>
-                        <GraduationCap className="w-3 h-3" />
-                        <span>{student.gradeLevel || "General"} (Sec {student.section || "A"})</span>
-                      </span>
-                    </td>
-                    <td className="py-3.5 px-6 text-slate-500 dark:text-slate-400">
-                      <div className="flex items-center gap-1.5">
-                        <Calendar className="w-3 h-3 text-slate-400" />
-                        <span>{student.enrollmentDate ? new Date(student.enrollmentDate).toLocaleDateString() : "Active Session"}</span>
-                      </div>
-                    </td>
-                    <td className="py-3.5 px-6">
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold border text-emerald-500 bg-emerald-500/10 border-emerald-500/20">
-                        <CheckCircle2 className="w-3 h-3" />
-                        <span>{student.status || "ACTIVE"}</span>
-                      </span>
-                    </td>
+            <div className="overflow-x-auto w-full">
+              <table className="w-full min-w-[620px] text-left text-xs border-collapse">
+                <thead className={`text-[11px] font-semibold uppercase tracking-wider border-b sticky top-0 z-10 ${isDarkMode ? "bg-[#081226] border-white/10 text-slate-400" : "bg-slate-100 border-slate-200 text-slate-600"
+                  }`}>
+                  <tr>
+                    <th className="py-3.5 px-6 font-semibold">#</th>
+                    <th className="py-3.5 px-6 font-semibold">Student ID</th>
+                    <th className="py-3.5 px-6 font-semibold">Full Name</th>
+                    <th className="py-3.5 px-6 font-semibold">Grade & Section</th>
+                    <th className="py-3.5 px-6 font-semibold">Enrollment Date</th>
+                    <th className="py-3.5 px-6 font-semibold">Status</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-inherit">
+                  {filteredStudents?.map((student, idx) => (
+                    <tr
+                      key={student.id || `${student.studentId}-${idx}`}
+                      className={`transition-colors ${isDarkMode ? "hover:bg-white/[0.02]" : "hover:bg-slate-50"
+                        }`}
+                    >
+                      <td className="py-3.5 px-6 text-slate-500 dark:text-slate-400 font-mono text-[11px]">
+                        {idx + 1}
+                      </td>
+                      <td className="py-3.5 px-6 font-mono font-semibold">
+                        <span className={`px-2 py-0.5 rounded-md text-[11px] font-mono font-semibold border ${isDarkMode
+                            ? "text-amber-400 bg-amber-500/10 border-amber-500/20"
+                            : "text-amber-700 bg-amber-50 border-amber-200"
+                          }`}>
+                          {student.studentId || "—"}
+                        </span>
+                      </td>
+                      <td className="py-3.5 px-6 font-semibold text-slate-900 dark:text-slate-100">
+                        {student.fullname || student.name || "Unknown"}
+                      </td>
+                      <td className="py-3.5 px-6">
+                        <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-medium border ${isDarkMode ? "bg-sky-500/10 border-sky-500/20 text-sky-400" : "bg-sky-50 border-sky-200 text-sky-700"
+                          }`}>
+                          <GraduationCap className="w-3 h-3" />
+                          <span>{student.gradeLevel || "General"} (Sec {student.section || "A"})</span>
+                        </span>
+                      </td>
+                      <td className="py-3.5 px-6 text-slate-500 dark:text-slate-400">
+                        <div className="flex items-center gap-1.5">
+                          <Calendar className="w-3 h-3 text-slate-400" />
+                          <span>{student.enrollmentDate ? new Date(student.enrollmentDate).toLocaleDateString() : "Active Session"}</span>
+                        </div>
+                      </td>
+                      <td className="py-3.5 px-6">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold border text-emerald-500 bg-emerald-500/10 border-emerald-500/20">
+                          <CheckCircle2 className="w-3 h-3" />
+                          <span>{student.status || "ACTIVE"}</span>
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
         </div>
 

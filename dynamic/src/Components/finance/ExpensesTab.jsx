@@ -243,7 +243,7 @@ export default function ExpensesTab({
             )}
           </div>
         ) : (
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto w-full">
             <table className="w-full text-left text-xs">
               <thead
                 className={`border-b text-[11px] uppercase tracking-wider font-semibold ${

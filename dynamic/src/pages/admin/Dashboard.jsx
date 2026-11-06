@@ -73,7 +73,7 @@ export default function Dashboard() {
       </div>
 
       {/* --- TOP ROW: SUMMARY CARDS --- */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8">
 
         {/* Total Members Card */}
         <div className={`p-6 rounded-3xl shadow-xl flex items-center gap-6 group hover:border-amber-500/50 transition-colors border ${isDarkMode ? 'bg-[#0b1b3d] border-white/10' : 'bg-white border-slate-200'}`}>

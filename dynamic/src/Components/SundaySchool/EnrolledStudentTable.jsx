@@ -166,7 +166,7 @@ export default function EnrolledStudentTable({
       </div>
 
       {/* Responsive Table */}
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto w-full">
         <table className="w-full text-left text-xs">
           <thead className={`text-[11px] font-semibold uppercase tracking-wider border-b ${isDarkMode
               ? "bg-white/[0.02] border-white/10 text-slate-400"

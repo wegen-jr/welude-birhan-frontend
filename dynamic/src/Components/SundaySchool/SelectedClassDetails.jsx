@@ -631,7 +631,7 @@ export default function SelectedClassDetails({
             </div>
 
             {/* Table Container */}
-            <div className={`overflow-x-auto rounded-xl border ${isDarkMode ? "border-white/10 bg-[#060e20]" : "border-slate-200 bg-white"
+            <div className={`overflow-x-auto w-full rounded-xl border ${isDarkMode ? "border-white/10 bg-[#060e20]" : "border-slate-200 bg-white"
               }`}>
               <table className="w-full text-left text-xs border-collapse">
                 <thead className={`text-[11px] font-semibold uppercase tracking-wider border-b ${isDarkMode ? "bg-white/[0.03] border-white/10 text-slate-400" : "bg-slate-50 border-slate-200 text-slate-600"
@@ -803,7 +803,7 @@ export default function SelectedClassDetails({
             )}
 
             {/* Courses Table Container */}
-            <div className={`overflow-x-auto rounded-xl border ${isDarkMode ? "border-white/10 bg-[#060e20]" : "border-slate-200 bg-white"
+            <div className={`overflow-x-auto w-full rounded-xl border ${isDarkMode ? "border-white/10 bg-[#060e20]" : "border-slate-200 bg-white"
               }`}>
               <table className="w-full text-left text-xs border-collapse">
                 <thead className={`text-[11px] font-semibold uppercase tracking-wider border-b ${isDarkMode ? "bg-white/[0.03] border-white/10 text-slate-400" : "bg-slate-50 border-slate-200 text-slate-600"
@@ -976,7 +976,7 @@ export default function SelectedClassDetails({
             )}
 
             {/* Teachers Table Container */}
-            <div className={`overflow-x-auto rounded-xl border ${isDarkMode ? "border-white/10 bg-[#060e20]" : "border-slate-200 bg-white"
+            <div className={`overflow-x-auto w-full rounded-xl border ${isDarkMode ? "border-white/10 bg-[#060e20]" : "border-slate-200 bg-white"
               }`}>
               <table className="w-full text-left text-xs border-collapse">
                 <thead className={`text-[11px] font-semibold uppercase tracking-wider border-b ${isDarkMode ? "bg-white/[0.03] border-white/10 text-slate-400" : "bg-slate-50 border-slate-200 text-slate-600"
