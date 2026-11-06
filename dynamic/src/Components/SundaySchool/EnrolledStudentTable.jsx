@@ -4,9 +4,11 @@ import {
   Search,
   RefreshCw,
   GraduationCap,
-  AlertCircle
+  AlertCircle,
+  IdCard,
 } from "lucide-react";
 import { sundaySchoolService } from "../../services/educationhub/sundaySchoolService";
+import StudentIDCardModal from "./StudentIDCardModal";
 
 export default function EnrolledStudentTable({
   newlyEnrolledStudent,
@@ -16,6 +18,7 @@ export default function EnrolledStudentTable({
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("ALL");
+  const [selectedCardStudent, setSelectedCardStudent] = useState(null);
 
   const fetchEnrollments = useCallback(async () => {
     await Promise.resolve();
@@ -180,12 +183,13 @@ export default function EnrolledStudentTable({
               <th className="py-4 px-6 font-semibold">Academic Year</th>
               <th className="py-4 px-6 font-semibold">Status</th>
               <th className="py-4 px-6 font-semibold">Enrolled Date</th>
+              <th className="py-4 px-6 font-semibold text-right">Official ID</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-inherit">
             {loading && students.length === 0 ? (
               <tr>
-                <td colSpan="7" className="py-12 text-center text-slate-500 dark:text-slate-400">
+                <td colSpan="8" className="py-12 text-center text-slate-500 dark:text-slate-400">
                   <div className="flex items-center justify-center gap-2">
                     <RefreshCw className="w-5 h-5 animate-spin text-amber-500" />
                     <span className="text-xs">Loading enrollments registry...</span>
@@ -194,7 +198,7 @@ export default function EnrolledStudentTable({
               </tr>
             ) : filteredStudents.length === 0 ? (
               <tr>
-                <td colSpan="7" className="py-12 text-center text-slate-500 dark:text-slate-400">
+                <td colSpan="8" className="py-12 text-center text-slate-500 dark:text-slate-400">
                   <div className="flex flex-col items-center justify-center gap-2">
                     <AlertCircle className="w-8 h-8 text-slate-400" />
                     <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">No enrolled students found</p>
@@ -256,6 +260,17 @@ export default function EnrolledStudentTable({
                         ? new Date(student.enrolledAt).toLocaleDateString()
                         : new Date().toLocaleDateString()}
                     </td>
+                    <td className="py-4 px-6 text-right">
+                      <button
+                        type="button"
+                        onClick={() => setSelectedCardStudent(student)}
+                        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-blue-50 hover:bg-blue-100 text-[#1A66CE] border border-blue-200 transition cursor-pointer"
+                        title="View Official ID Card"
+                      >
+                        <IdCard className="w-3.5 h-3.5" />
+                        <span>Card</span>
+                      </button>
+                    </td>
                   </tr>
                 );
               })
@@ -264,6 +279,13 @@ export default function EnrolledStudentTable({
 
         </table>
       </div>
+
+      {/* Official Student ID Card Modal Preview & Export */}
+      <StudentIDCardModal
+        isOpen={Boolean(selectedCardStudent)}
+        onClose={() => setSelectedCardStudent(null)}
+        student={selectedCardStudent}
+      />
     </div>
   );
 }

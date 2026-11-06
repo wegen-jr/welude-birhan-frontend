@@ -2,7 +2,9 @@
 import { useEffect, useMemo, useState } from "react";
 import QRCode from "qrcode";
 import { jsPDF } from "jspdf";
+import { IdCard } from "lucide-react";
 import { getAllEnrollments } from "../../services/educationhub/studentService";
+import StudentIDCardModal from "./StudentIDCardModal";
 
 function StudentQRManager({
   token,
@@ -12,6 +14,7 @@ function StudentQRManager({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [generating, setGenerating] = useState(null);
+  const [selectedCardStudent, setSelectedCardStudent] = useState(null);
 
   // Fetch all enrollments
   useEffect(() => {
@@ -334,6 +337,7 @@ function StudentQRManager({
                     <th className="p-3">Grade Level</th>
                     <th className="p-3">Section</th>
                     <th className="p-3">Academic Year</th>
+                    <th className="p-3 text-right">Official ID</th>
                   </tr>
                 </thead>
 
@@ -354,7 +358,7 @@ function StudentQRManager({
                           {student.fullname}
                         </td>
 
-                        <td className="p-3">
+                        <td className="p-3 font-mono text-xs">
                           {student.studentId}
                         </td>
 
@@ -368,6 +372,17 @@ function StudentQRManager({
 
                         <td className="p-3">
                           {student.year}
+                        </td>
+
+                        <td className="p-3 text-right">
+                          <button
+                            type="button"
+                            onClick={() => setSelectedCardStudent(student)}
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 text-[#1A66CE] font-semibold text-xs transition cursor-pointer border border-blue-200"
+                          >
+                            <IdCard className="w-3.5 h-3.5" />
+                            <span>View Card</span>
+                          </button>
                         </td>
 
                       </tr>
@@ -384,6 +399,13 @@ function StudentQRManager({
 
         ))
       )}
+
+      {/* Official Student ID Card Modal Preview & Export */}
+      <StudentIDCardModal
+        isOpen={Boolean(selectedCardStudent)}
+        onClose={() => setSelectedCardStudent(null)}
+        student={selectedCardStudent}
+      />
 
     </div>
   );
