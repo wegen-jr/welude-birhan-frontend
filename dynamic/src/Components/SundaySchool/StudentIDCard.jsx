@@ -4,7 +4,7 @@ import { QRCodeSVG } from "qrcode.react";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 import { Download, Printer, Loader2, Sparkles } from "lucide-react";
-import defaultLogo from "../../assets/logo.png";
+import churchLogoBase64 from "../../assets/churchLogoBase64";
 
 /**
  * Modern, breathable, and flexible Student ID Card component.
@@ -12,7 +12,7 @@ import defaultLogo from "../../assets/logo.png";
  */
 export default function StudentIDCard({
   student,
-  logoSrc = defaultLogo,
+  logoSrc = churchLogoBase64,
   showActions = true,
   className = "",
 }) {
@@ -34,12 +34,26 @@ export default function StudentIDCard({
       setExportError("");
 
       const element = cardRef.current;
+
+      // Preload / wait for any images inside the card to ensure html2canvas captures accurately
+      const images = element.querySelectorAll("img");
+      await Promise.all(
+        Array.from(images).map((img) => {
+          if (img.complete) return Promise.resolve();
+          return new Promise((resolve) => {
+            img.onload = resolve;
+            img.onerror = resolve;
+          });
+        })
+      );
+
       const canvas = await html2canvas(element, {
         scale: 3, // High DPI for crisp vector-like text & QR
         useCORS: true,
         allowTaint: true,
         backgroundColor: "#ffffff",
         logging: false,
+        imageTimeout: 8000,
       });
 
       const imgData = canvas.toDataURL("image/png");
@@ -59,7 +73,7 @@ export default function StudentIDCard({
       pdf.save(`StudentID_${safeId}.pdf`);
     } catch (err) {
       console.error("Failed to export Student ID Card PDF:", err);
-      setExportError("Failed to generate PDF. Please try again.");
+      setExportError(err?.message || "Failed to generate PDF. Please try again.");
     } finally {
       setIsExporting(false);
     }
@@ -161,7 +175,7 @@ export default function StudentIDCard({
           <div className="flex flex-col items-center">
             {/* Official Logo */}
             <img
-              src={logoSrc || "/assets/logo.png"}
+              src={logoSrc || churchLogoBase64}
               alt="ወሉደ ብርሃን ሰንበት ት/ቤት"
               crossOrigin="anonymous"
               className="h-24 object-contain mx-auto transition-transform"
