@@ -40,7 +40,6 @@ export default function TeacherDashboard() {
 
   const [assignments, setAssignments] = useState([]);
   const [students, setStudents] = useState([]);
-  const [attendance, setAttendance] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [fullname,setFullname]=useState("");
@@ -103,18 +102,6 @@ setAttendance(todayAttendance);
     loadDashboard();
   }, [loadDashboard]);
 
-  const present = attendance.filter(
-    (record) => record.status === "Present"
-  ).length;
-
-  const absent = attendance.filter(
-    (record) => record.status === "Absent"
-  ).length;
-
-  const late = attendance.filter(
-    (record) => record.status === "Late"
-  ).length;
-
   const labels = t.teacher.students.table;
 
   const mutedText = isDarkMode
@@ -175,14 +162,7 @@ setAttendance(todayAttendance);
         </button>
       </section>
 
-      {error && (
-        <div
-          role="alert"
-          className="rounded-xl border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-500"
-        >
-          {error}
-        </div>
-      )}
+     
 
       {!error && assignments.length === 0 && (
         <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-5 text-amber-600">
@@ -215,32 +195,6 @@ setAttendance(todayAttendance);
           </div>
         </section>
       )}
-
-      <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <TeacherStatCard
-          title={t.teacher.dashboard.totalStudents}
-          value={students.length}
-          type="students"
-        />
-
-        <TeacherStatCard
-          title={t.teacher.dashboard.presentToday}
-          value={present}
-          type="present"
-        />
-
-        <TeacherStatCard
-          title={t.teacher.dashboard.absentToday}
-          value={absent}
-          type="absent"
-        />
-
-        <TeacherStatCard
-          title={t.teacher.dashboard.lateToday}
-          value={late}
-          type="late"
-        />
-      </section>
 
       <section className={`rounded-2xl border p-5 sm:p-6 ${panelClass}`}>
         <div className="mb-5 flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
