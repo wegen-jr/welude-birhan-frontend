@@ -48,12 +48,22 @@ export default function StudentIDCard({
       );
 
       const canvas = await html2canvas(element, {
-        scale: 3, // High DPI for crisp vector-like text & QR
+        scale: 2,
         useCORS: true,
         allowTaint: true,
         backgroundColor: "#ffffff",
         logging: false,
         imageTimeout: 8000,
+        onclone: (clonedDoc) => {
+          const card =
+            clonedDoc.querySelector("[data-student-id-card]") ||
+            clonedDoc.getElementById(element.id);
+          if (card) {
+            card.style.boxShadow = "none";
+            card.style.backgroundColor = "#ffffff";
+            card.style.color = "#1f2937";
+          }
+        },
       });
 
       const imgData = canvas.toDataURL("image/png");
@@ -89,11 +99,22 @@ export default function StudentIDCard({
 
       const element = cardRef.current;
       const canvas = await html2canvas(element, {
-        scale: 3,
+        scale: 2,
         useCORS: true,
         allowTaint: true,
         backgroundColor: "#ffffff",
         logging: false,
+        imageTimeout: 8000,
+        onclone: (clonedDoc) => {
+          const card =
+            clonedDoc.querySelector("[data-student-id-card]") ||
+            clonedDoc.getElementById(element.id);
+          if (card) {
+            card.style.boxShadow = "none";
+            card.style.backgroundColor = "#ffffff";
+            card.style.color = "#1f2937";
+          }
+        },
       });
 
       const imgData = canvas.toDataURL("image/png");
@@ -166,8 +187,14 @@ export default function StudentIDCard({
       {/* 1. Card Container (Standard ID Ratio, Flexible & Breathable) */}
       <div
         ref={cardRef}
+        data-theme="light"
+        data-student-id-card="true"
         id={`student-id-card-${studentId || "preview"}`}
-        className="w-[22rem] min-h-[34rem] bg-white rounded-xl shadow-xl flex flex-col justify-between overflow-hidden relative select-none"
+        style={{
+          backgroundColor: "#ffffff",
+          color: "#1f2937",
+        }}
+        className="w-[22rem] min-h-[34rem] bg-[#ffffff] text-[#1f2937] rounded-xl shadow-xl flex flex-col justify-between overflow-hidden relative select-none"
       >
         {/* Top/Internal Content Wrapper with generous whitespace (p-8) */}
         <div className="flex flex-col justify-between flex-1 p-8">
@@ -182,17 +209,26 @@ export default function StudentIDCard({
             />
 
             {/* Amharic School Name in Royal Blue */}
-            <h1 className="text-[#1A66CE] text-lg sm:text-xl font-bold text-center tracking-wide mt-4 font-serif">
+            <h1
+              style={{ color: "#1A66CE" }}
+              className="text-[#1A66CE] text-lg sm:text-xl font-bold text-center tracking-wide mt-4 font-serif"
+            >
               ወሉደ ብርሃን ሰንበት ትምህርት ቤት
             </h1>
 
             {/* Subtle, thin golden divider line */}
-            <div className="border-t border-yellow-400 w-1/2 mx-auto mt-2" />
+            <div
+              style={{ borderTopColor: "#facc15" }}
+              className="border-t border-[#facc15] w-1/2 mx-auto mt-2"
+            />
           </div>
 
           {/* 3. QR Code Section (Floating centrally with gentle padding and soft drop shadow) */}
           <div className="flex items-center justify-center my-4">
-            <div className="p-3 bg-white rounded-xl shadow-sm border border-gray-100 flex items-center justify-center">
+            <div
+              style={{ backgroundColor: "#ffffff", borderColor: "#f3f4f6" }}
+              className="p-3 bg-[#ffffff] rounded-xl border border-[#f3f4f6] flex items-center justify-center shadow-xs"
+            >
               <QRCodeSVG
                 value={studentId || "N/A"}
                 size={140}
@@ -207,17 +243,30 @@ export default function StudentIDCard({
           {/* 4. Student Information (Clean Typography, strictly bound to API) */}
           <div className="flex flex-col items-center text-center gap-2">
             {/* Full Name */}
-            <h2 className="text-gray-800 text-xl font-bold tracking-tight line-clamp-2">
+            <h2
+              style={{ color: "#1f2937" }}
+              className="text-[#1f2937] text-xl font-bold tracking-tight line-clamp-2"
+            >
               {studentName || "Unnamed Student"}
             </h2>
 
             {/* Student ID Badge in soft blue pill */}
-            <div className="inline-flex items-center justify-center bg-blue-50 text-[#1A66CE] px-3 py-1 rounded-full text-xs font-semibold tracking-wider font-mono">
+            <div
+              style={{
+                backgroundColor: "#eff6ff",
+                color: "#1A66CE",
+                borderColor: "#dbeafe",
+              }}
+              className="inline-flex items-center justify-center bg-[#eff6ff] text-[#1A66CE] border border-[#dbeafe] px-3 py-1 rounded-full text-xs font-semibold tracking-wider font-mono"
+            >
               {studentId || "ID PENDING"}
             </div>
 
             {/* Class Details: Grade and Section in muted gray */}
-            <div className="text-gray-500 text-sm font-medium">
+            <div
+              style={{ color: "#6b7280" }}
+              className="text-[#6b7280] text-sm font-medium"
+            >
               <span>{gradeLevel ? `Grade: ${gradeLevel}` : "Grade: -"}</span>
               <span className="mx-1.5">•</span>
               <span>{section ? `Section: ${section}` : "Section: -"}</span>
@@ -227,8 +276,14 @@ export default function StudentIDCard({
 
         {/* 5. Footer Anchor (Edge-to-edge royal blue and gold accent blocks) */}
         <div className="w-full flex h-2 shrink-0">
-          <div className="flex-1 bg-[#1A66CE]" />
-          <div className="w-16 bg-yellow-400" />
+          <div
+            style={{ backgroundColor: "#1A66CE" }}
+            className="flex-1 bg-[#1A66CE]"
+          />
+          <div
+            style={{ backgroundColor: "#facc15" }}
+            className="w-16 bg-[#facc15]"
+          />
         </div>
       </div>
 

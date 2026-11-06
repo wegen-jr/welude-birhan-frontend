@@ -14,9 +14,11 @@ export default function StudentIDCardModal({
     <div
       role="dialog"
       aria-modal="true"
+      data-theme="light"
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm overflow-y-auto animate-fadeIn"
     >
       <div
+        data-theme="light"
         className="relative bg-white dark:bg-[#0b1b3d] rounded-2xl shadow-2xl border border-slate-200 dark:border-white/10 w-full max-w-[92vw] sm:max-w-md max-h-[92vh] overflow-y-auto flex flex-col items-center p-6 transition-all"
         onClick={(e) => e.stopPropagation()}
       >
