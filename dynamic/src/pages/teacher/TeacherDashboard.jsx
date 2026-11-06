@@ -104,15 +104,15 @@ setAttendance(todayAttendance);
   }, [loadDashboard]);
 
   const present = attendance.filter(
-    (record) => record.status === "PRESENT"
+    (record) => record.status === "Present"
   ).length;
 
   const absent = attendance.filter(
-    (record) => record.status === "ABSENT"
+    (record) => record.status === "Absent"
   ).length;
 
   const late = attendance.filter(
-    (record) => record.status === "LATE"
+    (record) => record.status === "Late"
   ).length;
 
   const labels = t.teacher.students.table;
