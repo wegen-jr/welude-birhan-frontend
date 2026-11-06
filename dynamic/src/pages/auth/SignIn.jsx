@@ -45,17 +45,17 @@ export default function SignIn() {
       navigate("/adminDashboard", { replace: true });
     } else if (roleUpper === "PROPERTYMANAGER" || roleUpper === "PROPERTY_MANAGER") {
       navigate("/dashboard/property", { replace: true });
-    } else if (roleUpper === "EDUCATIONHUB" || roleUpper === "EDUCATIONHUB") {
+    } else if (roleUpper === "EDUCATIONHUB" || roleUpper === "EDUCATION_LEADER" || roleUpper === "EDUCATION") {
       navigate("/dashboard/education", { replace: true });
     } else if (roleUpper === "FINANCE" || roleUpper === "FINANCE_LEADER") {
       navigate("/dashboard/finance", { replace: true });
     } else if (roleUpper === "MEMBER_USER") {
       navigate("/mediaDashboard", { replace: true });
-    }else if (roleUpper === "TEACHER") {
+    } else if (roleUpper === "TEACHER") {
       console.log("Navigating to teacher dashboard");
       navigate("/teacherDashboard", { replace: true });
-    }else {
-      navigate("/unauthorizeder", { replace: true });
+    } else {
+      navigate("/unauthorized", { replace: true });
     }
   };
 

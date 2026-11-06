@@ -78,9 +78,8 @@ function App() {
 
         {/* Protected Routes */}
         <Route element={<ProtectedRoute />}>
-          {/* Teacher Dashboard route (displays 404 while teacher dashboard is developed on separate branch) */}
-          <Route path="/dashboard/teacher" element={<div className="min-h-screen bg-[#081226] text-white flex items-center justify-center text-xl">404 Not Found</div>} />
-          <Route path="/teacherDashboard" element={<Navigate to="/dashboard/teacher" replace />} />
+          {/* Teacher Dashboard route alias */}
+          <Route path="/dashboard/teacher" element={<Navigate to="/teacherDashboard" replace />} />
 
           {/* Admin Dashboard legacy route alias */}
           <Route element={<RoleGuard allowedRoles={["ADMIN"]} />}>
@@ -95,7 +94,7 @@ function App() {
           </Route>
 
           {/* Unified Dashboard for all departmental roles */}
-          <Route element={<RoleGuard allowedRoles={['ADMIN','EDUCATIONHUB','FINANCE','PROPERTYMANAGER']} />}>
+          <Route element={<RoleGuard allowedRoles={['ADMIN', 'EDUCATIONHUB', 'EDUCATION_LEADER', 'EducationHub', 'FINANCE', 'FINANCE_LEADER', 'Finance', 'PROPERTYMANAGER', 'PROPERTY_MANAGER', 'PropertyManager', 'TEACHER']} />}>
             <Route path="/dashboard" element={<AdminLayout />}>
               <Route index element={<DashboardRedirector />} />
               <Route path="admin" element={<RoleGuard allowedRoles={["ADMIN"]}><Dashboard /></RoleGuard>} />

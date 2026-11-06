@@ -1,5 +1,5 @@
 import Logo from "../../assets/logo.png";
-import { UserPlus, HomeIcon, BadgeCheck, Settings, Globe, Moon, Sun, LogOut, Activity, BookOpen, Users, Music, Book, DollarSign, FileText, GraduationCap, Layers, Package } from 'lucide-react';
+import { UserPlus, HomeIcon, BadgeCheck, Settings, Globe, Moon, Sun, LogOut, Users, Book, DollarSign, GraduationCap, Layers, Package, X } from 'lucide-react';
 import { useLanguage } from "@/Contexts/LanguageContext";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -31,7 +31,7 @@ export default function SideBar({ isDarkMode, toggleTheme, onClose }) {
     property: { path: '/dashboard/property', icon: Package, label: t.adminSide?.property || 'Property Management' },
     finance: { path: '/dashboard/finance', icon: DollarSign, label: t.adminSide?.finance || 'Finance & Sales' },
     settings: { path: '/dashboard/settings', icon: Settings, label: t.adminSide?.setting || 'Settings' },
-    qrGenerator: { path: '/dashboard/qr-generator', icon: Settings, label: "QR Generator" || 'QR Generator' },
+    qrGenerator: { path: '/dashboard/qr-generator', icon: Settings, label: "QR Generator" },
   };
 
   const normalizedRole = role.toUpperCase();
